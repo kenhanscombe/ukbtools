@@ -16,7 +16,7 @@ You can install this development version from github
 ```{r, eval = FALSE}
 
 library(devtools)
-install_github("kenhanscombe/ukbtools")
+install_github("kenhanscombe/ukbtools", build_vignettes = TRUE)
 
 ```
 __Note:__ This package is pre-alpha - tools are added as soon as the functionality is complete.
@@ -76,3 +76,17 @@ __Note:__ You can move the three files in your fileset after creating them with 
 ## Other tools
 
 Other tools in the package are described in the vignette "Explore UK Biobank Data"
+
+```{r, eval = FALSE}
+
+vignette("explore-ukb-data", package = "ukbtools")
+
+```
+
+For a list of all functions
+
+```{r, eval = FALSE}
+
+help(package = "ukbtools")
+
+```

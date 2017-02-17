@@ -19,7 +19,7 @@ library(devtools)
 install_github("kenhanscombe/ukbtools")
 
 ```
-__Note:__ This software is pre-alpha - tools are added as soon as the functionality is complete.
+__Note:__ This package is pre-alpha - tools are added as soon as the functionality is complete.
 
 <br>
 

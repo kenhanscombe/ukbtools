@@ -1,24 +1,27 @@
 
 # ukbtools: A set of tools to manipulate UK Biobank data
 
-`ukbtools` is a set of convenience functions for 
+`ukbtools` includes a set of convenience functions for 
 
 - creating a single UKB dataset for analysis
-- querying diagnoses and retreiving diagnostic summaries
-- extracting genetic metadata for genetic analyses
+- querying International Classification of Disease (ICD) diagnosis codes and retreiving diagnostic summaries for an individual
 - exploring properties of a sample subset relative to the full UKB sample, or a reference subset
+- extracting genetic metadata for genetic analyses
+
 
 
 ## Overview
 
-After downloading and decrypting your UK Biobank (UKB) data with the supplied UKB programs (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf), you have multiple files that need to be brought together to give you a tidy dataset to explore. The data file has column names that are the field codes from the UKB data showcase. `ukbtools` provides tools to tidy up the naming of the variables and perform exploratory analysis.
+After downloading and decrypting your UK Biobank (UKB) data with the supplied [UKB programs] (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf), you have multiple files that need to be brought together to give you a tidy dataset to explore. The data file has column names that are edited Field-codes from the [UKB data showcase](http://www.ukbiobank.ac.uk/data-showcase/). `ukbtools` provides tools to tidy up the naming of the variables and perform exploratory analysis.
 
 <br>
 <br>
+
+
 
 ## Prerequisites: Making a UKB fileset
 
-Download^§^ then decrypt your data and create a UKB fileset (.tab, .r, .html):
+Download<sup>§</sup> then decrypt your data and create a UKB fileset (.tab, .r, .html):
 
 ```{bash, eval = FALSE}
 ukb_unpack ukbxxxx.enc key
@@ -31,10 +34,11 @@ ukb_conv ukbxxxx.enc_ukb docs
 
 <br>
 
-^§^ Full details of the data download and decrypt process are given in the _Using UK Biobank Data_ documentation (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf).
+<sup>§</sup> Full details of the data download and decrypt process are given in the _Using UK Biobank Data_ documentation (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf).
 
 <br>
 <br>
+
 
 
 ## Making a UKB dataset
@@ -60,7 +64,7 @@ my_ukb_data <- ukb_df("ukbxxxx", path = "./data/")
 
 <br>
 
-__Note:__ You can move the three files in your fileset after creating them with `ukb_conv`, but they should be kept together. `ukb_df()` automatically updates the read call in the R source file to point to the correct directory (the current directly by default, or the directory specified by `path`).
+__Note:__ You can move the three files in your fileset after creating them with `ukb_conv`, but they should be kept together. `ukb_df()` automatically updates the read call in the R source file to point to the correct directory (the current directory by default, or a directory specified by `path`).
 
 
 ## Other tools

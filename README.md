@@ -1,8 +1,6 @@
 
 # ukbtools: A set of tools to manipulate UK Biobank data
 
-[![Travis](https://img.shields.io/travis/rust-lang/rust.svg)]()
-
 <br>
 
 ## Overview
@@ -21,6 +19,7 @@ library(devtools)
 install_github("kenhanscombe/ukbtools")
 
 ```
+__Note:__ This software is pre-alpha - tools are added as soon as the functionality is complete.
 
 <br>
 

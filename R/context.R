@@ -7,18 +7,27 @@
 #' @param sample.sub A vector of UKB ids, or logical or row index, that defines the subset of interest.
 #' @param sample.ref A vector of UKB ids (or a logical or row index), that defines an alternative reference population. By default the reference is the full sample.
 #'
-ukb_context <- function(data, comparison.var, sample.sub, sample.ref) {
+.ukb_context <- function(data, comparison.var, sample.sub, sample.ref) {
+
+  # Fix loading of variables string/name
+  # Fix subsetting
+
   df <- data %>%
+
+    filter() %>% # fix
+
     select(
       sex_0_0,
       year_of_birth_0_0,
       townsend_deprivation_index_at_recruitment_0_0,
       ethnic_background_0_0,
-      as.name(substitute(comparison.var))) %>%
+
+      as.name(substitute(comparison.var))) %>% # fix
+
     mutate(age = 2010 - year_of_birth_0_0)
 
   # sex
-  sex <- df %>%
+  gender <- df %>%
     ggplot(aes(sex_0_0)) +
     geom_bar(fill = "grey35") +
     geom_bar(
@@ -29,7 +38,7 @@ ukb_context <- function(data, comparison.var, sample.sub, sample.ref) {
     labs(x = "Sex")
 
   # age
-  age <- df %>%
+  years <- df %>%
     ggplot(aes(age)) +
     geom_density(color = "grey35", fill = "grey35") +
     geom_density(
@@ -40,7 +49,7 @@ ukb_context <- function(data, comparison.var, sample.sub, sample.ref) {
     labs(x = "Age")
 
   # ethnicity
-  eth <- df %>%
+  ethnicity <- df %>%
     ggplot(aes(ethnic_background_0_0)) +
     geom_bar(fill = "grey35") +
     geom_bar(
@@ -51,7 +60,7 @@ ukb_context <- function(data, comparison.var, sample.sub, sample.ref) {
     labs(x = "Ethnic Background")
 
   # ses
-  ses <- df %>%
+  socioeconomic <- df %>%
     ggplot(aes(townsend_deprivation_index_at_recruitment_0_0)) +
     geom_density(color = "grey35", fill = "grey35") +
     geom_density(
@@ -61,5 +70,5 @@ ukb_context <- function(data, comparison.var, sample.sub, sample.ref) {
     ) +
     labs(x = "Townsend deprivation index")
 
-  .multiplot(sex, age, eth, ses, col = 2)
+  .multiplot(gender, years, ethnicity, socioeconomic, col = 2)
 }

@@ -123,11 +123,27 @@ count_ukb_names &lt;-<span class="st"> </span><span class="kw">data.frame</span>
 <p><br> <br></p>
 </div>
 </div>
-<div id="icd-diagnoses" class="section level2">
-<h2>3. ICD diagnoses</h2>
+<div id="retreiving-icd-diagnoses" class="section level2">
+<h2>3. Retreiving ICD diagnoses</h2>
+<p>To retrieve the full diagnosis of an individual</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">icd_diagnosis</span>(my_ukb_data, <span class="dt">id =</span> <span class="st">&quot;0000000&quot;</span>, <span class="dt">icd.version =</span> <span class="dv">10</span>)</code></pre></div>
+<p><br> <br></p>
+<p>To retrieve the “meaning” of an ICD code use <code>icd_code</code>. (You can also look up multiple codes by concatenating them.)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">icd_code</span>(<span class="dt">icd.code =</span> <span class="st">&quot;H282&quot;</span>, <span class="dt">icd.version =</span> <span class="dv">10</span>)</code></pre></div>
+<p>The full ICD “code-meaning” tables are available as datasets (<code>icd9codes</code>, <code>icd10codes</code>).</p>
+<p><br> <br></p>
+<p>To see the disease “blocks” that correspond to “chapters” in ICD-9 or ICD-10, <code>icd_chapter</code> takes the relevant ICD revision (or version) number</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">icd_chapter</span>(<span class="dt">icd.version =</span> <span class="dv">10</span>)</code></pre></div>
+<p><code>icd_chapter</code> prints to screen the required table. These are also available for query as datasets (<code>icd9chapters</code>, <code>icd10chapters</code>)</p>
+<p><br> <br></p>
+</div>
+<div id="exploring-a-ukb-sample-subset" class="section level2">
+<h2>4. Exploring a UKB sample subset</h2>
+<p>As an exploratory step you might want to look at the characteristics of a particular subset of the UKB sample relative to the full sample. For example, the subsample with your variable of interest. <code>ukb_context</code> plots the subset with data for your variable interest, against the full sample.</p>
+<p><br> <br></p>
 </div>
 <div id="genetic-metadata" class="section level2">
-<h2>4. Genetic metadata</h2>
+<h2>5. Genetic metadata</h2>
 </div>
 
 

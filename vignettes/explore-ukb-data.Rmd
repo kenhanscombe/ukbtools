@@ -130,7 +130,7 @@ icd_code(icd.code = "H282", icd.version = 10)
 
 ```
 
-The full ICD "code-meaning" tables are available as datasets (`icd9codes`, `icd10codes`)
+The full ICD "code-meaning" tables are available as datasets (`icd9codes`, `icd10codes`).
 
 <br>
 <br>
@@ -152,12 +152,6 @@ icd_chapter(icd.version = 10)
 ## 4. Exploring a UKB sample subset
 
 As an exploratory step you might want to look at the characteristics of a particular subset of the UKB sample relative to the full sample. For example, the subsample with your variable of interest. `ukb_context` plots the subset with data for your variable interest, against the full sample.
-
-```{r, eval = FALSE}
-
-ukb_context(my_ukb_data, comparison.var = )
-
-```
 
 
 <br>

@@ -34,3 +34,18 @@
 #  dim(count_ukb_names[count_names$Freq > 1, ])
 #  
 
+## ---- eval = FALSE-------------------------------------------------------
+#  
+#  icd_diagnosis(my_ukb_data, id = "0000000", icd.version = 10)
+#  
+
+## ---- eval = FALSE-------------------------------------------------------
+#  
+#  icd_code(icd.code = "H282", icd.version = 10)
+#  
+
+## ---- eval = FALSE-------------------------------------------------------
+#  
+#  icd_chapter(icd.version = 10)
+#  
+

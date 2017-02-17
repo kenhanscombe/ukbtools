@@ -1,7 +1,9 @@
 
 # ukbtools: A set of tools to manipulate UK Biobank data
 
-`ukbtools` includes a set of convenience functions for 
+[![Travis](https://img.shields.io/travis/rust-lang/rust.svg)]()
+
+ukbtools is a set of functions for 
 
 - creating a single UKB dataset for analysis
 - querying International Classification of Disease (ICD) diagnosis codes and retreiving diagnostic summaries for an individual

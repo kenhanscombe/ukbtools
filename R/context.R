@@ -14,7 +14,7 @@ ukb_context <- function(data, comparison.var, sample.sub, sample.ref) {
       year_of_birth_0_0,
       townsend_deprivation_index_at_recruitment_0_0,
       ethnic_background_0_0,
-      overall_acceleration_average_0_0) %>%
+      as.name(substitute(comparison.var))) %>%
     mutate(age = 2010 - year_of_birth_0_0)
 
   # sex
@@ -23,7 +23,7 @@ ukb_context <- function(data, comparison.var, sample.sub, sample.ref) {
     geom_bar(fill = "grey35") +
     geom_bar(
       data = df %>%
-        filter(!is.na(my.variable)),
+        filter(!is.na(comparison.var)),
       fill = "hotpink"
     ) +
     labs(x = "Sex")
@@ -34,7 +34,7 @@ ukb_context <- function(data, comparison.var, sample.sub, sample.ref) {
     geom_density(color = "grey35", fill = "grey35") +
     geom_density(
       data = df %>%
-        filter(!is.na(my.variable)),
+        filter(!is.na(comparison.var)),
       color = "hotpink"
     ) +
     labs(x = "Age")
@@ -45,7 +45,7 @@ ukb_context <- function(data, comparison.var, sample.sub, sample.ref) {
     geom_bar(fill = "grey35") +
     geom_bar(
       data = data %>%
-        filter(!is.na(my.variable)),
+        filter(!is.na(comparison.var)),
       fill = "hotpink") +
     coord_flip() +
     labs(x = "Ethnic Background")
@@ -56,7 +56,7 @@ ukb_context <- function(data, comparison.var, sample.sub, sample.ref) {
     geom_density(color = "grey35", fill = "grey35") +
     geom_density(
       data = df %>%
-        filter(!is.na(my.variable)),
+        filter(!is.na(comparison.var)),
       color = "hotpink"
     ) +
     labs(x = "Townsend deprivation index")

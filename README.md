@@ -3,18 +3,19 @@
 
 [![Travis](https://img.shields.io/travis/rust-lang/rust.svg)]()
 
+<br>
+
 - create a single UKB dataset for analysis
 - query the International Classification of Diseases (ICD) diagnosis codes, and retreive diagnostic summaries for an individual
 - explore properties of a sample subset relative to the full UKB sample, or a reference subset
 - extract genetic metadata for genetic analyses
 
-
+<br>
 
 ## Overview
 
 After downloading and decrypting your UK Biobank (UKB) data with the supplied [UKB programs] (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf), you have multiple files that need to be brought together to give you a dataset to explore. The data file has column names that are edited Field-codes from the [UKB data showcase](http://www.ukbiobank.ac.uk/data-showcase/). `ukbtools` makes it easy to collapse the multiple UKB files into a single dataset for analysis, in the process giving meaningful names to the variables. The package also includes functionality to retreive diagnoses, perform exploratory analysis, and collect genetic metadata.
 
-<br>
 <br>
 
 
@@ -36,7 +37,6 @@ ukb_conv ukbxxxx.enc_ukb docs
 
 <sup>§</sup> Full details of the data download and decrypt process are given in the _Using UK Biobank Data_ documentation (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf).
 
-<br>
 <br>
 
 
@@ -62,9 +62,10 @@ my_ukb_data <- ukb_df("ukbxxxx", path = "./data/")
 
 ```
 
+__Note:__ You can move the three files in your fileset after creating them with `ukb_conv`, but they should be kept together. `ukb_df()` automatically updates the read call in the R source file to point to the correct directory (the current directory by default, or a directory specified by `path`).
+
 <br>
 
-__Note:__ You can move the three files in your fileset after creating them with `ukb_conv`, but they should be kept together. `ukb_df()` automatically updates the read call in the R source file to point to the correct directory (the current directory by default, or a directory specified by `path`).
 
 
 ## Other tools

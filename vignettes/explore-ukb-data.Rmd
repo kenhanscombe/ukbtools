@@ -1,0 +1,120 @@
+---
+title: "Explore UK Biobank data"
+author: "Ken B. Hanscombe"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<br>
+
+After downloading and decrypting your UK Biobank (UKB) data with the supplied UKB programs (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf), you have multiple files that need to be brought together to give you a tidy dataset to explore. The data file has column names that are the field codes from the UKB data showcase. `ukbtools` provides tools to tidy up the naming of the variables and perform exploratory analysis. 
+
+<br>
+<br>
+
+
+## 1. Preparing a UKB fileset
+
+Download^§^ then decrypt your data and create a UKB fileset (.tab, .r, .html):
+
+```{bash, eval = FALSE}
+ukb_unpack ukbxxxx.enc key
+ukb_conv ukbxxxx.enc_ukb r
+ukb_conv ukbxxxx.enc_ukb docs
+
+```
+
+
+`ukb_unpack` decrypts your downloaded `ukbxxxx.enc` file, outputting a `ukbxxxx.enc_ukb` file. `ukb_conv` with the `r` flag converts the decrypted data to a tab-delimited file `ukbxxxx.tab` and an R script `ukbxxxx.r` that reads the tab file. The `docs` flag creates an html file containing a field-code-to-description table (among others).
+
+<br>
+
+^§^ Full details of the data download and decrypt process are given in the _Using UK Biobank Data_ documentation (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf).
+
+<br>
+<br>
+
+
+## 2. Making a dataset
+
+The function `ukb_df()` takes two arguments, the stem of your fileset and the path, and returns a dataframe with usable column names. 
+
+
+```{r, eval = FALSE}
+
+my_ukb_data <- ukb_df("ukbxxxx")
+
+```
+
+
+You can also specify the path to your fileset if it is not in the current directory. For example, if your fileset is in a subdirectory of the working directory called data
+
+
+```{r, eval = FALSE}
+
+my_ukb_data <- ukb_df("ukbxxxx", path = "./data/")
+
+```
+
+
+<br>
+
+__Note:__ You can move the three files in your fileset after creating them with `ukb_conv`, but they should be kept together. `ukb_df()` automatically updates the read call in the R source file to point to the correct directory (the current directly by default, or the directory specified by `path`).
+
+<br>
+<br>
+
+#### 2.1 Multiple downloads
+
+If you have multiple UKB downloads, tidy then merge them.
+
+```{r eval = FALSE}
+
+ukbxxxx_data <- ukb_df("ukbxxxx", path = "./data/")
+ukbyyyy_data <- ukb_df("ukbyyyy", path = "./data/")
+ukbzzzz_data <- ukb_df("ukbzzzz", path = "./data/")
+
+my_ukb_data <- plyr::join_all(
+  list(
+    ukbxxxx_data,
+    ukbyyyy_data,
+    ukbzzzz_data),
+  by = "eid",
+  type = "full")
+
+```
+
+<br>
+
+__Note:__ You will have at least one variable duplicated in the different downloads, the unique individual identifier `eid`. Counting the repeated variables (and the number of repeats of each) can give you a sense of the expected number of variables in your merged dataset.
+
+```{r, eval = FALSE}
+
+ukb_names <- c(
+  names(ukbxxxx_data),
+  names(ukbyyyy_data),
+  names(ukbzzzz_data)
+)
+count_ukb_names <- data.frame(table(ukb_names))
+dim(count_ukb_names[count_names$Freq > 1, ])
+
+```
+
+<br>
+<br>
+
+
+## 3. ICD diagnoses
+
+
+
+
+## 4. Genetic metadata
+
+
+
+

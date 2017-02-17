@@ -1,0 +1,18 @@
+Package: ukbtools
+Type: Package
+Title: A set of tools to tidy and explore UK Biobank data
+Version: 0.1.0
+Author: Who wrote it
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: A set of tools to create a single UK Biobank dataset
+    from a UKB fileset (.tab, .r, .html), visualize a sample subset in context,
+    explore ICD diagnoses, and extract genetic metadata for genetic analyses.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Imports: tidyverse,
+    magrittr
+RoxygenNote: 6.0.1
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr

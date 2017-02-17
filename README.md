@@ -18,7 +18,7 @@ You can install this development version from github
 ```{r, eval = FALSE}
 
 library(devtools)
-install_github("ukbtools")
+install_github("kenhanscombe/ukbtools")
 
 ```
 

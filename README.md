@@ -3,7 +3,7 @@
 
 [![Travis](https://img.shields.io/travis/rust-lang/rust.svg)]()
 
-- creating a single UKB dataset for analysis
+- create a single UKB dataset for analysis
 - query the International Classification of Diseases (ICD) diagnosis codes, and retreive diagnostic summaries for an individual
 - explore properties of a sample subset relative to the full UKB sample, or a reference subset
 - extract genetic metadata for genetic analyses
@@ -12,7 +12,7 @@
 
 ## Overview
 
-After downloading and decrypting your UK Biobank (UKB) data with the supplied [UKB programs] (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf), you have multiple files that need to be brought together to give you a tidy dataset to explore. The data file has column names that are edited Field-codes from the [UKB data showcase](http://www.ukbiobank.ac.uk/data-showcase/). `ukbtools` provides tools to tidy up the naming of the variables, retreive diagnoses, perform exploratory analysis, and collect genetic metadata.
+After downloading and decrypting your UK Biobank (UKB) data with the supplied [UKB programs] (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf), you have multiple files that need to be brought together to give you a dataset to explore. The data file has column names that are edited Field-codes from the [UKB data showcase](http://www.ukbiobank.ac.uk/data-showcase/). `ukbtools` makes it easy to collapse the multiple UKB files into a single dataset for analysis, in the process giving meaningful names to the variables. The package also includes functionality to retreive diagnoses, perform exploratory analysis, and collect genetic metadata.
 
 <br>
 <br>

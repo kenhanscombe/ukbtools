@@ -108,12 +108,63 @@ dim(count_ukb_names[count_names$Freq > 1, ])
 <br>
 
 
-## 3. ICD diagnoses
+## 3. Retreiving ICD diagnoses
 
 
+To retrieve the full diagnosis of an individual
+
+```{r, eval = FALSE}
+
+icd_diagnosis(my_ukb_data, id = "0000000", icd.version = 10)
+
+```
+
+<br>
+<br>
+
+To retrieve the "meaning" of an ICD code use `icd_code`. (You can also look up multiple codes by concatenating them.)
+
+```{r, eval = FALSE}
+
+icd_code(icd.code = "H282", icd.version = 10)
+
+```
+
+The full ICD "code-meaning" tables are available as datasets (`icd9codes`, `icd10codes`)
+
+<br>
+<br>
+
+To see the disease "blocks" that correspond to "chapters" in ICD-9 or ICD-10, `icd_chapter` takes the relevant ICD revision (or version) number
+
+```{r, eval = FALSE}
+
+icd_chapter(icd.version = 10)
+
+```
+
+`icd_chapter` prints to screen the required table. These are also available for query as datasets (`icd9chapters`, `icd10chapters`)
+
+<br>
+<br>
 
 
-## 4. Genetic metadata
+## 4. Exploring a UKB sample subset
+
+As an exploratory step you might want to look at the characteristics of a particular subset of the UKB sample relative to the full sample. For example, the subsample with your variable of interest. `ukb_context` plots the subset with data for your variable interest, against the full sample.
+
+```{r, eval = FALSE}
+
+ukb_context(my_ukb_data, comparison.var = )
+
+```
+
+
+<br>
+<br>
+
+
+## 5. Genetic metadata
 
 
 

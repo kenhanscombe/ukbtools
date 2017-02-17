@@ -4,17 +4,14 @@
 \alias{ukb_context}
 \title{Demographics of a sample subset, or an individual}
 \usage{
-ukb_context(data, id = "eid", sample_sub, sample_ref = TRUE,
-  individual = NULL, comparison_var)
+ukb_context(data, comparison.var, sample.sub, sample.ref)
 }
 \arguments{
 \item{data}{A UKB dataset.}
 
-\item{sample_sub}{A vector of UKB ids, or logical or row index, that defines the subset of interest.}
+\item{sample.sub}{A vector of UKB ids, or logical or row index, that defines the subset of interest.}
 
-\item{sample_ref}{A vector of UKB ids (or a logical or row index), that defines an alternative reference population. By default the reference is the full sample.}
-
-\item{individual}{A UKB individual id ("eid").}
+\item{sample.ref}{A vector of UKB ids (or a logical or row index), that defines an alternative reference population. By default the reference is the full sample.}
 }
 \description{
 Describes a subset of UKB sample, or an individual, relative to the full UK Biobank sample, or a specified UKB subset. This function is intended as an exploratory data analysis and quality control tool, and as such only provides summary statistics and graphical context for individual's data.

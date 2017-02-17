@@ -38,7 +38,7 @@ ukb_conv ukbxxxx.enc_ukb docs
 
 <br>
 
-<sup>§</sup> Full details of the data download and decrypt process are given in the _Using UK Biobank Data_ documentation (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf).
+<sup>§</sup> Full details of the data download and decrypt process are given in the [Using UK Biobank Data](http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf) documentation.
 
 <br>
 

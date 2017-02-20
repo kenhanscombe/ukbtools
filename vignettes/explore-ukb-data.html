@@ -75,7 +75,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <p><br></p>
-<p>After downloading and decrypting your UK Biobank (UKB) data with the supplied UKB programs (<a href="http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf" class="uri">http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf</a>), you have multiple files that need to be brought together to give you a tidy dataset to explore. The data file has column names that are the field codes from the UKB data showcase. <code>ukbtools</code> provides tools to tidy up the naming of the variables and perform exploratory analysis.</p>
+<p>After downloading and decrypting your UK Biobank (UKB) data with the supplied <a href="http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf">UKB programs</a>, you have multiple files that need to be brought together to give you a tidy dataset to explore. The data file has column names that are the field codes from the UKB data showcase. <code>ukbtools</code> provides tools to tidy up the naming of the variables and perform exploratory analysis.</p>
 <p><br> <br></p>
 <div id="preparing-a-ukb-fileset" class="section level2">
 <h2>1. Preparing a UKB fileset</h2>
@@ -85,7 +85,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">ukb_conv</span> ukbxxxx.enc_ukb docs</code></pre></div>
 <p><code>ukb_unpack</code> decrypts your downloaded <code>ukbxxxx.enc</code> file, outputting a <code>ukbxxxx.enc_ukb</code> file. <code>ukb_conv</code> with the <code>r</code> flag converts the decrypted data to a tab-delimited file <code>ukbxxxx.tab</code> and an R script <code>ukbxxxx.r</code> that reads the tab file. The <code>docs</code> flag creates an html file containing a field-code-to-description table (among others).</p>
 <p><br></p>
-<p><sup>§</sup> Full details of the data download and decrypt process are given in the <em>Using UK Biobank Data</em> documentation (<a href="http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf" class="uri">http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf</a>).</p>
+<p><sup>§</sup> Full details of the data download and decrypt process are given in the <a href="http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf">Using UK Biobank Data</a> documentation .</p>
 <p><br> <br></p>
 </div>
 <div id="making-a-dataset" class="section level2">
@@ -149,6 +149,19 @@ count_ukb_names &lt;-<span class="st"> </span><span class="kw">data.frame</span>
 </div>
 <div id="genetic-metadata" class="section level2">
 <h2>5. Genetic metadata</h2>
+<p>If you are doing any downstream genetic analyses, you will need the genetic metadata (which should be in you phenotype dataset). Detailed information is available on UKB <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf">genotyping and quality control</a> and <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/imputation_documentation_May2015.pdf">imputation and association</a>.</p>
+<p><br> <br></p>
+<p>You can collect the genetic metadata (including recommended exclusions, genetic sex, genetic ethnicity, chip, etc.), and principal components with</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_gen_meta &lt;-<span class="st"> </span><span class="kw">ukb_meta</span>(my_ukb_data)
+my_gen_pcs &lt;-<span class="st"> </span><span class="kw">ukb_gen_pcs</span>(my_ukb_data)</code></pre></div>
+<p><br> <br></p>
+<p>A list of IDs for recommended exclusions and heterozygosity outliers (+/- 3*SD) can be retreived</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ukb_gen_excl</span>(my_ukb_data)
+<span class="kw">ukb_gen_het</span>(my_ukb_data)</code></pre></div>
+<p><br> <br></p>
+<p><code>ukb_gen_rel</code> returns a dataframe with <code>id</code>, <code>pair</code> (a numeric identifier for related pairs), and <code>kinship</code> (kinship coefficient)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_gen_rel &lt;-<span class="st"> </span><span class="kw">ukb_gen_rel</span>(my_ukb_data)</code></pre></div>
+<p><br> <br></p>
 </div>
 
 

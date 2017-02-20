@@ -11,7 +11,7 @@ vignette: >
 
 <br>
 
-After downloading and decrypting your UK Biobank (UKB) data with the supplied UKB programs (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf), you have multiple files that need to be brought together to give you a tidy dataset to explore. The data file has column names that are the field codes from the UKB data showcase. `ukbtools` provides tools to tidy up the naming of the variables and perform exploratory analysis. 
+After downloading and decrypting your UK Biobank (UKB) data with the supplied [UKB programs](http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf), you have multiple files that need to be brought together to give you a tidy dataset to explore. The data file has column names that are the field codes from the UKB data showcase. `ukbtools` provides tools to tidy up the naming of the variables and perform exploratory analysis. 
 
 <br>
 <br>
@@ -33,7 +33,7 @@ ukb_conv ukbxxxx.enc_ukb docs
 
 <br>
 
-^§^ Full details of the data download and decrypt process are given in the _Using UK Biobank Data_ documentation (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf).
+^§^ Full details of the data download and decrypt process are given in the [Using UK Biobank Data](http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf) documentation .
 
 <br>
 <br>
@@ -170,8 +170,44 @@ ukb_context(
 
 ## 5. Genetic metadata
 
+If you are doing any downstream genetic analyses, you will need the genetic metadata (which should be in you phenotype dataset). Detailed information is available on UKB [genotyping and quality control](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf) and [imputation and association](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/imputation_documentation_May2015.pdf).
+
+<br>
+<br>
+
+You can collect the genetic metadata (including recommended exclusions, genetic sex, genetic ethnicity, chip, etc.), and principal components with
+
+```{r, eval = FALSE}
+
+my_gen_meta <- ukb_meta(my_ukb_data)
+my_gen_pcs <- ukb_gen_pcs(my_ukb_data)
+
+```
+
+<br>
+<br>
+
+A list of IDs for recommended exclusions and heterozygosity outliers (+/- 3*SD) can be retreived
+
+```{r, eval = FALSE}
+
+ukb_gen_excl(my_ukb_data)
+ukb_gen_het(my_ukb_data)
+
+```
 
 
+<br>
+<br>
+
+`ukb_gen_rel` returns a dataframe with `id`, `pair` (a numeric identifier for related pairs), and `kinship` (kinship coefficient)
+
+```{r, eval = FALSE}
+
+my_gen_rel <- ukb_gen_rel(my_ukb_data)
+
+```
 
 
-
+<br>
+<br>

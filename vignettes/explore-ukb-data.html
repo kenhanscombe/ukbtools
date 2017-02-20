@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ken B. Hanscombe" />
 
-<meta name="date" content="2017-02-17" />
+<meta name="date" content="2017-02-20" />
 
 <title>Explore UK Biobank data</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Explore UK Biobank data</h1>
 <h4 class="author"><em>Ken B. Hanscombe</em></h4>
-<h4 class="date"><em>2017-02-17</em></h4>
+<h4 class="date"><em>2017-02-20</em></h4>
 
 
 
@@ -139,7 +139,12 @@ count_ukb_names &lt;-<span class="st"> </span><span class="kw">data.frame</span>
 </div>
 <div id="exploring-a-ukb-sample-subset" class="section level2">
 <h2>4. Exploring a UKB sample subset</h2>
-<p>As an exploratory step you might want to look at the characteristics of a particular subset of the UKB sample relative to the full sample. For example, the subsample with your variable of interest. <code>ukb_context</code> plots the subset with data for your variable interest, against the full sample.</p>
+<p>As an exploratory step you might want to look at the demographics of a particular subset of the UKB sample relative to a reference sample. For example, the subsample with data on your variable of interest compared to those without data (i.e. <code>NA</code>). <code>ukb_context</code> takes either a comparison variable (<code>comparison.var</code>) or a logical vector (<code>sample.ref</code>) to define a reference and comparison sample.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ukb_context</span>(
+  my_ukb_data,
+  <span class="dt">age.var =</span> <span class="st">&quot;year_of_birth_0_0&quot;</span>,
+  <span class="dt">sample.ref =</span> <span class="kw">sample</span>(<span class="kw">c</span>(T,F), <span class="kw">nrow</span>(my_ukb_data), <span class="dt">replace =</span> <span class="ot">TRUE</span>)
+  )</code></pre></div>
 <p><br> <br></p>
 </div>
 <div id="genetic-metadata" class="section level2">

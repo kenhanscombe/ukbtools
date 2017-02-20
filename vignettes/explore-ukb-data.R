@@ -49,3 +49,12 @@
 #  icd_chapter(icd.version = 10)
 #  
 
+## ---- eval = FALSE-------------------------------------------------------
+#  
+#  ukb_context(
+#    my_ukb_data,
+#    age.var = "year_of_birth_0_0",
+#    sample.ref = sample(c(T,F), nrow(my_ukb_data), replace = TRUE)
+#    )
+#  
+

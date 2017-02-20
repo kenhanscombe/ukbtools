@@ -151,7 +151,17 @@ icd_chapter(icd.version = 10)
 
 ## 4. Exploring a UKB sample subset
 
-As an exploratory step you might want to look at the characteristics of a particular subset of the UKB sample relative to the full sample. For example, the subsample with your variable of interest. `ukb_context` plots the subset with data for your variable interest, against the full sample.
+As an exploratory step you might want to look at the demographics of a particular subset of the UKB sample relative to a reference sample. For example, the subsample with data on your variable of interest compared to those without data (i.e. `NA`). `ukb_context` takes either a comparison variable (`comparison.var`) or a logical vector (`sample.ref`) to define a reference and comparison sample.
+
+```{r, eval = FALSE}
+
+ukb_context(
+  my_ukb_data,
+  age.var = "year_of_birth_0_0",
+  sample.ref = sample(c(T,F), nrow(my_ukb_data), replace = TRUE)
+  )
+
+```
 
 
 <br>

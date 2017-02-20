@@ -1,6 +1,8 @@
 
 # ukbtools: A set of tools to manipulate UK Biobank data
 
+__Co-authors:__ Joni Coleman, Matthew Traylor, Cathryn Lewis
+
 <br>
 
 ## Overview

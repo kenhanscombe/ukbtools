@@ -1,6 +1,6 @@
 Package: ukbtools
 Version: 0.0.0.9000
-Title: A set of tools to tidy and explore UK Biobank data
+Title: A set of tools to manipulate and explore UK Biobank data
 Authors@R: person("Ken", "Hanscombe", email = "ken.hanscombe@gmail.com", role = c("aut", "cre"))
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: A set of tools to create a single UK Biobank dataset

@@ -21,3 +21,9 @@
 #'
 #' A dataset containing the ICD-10 chapter titles - a top level description of diagnoses classes (or blocks)
 "icd10chapters"
+
+
+#' UKB assessment centre
+#'
+#' A dataset containing the 22 assessment centres (as well as pilot test centre and a revisit centre)
+"ukbcentre"

@@ -9,6 +9,7 @@ ukb_gen_meta <-  function(data) {
   data %>%
     select(
       eid,
+      uk_biobank_assessment_centre_0_0,
       genetic_ethnic_grouping_0_0,
       average_x_chromosome_intensities_for_determining_sex_0_0,
       average_y_chromosome_intensities_for_determining_sex_0_0,
@@ -127,6 +128,21 @@ ukb_gen_het <- function(data) {
         heterozygosity_0_0 > (mean(heterozygosity_0_0) + (3 * sd(heterozygosity_0_0)))
     ) %>%
     pull(eid)
+}
+
+
+#' Inserts UKB centre names into data
+#'
+#' Useful if your UKB centre variable \code{uk_biobank_assessment_centre_0_0} has not been populated with named levels.
+#'
+#' @param data A UKB dataset created with \code{\link{ukb_df}}.
+#' @return A dataframe with an additional column \code{ukb_centre} - UKB assessment centre names
+#'
+ukb_centre <- function(data, plot = FALSE){
+  centre_lookup <- .lookup(ukbcentre, "code", "centre")
+  data$ukb_centre <- centre_lookup[as.factor(data$uk_biobank_assessment_centre_0_0)]
+
+  return(data)
 }
 
 

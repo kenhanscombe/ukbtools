@@ -6,7 +6,7 @@
 #' @param data A UKB dataset constructed with \code{\link{ukb_df}}.
 #' @param comparison.var The variable of interest which defines the "comparison" (samples with data) and "reference" (samples without data, i.e. NA) samples.
 #' @param age.var The demographic to be use for age, either "age_when_attended_assessment_centre_0_0" (default) or "year_of_birth_0_0" (age calculated as 2010 - "year_of_birth_0_0").
-#' @param sample.ref A logical vector defining a "comparison" subset (TRUE) and "reference" subset (FALSE). Length must equal the number of rows in your \data{data}.
+#' @param sample.ref A logical vector defining a "comparison" subset (TRUE) and "reference" subset (FALSE). Length must equal the number of rows in your \code{data}.
 #'
 #' @seealso \code{\link{ukb_df}}
 #'

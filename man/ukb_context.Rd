@@ -14,7 +14,7 @@ ukb_context(data, age.var = "age_when_attended_assessment_centre_0_0",
 
 \item{comparison.var}{The variable of interest which defines the "comparison" (samples with data) and "reference" (samples without data, i.e. NA) samples.}
 
-\item{sample.ref}{A logical vector defining a "comparison" subset (TRUE) and "reference" subset (FALSE). Length must equal the number of rows in your \data{data}.}
+\item{sample.ref}{A logical vector defining a "comparison" subset (TRUE) and "reference" subset (FALSE). Length must equal the number of rows in your \code{data}.}
 }
 \description{
 Describes a subset of the UKB sample, relative to a reference subsample, on the \href{http://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=1001}{UKB primary demographics} (sex, age, ethnicity, socioeconomic status). The "reference" and "comparison" samples are defined either by a variable of interest (\code{comparison.var} - those with data form the "comparison" subset and samples with missing data are the "reference" sample), or a logical vector (\code{sample.ref} - where \code{TRUE} values define the "comparison" and \code{FALSE} the "reference" sample) . This function is intended as an exploratory data analysis and quality control tool, and as such only provides summary statistics and graphical context for an individual's data.

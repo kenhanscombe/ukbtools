@@ -4,7 +4,7 @@
 \alias{ukb_df}
 \title{Reads a UK Biobank phenotype fileset and returns a single dataset.}
 \usage{
-ukb_df(fileset, path = "./", data.pos = 2)
+ukb_df(fileset, path = "", data.pos = 2)
 }
 \arguments{
 \item{fileset}{The prefix for a UKB fileset, e.g., ukbxxxx (for ukbxxxx.tab, ukbxxxx.r, ukbxxxx.html)}

@@ -14,17 +14,17 @@
 #'
 #' @seealso \code{\link{ukb_field}}
 #'
-ukb_df <- function(fileset, path = './', data.pos = 2) {
+ukb_df <- function(fileset, path = "", data.pos = 2) {
   html_file <- sprintf("%s.html", fileset)
   r_file <- sprintf("%s.r", fileset)
   tab_file <- sprintf("%s.tab", fileset)
 
   .update_tab_path(fileset, path)
 
-  source(paste(path, r_file, sep = ""))
+  source(file.path(path, r_file))
 
   tables <- readHTMLTable(
-    doc = paste(path, html_file, sep = ""),
+    doc = file.path(path, html_file),
     stringsAsFactors = FALSE
   )
 
@@ -45,10 +45,10 @@ ukb_df <- function(fileset, path = './', data.pos = 2) {
 #' @param data.pos Locates the data in your .html file. The .html file is read into a list; the default value data.pos = 2 indicates the second item in the list. (The first item in the list is the title of the table). You will probably not need to change this value, but if the need arises you can open the .html file in a browser and identify where in the file the data is.
 #' @param as.lookup If set to TRUE, returns a named \code{vector}. The default \code{as.look = FALSE} returns a dataframe with columns: field.showcase (as used in the UKB online showcase), field.data (as used in the tab file), name (descriptive name created by \code{\link{ukb_df}})
 #'
-ukb_field <- function(fileset, path = './', data.pos = 2, as.lookup = FALSE) {
+ukb_field <- function(fileset, path = "", data.pos = 2, as.lookup = FALSE) {
   html_file <- sprintf("%s.html", fileset)
   tables <- readHTMLTable(
-    doc = paste(path, html_file, sep = ""),
+    doc = file.path(path, html_file),
     stringsAsFactors = FALSE
   )
 
@@ -139,13 +139,13 @@ ukb_field <- function(fileset, path = './', data.pos = 2, as.lookup = FALSE) {
 #' @param fileset prefix for UKB fileset
 #' @param path relative path to directory containing the fileset
 #'
-.update_tab_path <- function(fileset, path = './') {
+.update_tab_path <- function(fileset, path = "") {
   r_file <- sprintf("%s.r", fileset)
   tab_file <- sprintf("%s.tab", fileset)
 
   # Update path to tab file in R source
-  tab_location <- paste(path, tab_file, sep = "")
-  r_location <- paste(path, r_file, sep = "")
+  tab_location <- file.path(path, tab_file)
+  r_location <- file.path(path, r_file)
 
   f <- gsub(
     "read.*$" ,

@@ -4,7 +4,7 @@
 \alias{ukb_field}
 \title{Makes a UKB Data-Field to variable name table for reference or lookup.}
 \usage{
-ukb_field(fileset, path = "./", data.pos = 2, as.lookup = FALSE)
+ukb_field(fileset, path = "", data.pos = 2, as.lookup = FALSE)
 }
 \arguments{
 \item{fileset}{The prefix for a UKB fileset, e.g., ukbxxxx (for ukbxxxx.tab, ukbxxxx.r, ukbxxxx.html)}

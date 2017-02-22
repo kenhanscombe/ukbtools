@@ -59,6 +59,8 @@ my_ukb_data <- ukb_df("ukbxxxx")
 ```
 
 
+This will take a few minutes. The rate-limiting step is reading and parsing the code in the UKB-generated .r file - not `ukb_df` per se.
+
 You can also specify the path to your fileset if it is not in the current directory. For example, if your fileset is in a subdirectory of the working directory called data
 
 

@@ -36,11 +36,8 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
   )
 
   variable_names <- .column_name_lookup(tables[[data.pos]])
-
-  df <- bd
-  names(df) <- variable_names[names(df)]
-  #rm(list = ls(pattern = "^bd$|^lbl.*|^lvl.*"), pos = 1)
-  return(df)
+  names(bd) <- variable_names[names(bd)]
+  return(bd)
 }
 
 

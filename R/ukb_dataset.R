@@ -36,7 +36,7 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
 
   df <- bd
   names(df) <- variable_names[names(df)]
-  rm(list = ls(pattern = "^bd$|^lbl.*|^lvl.*"), envir = globalenv())
+  rm(list = ls(pattern = "^bd$|^lbl.*|^lvl.*"), pos = globalenv())
   return(df)
 }
 

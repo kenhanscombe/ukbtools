@@ -72,6 +72,7 @@ ukb_field <- function(fileset, path = './', data.pos = 2, as.lookup = FALSE) {
 
 #' Fills Description and Type columns where missing at follow-up assessments.
 #'
+#' @export
 #' @param data Field-to-description table from html file
 #'
 .fill_missing_description <-  function(data) {
@@ -89,6 +90,7 @@ ukb_field <- function(fileset, path = './', data.pos = 2, as.lookup = FALSE) {
 
 #' Creates a variable name from the field description.
 #'
+#' @export
 #' @param data Field-to-description table from html file
 #'
 .description_to_name <-  function(data) {
@@ -116,6 +118,7 @@ ukb_field <- function(fileset, path = './', data.pos = 2, as.lookup = FALSE) {
 
 #' Matches field (as in tab file) to variable name
 #'
+#' @export
 #' @param data Field-to-description table from html file
 #' @return A named character vector. Names are fields, values are variable names made from description
 #'
@@ -132,6 +135,7 @@ ukb_field <- function(fileset, path = './', data.pos = 2, as.lookup = FALSE) {
 #'
 #' In particular, if you have moved the fileset from the directory containing the foo.enc file on which you called gconv. NB. gconv writes absolute path to directory containing foo.enc, into foo.r read.table() call
 #'
+#' @export
 #' @param fileset prefix for UKB fileset
 #' @param path relative path to directory containing the fileset
 #'

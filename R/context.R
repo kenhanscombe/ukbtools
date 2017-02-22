@@ -3,6 +3,7 @@
 #'
 #' Describes a subset of the UKB sample, relative to a reference subsample, on the \href{http://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=1001}{UKB primary demographics} (sex, age, ethnicity, socioeconomic status). The "reference" and "comparison" samples are defined either by a variable of interest (\code{comparison.var} - those with data form the "comparison" subset and samples with missing data are the "reference" sample), or a logical vector (\code{sample.ref} - where \code{TRUE} values define the "comparison" and \code{FALSE} the "reference" sample) . This function is intended as an exploratory data analysis and quality control tool, and as such only provides summary statistics and graphical context for an individual's data.
 #'
+#' @export
 #' @param data A UKB dataset constructed with \code{\link{ukb_df}}.
 #' @param comparison.var The variable of interest which defines the "comparison" (samples with data) and "reference" (samples without data, i.e. NA) samples.
 #' @param age.var The demographic to be use for age, either "age_when_attended_assessment_centre_0_0" (default) or "year_of_birth_0_0" (age calculated as 2010 - "year_of_birth_0_0").

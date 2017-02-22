@@ -21,11 +21,14 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
 
   .update_tab_path(fileset, path)
 
-  source(if (path == ".") {
-    file.path(getwd(), r_file)
-  } else {
-    file.path(path, r_file)
-  })
+  source(
+    if (path == ".") {
+      file.path(getwd(), r_file)
+    } else {
+      file.path(path, r_file)
+    },
+    local = TRUE
+  )
 
   tables <- XML::readHTMLTable(
     doc = file.path(path, html_file),
@@ -36,7 +39,7 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
 
   df <- bd
   names(df) <- variable_names[names(df)]
-  rm(list = ls(pattern = "^bd$|^lbl.*|^lvl.*"), pos = 1)
+  #rm(list = ls(pattern = "^bd$|^lbl.*|^lvl.*"), pos = 1)
   return(df)
 }
 

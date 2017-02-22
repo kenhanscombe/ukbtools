@@ -11,7 +11,8 @@ Encoding: UTF-8
 LazyData: true
 Imports: tidyverse,
     magrittr,
-    grid
+    grid,
+    XML
 RoxygenNote: 6.0.1
 Suggests: knitr,
     rmarkdown

@@ -144,29 +144,9 @@ ukb_gen_het <- function(data) {
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
 #' @return A dataframe with an additional column \code{ukb_centre} - UKB assessment centre names
 #'
-ukb_centre <- function(data, plot = FALSE){
+ukb_centre <- function(data){
   centre_lookup <- .lookup(ukbcentre, "code", "centre")
   data$ukb_centre <- centre_lookup[as.factor(data$uk_biobank_assessment_centre_0_0)]
 
   return(data)
-}
-
-
-
-#' Two-column ID for plink individual subset selection
-#'
-#' Writes a two-column space-delimited text file of IDs (without header) for sample subset selection in \code{\href{https://www.cog-genomics.org/plink2/filter#snp}{plink}}, using \code{--keep} or \code{--remove}.
-#'
-#' @export
-#' @param file Filename to create disk (including path if not current directory).
-#' @param id A character vector of IDs to save to file for plink keep/remove subsetting.
-#'
-ukb_gen_plinkid <- function(file, id) {
-  write.table(
-    x = data.frame(id, id),
-    file = file,
-    quote = FALSE,
-    col.names = FALSE,
-    row.names = FALSE
-  )
 }

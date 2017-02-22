@@ -63,7 +63,7 @@ You can also specify the path to your fileset if it is not in the current direct
 
 ```{r, eval = FALSE}
 
-my_ukb_data <- ukb_df("ukbxxxx", path = "./data/")
+my_ukb_data <- ukb_df("ukbxxxx", path = "/full/path/to/my/data/")
 
 ```
 

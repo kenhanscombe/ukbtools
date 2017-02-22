@@ -4,7 +4,7 @@
 \alias{ukb_centre}
 \title{Inserts UKB centre names into data}
 \usage{
-ukb_centre(data, plot = FALSE)
+ukb_centre(data)
 }
 \arguments{
 \item{data}{A UKB dataset created with \code{\link{ukb_df}}.}

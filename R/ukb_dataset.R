@@ -27,7 +27,7 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
     file.path(path, r_file)
   })
 
-  tables <- readHTMLTable(
+  tables <- XML::readHTMLTable(
     doc = file.path(path, html_file),
     stringsAsFactors = FALSE
   )

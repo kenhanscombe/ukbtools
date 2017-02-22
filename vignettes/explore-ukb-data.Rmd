@@ -51,12 +51,12 @@ my_ukb_data <- ukb_df("ukbxxxx")
 ```
 
 
-You can also specify the path to your fileset if it is not in the current directory. For example, if your fileset is in a subdirectory of the working directory called data
+You can also specify the path to your fileset if it is not in the current directory. For example, if your fileset is in a subdirectory of the working directory called `data`
 
 
 ```{r, eval = FALSE}
 
-my_ukb_data <- ukb_df("ukbxxxx", path = "./data/")
+my_ukb_data <- ukb_df("ukbxxxx", path = "/full/path/to/my/data")
 
 ```
 
@@ -74,9 +74,9 @@ If you have multiple UKB downloads, tidy then merge them.
 
 ```{r eval = FALSE}
 
-ukbxxxx_data <- ukb_df("ukbxxxx", path = "./data/")
-ukbyyyy_data <- ukb_df("ukbyyyy", path = "./data/")
-ukbzzzz_data <- ukb_df("ukbzzzz", path = "./data/")
+ukbxxxx_data <- ukb_df("ukbxxxx")
+ukbyyyy_data <- ukb_df("ukbyyyy")
+ukbzzzz_data <- ukb_df("ukbzzzz")
 
 my_ukb_data <- plyr::join_all(
   list(

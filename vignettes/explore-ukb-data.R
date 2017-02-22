@@ -5,14 +5,14 @@
 
 ## ---- eval = FALSE-------------------------------------------------------
 #  
-#  my_ukb_data <- ukb_df("ukbxxxx", path = "./data/")
+#  my_ukb_data <- ukb_df("ukbxxxx", path = "/full/path/to/my/data")
 #  
 
 ## ----eval = FALSE--------------------------------------------------------
 #  
-#  ukbxxxx_data <- ukb_df("ukbxxxx", path = "./data/")
-#  ukbyyyy_data <- ukb_df("ukbyyyy", path = "./data/")
-#  ukbzzzz_data <- ukb_df("ukbzzzz", path = "./data/")
+#  ukbxxxx_data <- ukb_df("ukbxxxx")
+#  ukbyyyy_data <- ukb_df("ukbyyyy")
+#  ukbzzzz_data <- ukb_df("ukbzzzz")
 #  
 #  my_ukb_data <- plyr::join_all(
 #    list(

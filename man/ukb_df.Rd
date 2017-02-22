@@ -4,12 +4,12 @@
 \alias{ukb_df}
 \title{Reads a UK Biobank phenotype fileset and returns a single dataset.}
 \usage{
-ukb_df(fileset, path = "", data.pos = 2)
+ukb_df(fileset, path = ".", data.pos = 2)
 }
 \arguments{
 \item{fileset}{The prefix for a UKB fileset, e.g., ukbxxxx (for ukbxxxx.tab, ukbxxxx.r, ukbxxxx.html)}
 
-\item{path}{The relative path to the directory containing your UKB fileset.}
+\item{path}{The path to the directory containing your UKB fileset. The default value is the currect directory.}
 
 \item{data.pos}{Locates the data in your .html file. The .html file is read into a list; the default value data.pos = 2 indicates the second item in the list. (The first item in the list is the title of the table). You will probably not need to change this value, but if the need arises you can open the .html file in a browser and identify where in the file the data is.}
 }

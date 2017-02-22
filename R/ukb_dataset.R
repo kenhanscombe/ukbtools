@@ -5,7 +5,7 @@
 #'
 #' @export
 #' @param fileset The prefix for a UKB fileset, e.g., ukbxxxx (for ukbxxxx.tab, ukbxxxx.r, ukbxxxx.html)
-#' @param path The relative path to the directory containing your UKB fileset.
+#' @param path The path to the directory containing your UKB fileset. The default value is the currect directory.
 #' @param data.pos Locates the data in your .html file. The .html file is read into a list; the default value data.pos = 2 indicates the second item in the list. (The first item in the list is the title of the table). You will probably not need to change this value, but if the need arises you can open the .html file in a browser and identify where in the file the data is.
 #'
 #' @details The \strong{index} and \strong{array} from the UKB field code are preserved in the variable name, as two numbers separated by underscores at the end of the name e.g. \emph{variable_index_array}. \strong{index} refers the assessment instance (or visit). \strong{array} captures multiple answers to the same "question". See UKB documentation for detailed descriptions of \href{http://biobank.ctsu.ox.ac.uk/crystal/instance.cgi?id=2}{index} and \href{http://biobank.ctsu.ox.ac.uk/crystal/help.cgi?cd=array}{array}.
@@ -45,7 +45,7 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
 #'
 #' @export
 #' @param fileset The prefix for a UKB fileset, e.g., ukbxxxx (for ukbxxxx.tab, ukbxxxx.r, ukbxxxx.html)
-#' @param path The relative path to the directory containing your UKB fileset.
+#' @param path The path to the directory containing your UKB fileset. The default value is the currect directory.
 #' @param data.pos Locates the data in your .html file. The .html file is read into a list; the default value data.pos = 2 indicates the second item in the list. (The first item in the list is the title of the table). You will probably not need to change this value, but if the need arises you can open the .html file in a browser and identify where in the file the data is.
 #' @param as.lookup If set to TRUE, returns a named \code{vector}. The default \code{as.look = FALSE} returns a dataframe with columns: field.showcase (as used in the UKB online showcase), field.data (as used in the tab file), name (descriptive name created by \code{\link{ukb_df}})
 #'
@@ -145,7 +145,7 @@ ukb_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
 #'
 #' @export
 #' @param fileset prefix for UKB fileset
-#' @param path relative path to directory containing the fileset
+#' @param path The path to the directory containing your UKB fileset. The default value is the currect directory.
 #'
 .update_tab_path <- function(fileset, path = ".") {
   r_file <- sprintf("%s.r", fileset)

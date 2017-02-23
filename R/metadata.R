@@ -125,14 +125,25 @@ ukb_gen_rel <- function(data) {
 #'
 #' @export
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
+#' @param all.het Set \code{all.het = TRUE} for raw heterozygosity scores for all samples. By default \code{all.het = FALSE} returns a vector of sample IDs for individuals +/-3SD from the mean heterozygosity.
 #'
-ukb_gen_het <- function(data) {
-  data %>%
-    filter(
-      heterozygosity_0_0 < (mean(heterozygosity_0_0, na.rm = TRUE) - (3 * sd(heterozygosity_0_0, na.rm = TRUE))) |
-        heterozygosity_0_0 > (mean(heterozygosity_0_0, na.rm = TRUE) + (3 * sd(heterozygosity_0_0, na.rm = TRUE)))
-    ) %>%
-    pull(eid)
+#' @return A vector of IDs if \code{all.het = FALSE} (default), or a dataframe with ID, heterozygosity and PCA-corrected heterozygosity if \code{all.het = TRUE}.
+#'
+ukb_gen_het <- function(data, all.het = FALSE) {
+  if (!(all.het)) {
+    return(
+      data %>%
+        select(eid, heterozygosity_0_0, heterozygosity_pca_corrected_0_0) %>%
+        as.data.frame()
+    )
+  } else {
+    data %>%
+      filter(
+        heterozygosity_0_0 < (mean(heterozygosity_0_0, na.rm = TRUE) - (3 * sd(heterozygosity_0_0, na.rm = TRUE))) |
+          heterozygosity_0_0 > (mean(heterozygosity_0_0, na.rm = TRUE) + (3 * sd(heterozygosity_0_0, na.rm = TRUE)))
+      ) %>%
+      pull(eid)
+  }
 }
 
 

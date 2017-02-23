@@ -4,10 +4,15 @@
 \alias{ukb_gen_het}
 \title{Heterozygosity outliers}
 \usage{
-ukb_gen_het(data)
+ukb_gen_het(data, all.het = FALSE)
 }
 \arguments{
 \item{data}{A UKB dataset created with \code{\link{ukb_df}}.}
+
+\item{all.het}{Set \code{all.het = TRUE} for raw heterozygosity scores for all samples. By default \code{all.het = FALSE} returns a vector of sample IDs for individuals +/-3SD from the mean heterozygosity.}
+}
+\value{
+A vector of IDs if \code{all.het = FALSE} (default), or a dataframe with ID, heterozygosity and PCA-corrected heterozygosity if \code{all.het = TRUE}.
 }
 \description{
 UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data.

@@ -130,7 +130,7 @@ ukb_gen_rel <- function(data) {
 #' @return A vector of IDs if \code{all.het = FALSE} (default), or a dataframe with ID, heterozygosity and PCA-corrected heterozygosity if \code{all.het = TRUE}.
 #'
 ukb_gen_het <- function(data, all.het = FALSE) {
-  if (!(all.het)) {
+  if (all.het) {
     return(
       data %>%
         select(eid, heterozygosity_0_0, heterozygosity_pca_corrected_0_0) %>%

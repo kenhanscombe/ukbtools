@@ -80,31 +80,31 @@ ukb_gen_excl <- function(data) {
 #'
 ukb_gen_rel <- function(data) {
   rbind(
-    ukb_data %>%
+    data %>%
       select(
         eid,
         pair = genetic_relatedness_pairing_0_0,
         kinship = genetic_relatedness_factor_0_0
       ),
-    ukb_data %>%
+    data %>%
       select(
         eid,
         pair = genetic_relatedness_pairing_0_1,
         kinship = genetic_relatedness_factor_0_1
       ),
-    ukb_data %>%
+    data %>%
       select(
         eid,
         pair = genetic_relatedness_pairing_0_2,
         kinship = genetic_relatedness_factor_0_2
       ),
-    ukb_data %>%
+    data %>%
       select(
         eid,
         pair = genetic_relatedness_pairing_0_3,
         kinship = genetic_relatedness_factor_0_3
       ),
-    ukb_data %>%
+    data %>%
       select(
         eid,
         pair = genetic_relatedness_pairing_0_4,

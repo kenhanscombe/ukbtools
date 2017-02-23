@@ -8,6 +8,7 @@
 #' @param data A tidyverse tibble, tbl_df
 #' @param y The column to be collected. Can be a numeric index or the column
 #'   name (quoted or not)
+#'
 pull <- function(data, y) {
   data[,
     if (is.name(substitute(y))) {

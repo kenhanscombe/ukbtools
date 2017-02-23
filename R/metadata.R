@@ -129,8 +129,8 @@ ukb_gen_rel <- function(data) {
 ukb_gen_het <- function(data) {
   data %>%
     filter(
-      heterozygosity_0_0 < (mean(heterozygosity_0_0) - (3 * sd(heterozygosity_0_0))) |
-        heterozygosity_0_0 > (mean(heterozygosity_0_0) + (3 * sd(heterozygosity_0_0)))
+      heterozygosity_0_0 < (mean(heterozygosity_0_0, na.rm = TRUE) - (3 * sd(heterozygosity_0_0, na.rm = TRUE))) |
+        heterozygosity_0_0 > (mean(heterozygosity_0_0, na.rm = TRUE) + (3 * sd(heterozygosity_0_0, na.rm = TRUE)))
     ) %>%
     pull(eid)
 }

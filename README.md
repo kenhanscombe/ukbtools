@@ -7,7 +7,7 @@ __Co-authors:__ Joni Coleman, Matthew Traylor, Cathryn Lewis
 
 ## Overview
 
-After downloading and decrypting your UK Biobank (UKB) data with the supplied [UKB programs] (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf), you have multiple files that need to be brought together to give you a dataset to explore. The data file has column names that are edited Field-codes from the [UKB data showcase](http://www.ukbiobank.ac.uk/data-showcase/). `ukbtools` makes it easy to collapse the multiple UKB files into a single dataset for analysis, in the process giving meaningful names to the variables. The package also includes functionality to retreive ICD diagnoses, explore a sample subset in the context of the UKB sample, and collect genetic metadata.
+After downloading and decrypting your UK Biobank (UKB) data with the supplied [UKB programs] (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf), you have multiple files that need to be brought together to give you a dataset to explore. The data file has column names that are edited field-codes from the [UKB data showcase](http://www.ukbiobank.ac.uk/data-showcase/). `ukbtools` makes it easy to collapse the multiple UKB files into a single dataset for analysis, in the process giving meaningful names to the variables. The package also includes functionality to retreive ICD diagnoses, explore a sample subset in the context of the UKB sample, and collect genetic metadata.
 
 <br>
 
@@ -21,12 +21,15 @@ library(devtools)
 install_github("kenhanscombe/ukbtools", build_vignettes = TRUE)
 
 ```
-__Note:__ This package is pre-alpha - tools are added as soon as the functionality is complete. If anything does not work, first re-install the package `install_github("kenhanscombe/ukbtools", build_vignettes = TRUE, force = TRUE)` to get the latest development version. If it is still not working, let me know and I'll fix it.
+
+<br>
+
+__Note:__ This package is pre-alpha - tools are added as soon as the functionality is complete. If anything does not work, first re-install the package `install_github("kenhanscombe/ukbtools", build_vignettes = TRUE, force = TRUE)` to get the latest development version. If it is still not working, [let me know](https://github.com/kenhanscombe/ukbtools/issues) and I'll fix it.
 
 <br>
 
 
-## Prerequisites: Making a UKB fileset
+## Prerequisite: Make a UKB fileset
 
 Download<sup>§</sup> then decrypt your data and create a "UKB fileset" (.tab, .r, .html):
 
@@ -47,9 +50,9 @@ ukb_conv ukbxxxx.enc_ukb docs
 
 
 
-## Making a UKB dataset
+## Make a UKB dataset
 
-The function `ukb_df()` takes two arguments, the stem of your fileset and the path, and returns a dataframe with usable column names.
+The function `ukb_df()` takes two arguments, the stem of your fileset and the path, and returns a dataframe with usable column names. This will take a few minutes. The rate-limiting step is reading and parsing the code in the UKB-generated .r file - not `ukb_df` per se.
 
 
 ```{r, eval = FALSE}
@@ -58,8 +61,6 @@ my_ukb_data <- ukb_df("ukbxxxx")
 
 ```
 
-
-This will take a few minutes. The rate-limiting step is reading and parsing the code in the UKB-generated .r file - not `ukb_df` per se.
 
 You can also specify the path to your fileset if it is not in the current directory. For example, if your fileset is in a subdirectory of the working directory called data
 

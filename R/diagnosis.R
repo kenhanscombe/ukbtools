@@ -5,9 +5,10 @@
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
 #' @param id An individual's id, i.e., their unique eid reference number.
 #' @param icd.version The ICD version (or revision) number, 9 or 10.
+#'
 #' @seealso \code{\link{ukb_df}}
 #'
-ukb_diagnosis <- function(data, id, icd.version = NULL) {
+icd_diagnosis <- function(data, id, icd.version = NULL) {
   if (!is.null(icd.version) && !(icd.version %in% 9:10)) {
     stop(
       "`icd.version` is an invalid ICD revision number.

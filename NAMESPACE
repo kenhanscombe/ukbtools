@@ -2,10 +2,10 @@
 
 export(icd_chapter)
 export(icd_code)
+export(icd_diagnosis)
 export(ukb_centre)
 export(ukb_context)
 export(ukb_df)
-export(ukb_diagnosis)
 export(ukb_field)
 export(ukb_gen_excl)
 export(ukb_gen_het)

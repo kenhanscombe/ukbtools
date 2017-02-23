@@ -18,13 +18,13 @@ You can install this development version from github
 ```{r, eval = FALSE}
 
 library(devtools)
-install_github("kenhanscombe/ukbtools", build_vignettes = TRUE)
+install_github("kenhanscombe/ukbtools", build_vignettes = TRUE, dependencies = TRUE)
 
 ```
 
 <br>
 
-__Note:__ This package is pre-alpha - tools are added as soon as the functionality is complete. If anything does not work, first re-install the package `install_github("kenhanscombe/ukbtools", build_vignettes = TRUE, force = TRUE)` to get the latest development version. If it is still not working, [let me know](https://github.com/kenhanscombe/ukbtools/issues) and I'll fix it.
+__Note:__ This package is pre-alpha - tools are added as soon as the functionality is complete. If anything does not work, first re-install the package `install_github("kenhanscombe/ukbtools", build_vignettes = TRUE, dependencies = TRUE, force = TRUE)` to get the latest development version. If it is still not working, [let me know](https://github.com/kenhanscombe/ukbtools/issues) and I'll fix it.
 
 <br>
 

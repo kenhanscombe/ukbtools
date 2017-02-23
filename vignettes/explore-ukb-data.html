@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ken B. Hanscombe" />
 
-<meta name="date" content="2017-02-22" />
+<meta name="date" content="2017-02-23" />
 
 <title>Explore UK Biobank data</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Explore UK Biobank data</h1>
 <h4 class="author"><em>Ken B. Hanscombe</em></h4>
-<h4 class="date"><em>2017-02-22</em></h4>
+<h4 class="date"><em>2017-02-23</em></h4>
 
 
 
@@ -125,16 +125,16 @@ count_ukb_names &lt;-<span class="st"> </span><span class="kw">data.frame</span>
 </div>
 <div id="retreiving-icd-diagnoses" class="section level2">
 <h2>3. Retreiving ICD diagnoses</h2>
+<p>All ICD related functions begin <code>icd_</code>. Type <code>icd_</code> tab to see the family of functions. The full ICD “code-meaning” tables are available as datasets (<code>icd9codes</code>, <code>icd10codes</code>). ICD chapter-level tables describing disease blocks are also available for query as datasets (<code>icd9chapters</code>, <code>icd10chapters</code>)</p>
+<p><br></p>
 <p>To retrieve the full diagnosis of an individual</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">icd_diagnosis</span>(my_ukb_data, <span class="dt">id =</span> <span class="st">&quot;0000000&quot;</span>, <span class="dt">icd.version =</span> <span class="dv">10</span>)</code></pre></div>
 <p><br> <br></p>
 <p>To retrieve the “meaning” of an ICD code use <code>icd_code</code>. (You can also look up multiple codes by concatenating them.)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">icd_code</span>(<span class="dt">icd.code =</span> <span class="st">&quot;H282&quot;</span>, <span class="dt">icd.version =</span> <span class="dv">10</span>)</code></pre></div>
-<p>The full ICD “code-meaning” tables are available as datasets (<code>icd9codes</code>, <code>icd10codes</code>).</p>
 <p><br> <br></p>
 <p>To see the disease “blocks” that correspond to “chapters” in ICD-9 or ICD-10, <code>icd_chapter</code> takes the relevant ICD revision (or version) number</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">icd_chapter</span>(<span class="dt">icd.version =</span> <span class="dv">10</span>)</code></pre></div>
-<p><code>icd_chapter</code> prints to screen the required table. These are also available for query as datasets (<code>icd9chapters</code>, <code>icd10chapters</code>)</p>
 <p><br> <br></p>
 </div>
 <div id="exploring-a-ukb-sample-subset" class="section level2">
@@ -150,14 +150,17 @@ count_ukb_names &lt;-<span class="st"> </span><span class="kw">data.frame</span>
 <div id="genetic-metadata" class="section level2">
 <h2>5. Genetic metadata</h2>
 <p>If you are doing any downstream genetic analyses, you will need the genetic metadata (which should be in you phenotype dataset). Detailed information is available on UKB <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf">genotyping and quality control</a> and <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/imputation_documentation_May2015.pdf">imputation and association</a>.</p>
+<p>All genetic metadata related functions begin <code>ukb_gen_</code>. Typing <code>ukb_gen_</code> tab opens a dropdown menu for this group of functions.</p>
 <p><br> <br></p>
 <p>You can collect the genetic metadata (including recommended exclusions, genetic sex, genetic ethnicity, chip, etc.), and principal components with</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_gen_meta &lt;-<span class="st"> </span><span class="kw">ukb_meta</span>(my_ukb_data)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_gen_meta &lt;-<span class="st"> </span><span class="kw">ukb_gen_meta</span>(my_ukb_data)
 my_gen_pcs &lt;-<span class="st"> </span><span class="kw">ukb_gen_pcs</span>(my_ukb_data)</code></pre></div>
 <p><br> <br></p>
 <p>A list of IDs for recommended exclusions and heterozygosity outliers (+/- 3*SD) can be retreived</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ukb_gen_excl</span>(my_ukb_data)
 <span class="kw">ukb_gen_het</span>(my_ukb_data)</code></pre></div>
+<p>For a dataframe of raw heterozygosity data</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ukb_gen_het</span>(my_ukb_data, <span class="dt">all.het =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><br> <br></p>
 <p><code>ukb_gen_rel</code> returns a dataframe with <code>id</code>, <code>pair</code> (a numeric identifier for related pairs), and <code>kinship</code> (kinship coefficient)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_gen_rel &lt;-<span class="st"> </span><span class="kw">ukb_gen_rel</span>(my_ukb_data)</code></pre></div>

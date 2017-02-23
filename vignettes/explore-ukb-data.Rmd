@@ -104,12 +104,18 @@ dim(count_ukb_names[count_names$Freq > 1, ])
 
 ```
 
+
 <br>
 <br>
 
 
 ## 3. Retreiving ICD diagnoses
 
+
+All ICD related functions begin `icd_`. Type `icd_` tab to see the family of functions. The full ICD "code-meaning" tables are available as datasets (`icd9codes`, `icd10codes`). ICD chapter-level tables describing disease blocks are also available for query as datasets (`icd9chapters`, `icd10chapters`)
+
+
+<br>
 
 To retrieve the full diagnosis of an individual
 
@@ -130,7 +136,6 @@ icd_code(icd.code = "H282", icd.version = 10)
 
 ```
 
-The full ICD "code-meaning" tables are available as datasets (`icd9codes`, `icd10codes`).
 
 <br>
 <br>
@@ -143,7 +148,6 @@ icd_chapter(icd.version = 10)
 
 ```
 
-`icd_chapter` prints to screen the required table. These are also available for query as datasets (`icd9chapters`, `icd10chapters`)
 
 <br>
 <br>
@@ -172,6 +176,8 @@ ukb_context(
 
 If you are doing any downstream genetic analyses, you will need the genetic metadata (which should be in you phenotype dataset). Detailed information is available on UKB [genotyping and quality control](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf) and [imputation and association](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/imputation_documentation_May2015.pdf).
 
+All genetic metadata related functions begin `ukb_gen_`. Typing `ukb_gen_` tab opens a dropdown menu for this group of functions. 
+
 <br>
 <br>
 
@@ -179,7 +185,7 @@ You can collect the genetic metadata (including recommended exclusions, genetic 
 
 ```{r, eval = FALSE}
 
-my_gen_meta <- ukb_meta(my_ukb_data)
+my_gen_meta <- ukb_gen_meta(my_ukb_data)
 my_gen_pcs <- ukb_gen_pcs(my_ukb_data)
 
 ```
@@ -193,6 +199,14 @@ A list of IDs for recommended exclusions and heterozygosity outliers (+/- 3*SD) 
 
 ukb_gen_excl(my_ukb_data)
 ukb_gen_het(my_ukb_data)
+
+```
+
+For a dataframe of raw heterozygosity data
+
+```{r, eval = FALSE}
+
+ukb_gen_het(my_ukb_data, all.het = TRUE)
 
 ```
 

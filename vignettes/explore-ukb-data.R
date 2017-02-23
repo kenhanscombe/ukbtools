@@ -60,7 +60,7 @@
 
 ## ---- eval = FALSE-------------------------------------------------------
 #  
-#  my_gen_meta <- ukb_meta(my_ukb_data)
+#  my_gen_meta <- ukb_gen_meta(my_ukb_data)
 #  my_gen_pcs <- ukb_gen_pcs(my_ukb_data)
 #  
 
@@ -68,6 +68,11 @@
 #  
 #  ukb_gen_excl(my_ukb_data)
 #  ukb_gen_het(my_ukb_data)
+#  
+
+## ---- eval = FALSE-------------------------------------------------------
+#  
+#  ukb_gen_het(my_ukb_data, all.het = TRUE)
 #  
 
 ## ---- eval = FALSE-------------------------------------------------------

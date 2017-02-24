@@ -3,8 +3,10 @@
 #'
 #' UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data.
 #'
-#' @export
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
+#'
+#' @export
+#' @importFrom magrittr %>%
 #'
 ukb_gen_meta <-  function(data) {
   data %>%
@@ -35,8 +37,10 @@ ukb_gen_meta <-  function(data) {
 #'
 #' These are the principal components derived on the UK Biobank subsample with interim genotype data. UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data.
 #'
-#' @export
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
+#'
+#' @export
+#' @importFrom magrittr %>%
 #'
 ukb_gen_pcs <- function(data) {
   data %>%
@@ -52,8 +56,10 @@ ukb_gen_pcs <- function(data) {
 #'
 #' This list of sample exclusions includes UKB's "recommended", "affymetrix quality control", and "genotype quality control" exclusions. UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data.
 #'
-#' @export
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
+#'
+#' @export
+#' @importFrom magrittr %>%
 #'
 ukb_gen_excl <- function(data) {
   data %>%
@@ -75,8 +81,10 @@ ukb_gen_excl <- function(data) {
 #'
 #' UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data.
 #'
-#' @export
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
+#'
+#' @export
+#' @importFrom magrittr %>%
 #'
 ukb_gen_rel <- function(data) {
   rbind(
@@ -123,11 +131,13 @@ ukb_gen_rel <- function(data) {
 #'
 #' UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data.
 #'
-#' @export
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
 #' @param all.het Set \code{all.het = TRUE} for raw heterozygosity scores for all samples. By default \code{all.het = FALSE} returns a vector of sample IDs for individuals +/-3SD from the mean heterozygosity.
 #'
 #' @return A vector of IDs if \code{all.het = FALSE} (default), or a dataframe with ID, heterozygosity and PCA-corrected heterozygosity if \code{all.het = TRUE}.
+#'
+#' @export
+#' @importFrom magrittr %>%
 #'
 ukb_gen_het <- function(data, all.het = FALSE) {
   if (all.het) {
@@ -151,9 +161,11 @@ ukb_gen_het <- function(data, all.het = FALSE) {
 #'
 #' Useful if your UKB centre variable \code{uk_biobank_assessment_centre_0_0} has not been populated with named levels.
 #'
-#' @export
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
 #' @return A dataframe with an additional column \code{ukb_centre} - UKB assessment centre names
+#'
+#' @export
+#' @importFrom magrittr %>%
 #'
 ukb_centre <- function(data){
   centre_lookup <- .lookup(ukbcentre, "code", "centre")

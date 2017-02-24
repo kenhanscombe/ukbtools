@@ -1,12 +1,14 @@
 
 #' Retrieves diagnoses for an individual.
 #'
-#' @export
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
 #' @param id An individual's id, i.e., their unique eid reference number.
 #' @param icd.version The ICD version (or revision) number, 9 or 10.
 #'
 #' @seealso \code{\link{ukb_df}}
+#'
+#' @export
+#' @importFrom magrittr %>%
 #'
 icd_diagnosis <- function(data, id, icd.version = NULL) {
   if (!is.null(icd.version) && !(icd.version %in% 9:10)) {
@@ -37,9 +39,11 @@ icd_diagnosis <- function(data, id, icd.version = NULL) {
 
 #' Retrieves description for a ICD code.
 #'
-#' @export
 #' @param icd.version The ICD version (or revision) number, 9 or 10.
 #' @param icd.code The ICD diagnosis code to be looked up.
+#'
+#' @export
+#' @importFrom magrittr %>%
 #'
 icd_code <- function(icd.code, icd.version) {
   icd <- if (icd.version == 9) {
@@ -62,8 +66,9 @@ icd_code <- function(icd.code, icd.version) {
 
 #' Displays a table for the International Classification of Diseases (ICD)
 #'
-#' @export
 #' @param icd.version The ICD icd.version (or revision) number, 9 or 10.
+#'
+#' @export
 #'
 icd_chapter <- function(icd.version) {
   if (icd.version == 9) {

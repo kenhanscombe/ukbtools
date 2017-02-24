@@ -65,7 +65,7 @@ ukb_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
 
   df <- .fill_missing_description(tables[[data.pos]])
   lookup <- .description_to_name(df)
-  old_var_names <- .paste("f.", gsub("-", ".", df[, "UDI"]), sep = "")
+  old_var_names <- paste("f.", gsub("-", ".", df[, "UDI"]), sep = "")
 
   if (as.lookup) {
     names(lookup) <- old_var_names

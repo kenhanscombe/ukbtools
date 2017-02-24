@@ -54,7 +54,7 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
 #'
 ukb_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
   html_file <- sprintf("%s.html", fileset)
-  tables <- readHTMLTable(
+  tables <- XML::readHTMLTable(
     doc = if (path == ".") {
       file.path(getwd(), html_file)
     } else {

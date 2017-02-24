@@ -101,5 +101,5 @@ ukb_context <- function(data, age.var = "age_when_attended_assessment_centre_0_0
     theme(legend.position = "none") +
     labs(x = "Townsend deprivation index")
 
-  .multiplot(gender, years_old, ethnicity, socioeconomic, cols = 2)
+  multiplot(gender, years_old, ethnicity, socioeconomic, cols = 2)
 }

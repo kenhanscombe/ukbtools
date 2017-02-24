@@ -5,9 +5,8 @@
 #'
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
 #'
-#' @export
 #' @import tidyverse
-#' @importFrom magrittr %>%
+#' @export
 #'
 ukb_gen_meta <-  function(data) {
   data %>%

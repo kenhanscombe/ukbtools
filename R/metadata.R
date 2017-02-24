@@ -6,7 +6,6 @@
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
 #'
 #' @export
-#' @import tidyverse
 #' @importFrom magrittr %>%
 #'
 ukb_gen_meta <-  function(data) {
@@ -41,7 +40,6 @@ ukb_gen_meta <-  function(data) {
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
 #'
 #' @export
-#' @import tidyverse
 #' @importFrom magrittr %>%
 #'
 ukb_gen_pcs <- function(data) {
@@ -61,7 +59,6 @@ ukb_gen_pcs <- function(data) {
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
 #'
 #' @export
-#' @import tidyverse
 #' @importFrom magrittr %>%
 #'
 ukb_gen_excl <- function(data) {
@@ -87,7 +84,6 @@ ukb_gen_excl <- function(data) {
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
 #'
 #' @export
-#' @import tidyverse
 #' @importFrom magrittr %>%
 #'
 ukb_gen_rel <- function(data) {
@@ -141,7 +137,6 @@ ukb_gen_rel <- function(data) {
 #' @return A vector of IDs if \code{all.het = FALSE} (default), or a dataframe with ID, heterozygosity and PCA-corrected heterozygosity if \code{all.het = TRUE}.
 #'
 #' @export
-#' @import tidyverse
 #' @importFrom magrittr %>%
 #'
 ukb_gen_het <- function(data, all.het = FALSE) {
@@ -170,7 +165,6 @@ ukb_gen_het <- function(data, all.het = FALSE) {
 #' @return A dataframe with an additional column \code{ukb_centre} - UKB assessment centre names
 #'
 #' @export
-#' @import tidyverse
 #' @importFrom magrittr %>%
 #'
 ukb_centre <- function(data){

@@ -8,7 +8,6 @@
 #' @seealso \code{\link{ukb_df}}
 #'
 #' @export
-#' @import tidyverse
 #' @importFrom magrittr %>%
 #'
 icd_diagnosis <- function(data, id, icd.version = NULL) {
@@ -44,7 +43,6 @@ icd_diagnosis <- function(data, id, icd.version = NULL) {
 #' @param icd.code The ICD diagnosis code to be looked up.
 #'
 #' @export
-#' @import tidyverse
 #' @importFrom magrittr %>%
 #'
 icd_code <- function(icd.code, icd.version) {

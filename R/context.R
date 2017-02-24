@@ -11,7 +11,6 @@
 #' @seealso \code{\link{ukb_df}}
 #'
 #' @export
-#' @import tidyverse
 #' @importFrom magrittr %>%
 #'
 ukb_context <- function(data, age.var = "age_when_attended_assessment_centre_0_0", comparison.var = NULL, sample.ref = NULL) {

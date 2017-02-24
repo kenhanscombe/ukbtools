@@ -156,7 +156,7 @@ ukb_gen_het <- function(data, all.het = FALSE) {
 #' @return A dataframe with an additional column \code{ukb_centre} - UKB assessment centre names
 #'
 ukb_centre <- function(data){
-  centre_lookup <- .lookup(ukbcentre, "code", "centre")
+  centre_lookup <- lookup(ukbcentre, "code", "centre")
   data$ukb_centre <- centre_lookup[as.factor(data$uk_biobank_assessment_centre_0_0)]
 
   return(data)

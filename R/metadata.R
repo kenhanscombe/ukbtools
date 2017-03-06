@@ -71,7 +71,7 @@ ukb_gen_excl <- function(data) {
 
 
 
-#' Relatedness exclusions
+#' Relatedness pairings
 #'
 #' UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data.
 #'
@@ -84,37 +84,90 @@ ukb_gen_rel <- function(data) {
       select(
         eid,
         pair = genetic_relatedness_pairing_0_0,
-        kinship = genetic_relatedness_factor_0_0
+        kinship = genetic_relatedness_factor_0_0,
+        ibs0 = genetic_relatedness_ibs0_0_0
       ),
     data %>%
       select(
         eid,
         pair = genetic_relatedness_pairing_0_1,
-        kinship = genetic_relatedness_factor_0_1
+        kinship = genetic_relatedness_factor_0_1,
+        ibs0 = genetic_relatedness_ibs0_0_1
       ),
     data %>%
       select(
         eid,
         pair = genetic_relatedness_pairing_0_2,
-        kinship = genetic_relatedness_factor_0_2
+        kinship = genetic_relatedness_factor_0_2,
+        ibs0 = genetic_relatedness_ibs0_0_2
       ),
     data %>%
       select(
         eid,
         pair = genetic_relatedness_pairing_0_3,
-        kinship = genetic_relatedness_factor_0_3
+        kinship = genetic_relatedness_factor_0_3,
+        ibs0 = genetic_relatedness_ibs0_0_3
       ),
     data %>%
       select(
         eid,
         pair = genetic_relatedness_pairing_0_4,
-        kinship = genetic_relatedness_factor_0_4
+        kinship = genetic_relatedness_factor_0_4,
+        ibs0 = genetic_relatedness_ibs0_0_4
       )
   ) %>%
     na.omit() %>%
     as_tibble() %>%
     arrange(pair) %>%
     as.data.frame()
+}
+
+
+
+#' Relatedness count
+#'
+#' @export
+#' @param data A dataframe of UKB ID, pair ID,  KING kinship coefficient, and proportion of alleles IBS = 0 created with \code{\link{ukb_gen _rel}}.
+#' @return If \code{plot = FALSE} (default), a count of individuals and pairs at each level of relatedness. If \code{plot = TRUE}, reproduces the scatterplot of genetic relatedness (with each point representing a pair of related individuals) from the \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{genotyping and quality control} documentation.
+#'
+ukb_gen_rel_count <- function(data, plot = FALSE) {
+
+  relatedness <- data %>%
+    mutate(
+      category_related = cut(
+        kinship,
+        breaks = rev(c(0.044, 0.088, 0.177, 0.354, Inf)),
+        labels = rev(c("Identical twins","1st","2nd-degree","3rd-degree"))
+      ),
+      ped_related = ifelse(
+        !(category_related %in% "1st"),
+        as.character(category_related),
+        ifelse(ibs0 < 0.0020,
+               "Parent-offspring",
+               "Full siblings")
+      )
+    )
+
+  if (plot) {
+    relatedness %>%
+      ggplot(aes(ibs0, kinship, color = ped_related)) +
+      geom_jitter() +
+      labs(
+        x = "Proportion of SNPs IBS = 0",
+        y = "KING kinship coefficient",
+        color = "Relatedness"
+      ) +
+      theme(legend.position = "bottom")
+  } else {
+    relatedness %>%
+      count(ped_related) %>%
+      mutate(pairs = round(n/2)) %>%
+      rename(
+        relationship = ped_related,
+        individuals = n
+      ) %>%
+      as.data.frame()
+  }
 }
 
 

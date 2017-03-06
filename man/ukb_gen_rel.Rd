@@ -2,7 +2,7 @@
 % Please edit documentation in R/metadata.R
 \name{ukb_gen_rel}
 \alias{ukb_gen_rel}
-\title{Relatedness exclusions}
+\title{Relatedness pairings}
 \usage{
 ukb_gen_rel(data)
 }

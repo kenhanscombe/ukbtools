@@ -6,9 +6,6 @@
 \usage{
 multiplot(..., plotlist = NULL, file, cols = 1, layout = NULL)
 }
-\arguments{
-\item{\href{http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/}{Cookbook}{for R}}
-}
 \description{
-Draws a grid of ggplot figures
+For arranging multiple ggplot2 plots in a grid. Found in the \href{http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/}{Cookbook for R}.
 }

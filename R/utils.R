@@ -21,8 +21,7 @@ pull <- function(data, y) {
 
 #' Draws a grid of ggplot figures
 #'
-#' @param
-#' \href{http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/}{Cookbook for R}
+#' For arranging multiple ggplot2 plots in a grid. Found in the \href{http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/}{Cookbook for R}.
 #'
 multiplot <- function(..., plotlist = NULL, file, cols = 1, layout = NULL) {
 

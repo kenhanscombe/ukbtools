@@ -127,8 +127,8 @@ ukb_gen_rel <- function(data) {
 #' Relatedness count
 #'
 #' @export
-#' @param data A dataframe of UKB ID, pair ID,  KING kinship coefficient, and proportion of alleles IBS = 0 created with \code{\link{ukb_gen _rel}}.
-#' @return If \code{plot = FALSE} (default), a count of individuals and pairs at each level of relatedness. If \code{plot = TRUE}, reproduces the scatterplot of genetic relatedness (with each point representing a pair of related individuals) from the \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{genotyping and quality control} documentation.
+#' @param data A dataframe of UKB ID, pair ID, \href{http://people.virginia.edu/~wc9c/KING/manual.html}{KING kinship coefficient}, and proportion of alleles IBS = 0 created with \code{\link{ukb_gen _rel}}.
+#' @return If \code{plot = FALSE} (default), a count of individuals and pairs at each level of relatedness. If \code{plot = TRUE}, reproduces the scatterplot of genetic relatedness against proportion of SNPs shared IBS=0 (each point representing a pair of related UKB individuals) from the \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{genotyping and quality control} documentation.
 #'
 ukb_gen_rel_count <- function(data, plot = FALSE) {
 
@@ -137,7 +137,7 @@ ukb_gen_rel_count <- function(data, plot = FALSE) {
       category_related = cut(
         kinship,
         breaks = rev(c(0.044, 0.088, 0.177, 0.354, Inf)),
-        labels = rev(c("Identical twins","1st","2nd-degree","3rd-degree"))
+        labels = rev(c("Duplicates/MZ twins","1st-degree","2nd-degree","3rd-degree"))
       ),
       ped_related = ifelse(
         !(category_related %in% "1st"),

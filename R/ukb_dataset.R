@@ -106,7 +106,9 @@ ukb_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
 
   name <- tolower(data[, "Description"])
   name <- gsub(" - ", "_", name)
+  name <- gsub("-", "_", name)
   name <- gsub(" ", "_", name)
+  name <- gsub("/", "_", name)
   name <- gsub("uses_data-coding.*simple_list.$", "", name)
   name <- gsub("uses_data-coding.*hierarchical_tree.", "", name)
   name <- gsub(",", "", name)

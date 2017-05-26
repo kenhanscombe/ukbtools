@@ -8,7 +8,7 @@
 #'
 #' @seealso \code{\link{ukb_df}}
 #'
-icd_diagnosis <- function(data, id, icd.version = NULL) {
+ukb_icd_diagnosis <- function(data, id, icd.version = NULL) {
   if (!is.null(icd.version) && !(icd.version %in% 9:10)) {
     stop(
       "`icd.version` is an invalid ICD revision number.
@@ -25,12 +25,18 @@ icd_diagnosis <- function(data, id, icd.version = NULL) {
 
   individual_codes <- data %>%
     filter(eid == id) %>%
-    select(
-      matches(paste("^diagnoses.*icd", icd.version, sep = ""))
-    ) %>%
-    unlist()
+    select(matches(paste("^diagnoses.*icd", icd.version, sep = ""))) %>%
+    select_if(colSums(!is.na(.)) > 0) %>%
+    t() %>%
+    as.vector()
 
-  icd_code(icd.version, individual_codes)
+  if(sum(!is.na(individual_codes)) < 1) {
+    message(paste("ID", id, "has no ICD", icd.version, "diagnoses", sep = " "))
+  } else {
+    message(paste("ID", id, "has ICD", icd.version, "diagnoses:", sep = " "))
+    print(ukb_icd_code_meaning(c(individual_codes), icd.version))
+    cat("\n")
+  }
 }
 
 
@@ -41,7 +47,7 @@ icd_diagnosis <- function(data, id, icd.version = NULL) {
 #' @param icd.version The ICD version (or revision) number, 9 or 10.
 #' @param icd.code The ICD diagnosis code to be looked up.
 #'
-icd_code <- function(icd.code, icd.version) {
+ukb_icd_code_meaning <- function(icd.code, icd.version) {
   icd <- if (icd.version == 9) {
     icd9codes
   } else if (icd.version == 10){
@@ -60,12 +66,31 @@ icd_code <- function(icd.code, icd.version) {
 
 
 
+#' Retrieves diagnoses containing a description.
+#'
+#' @export
+#' @param icd.version The ICD version (or revision) number, 9 or 10.
+#' @param description A regular expression to be looked up in the ICD descriptions, e.g., "cardiovascular"
+#'
+ukb_icd_description <- function(icd.version, description) {
+  icd <- if (icd.version == 9) {
+    icd9codes
+  } else if (icd.version == 10){
+    icd10codes
+  }
+
+  icd %>%
+    filter(grepl(description, .$meaning))
+}
+
+
+
 #' Displays a table for the International Classification of Diseases (ICD)
 #'
 #' @export
 #' @param icd.version The ICD icd.version (or revision) number, 9 or 10.
 #'
-icd_chapter <- function(icd.version) {
+ukb_icd_chapter <- function(icd.version) {
   if (icd.version == 9) {
     cat("\nICD-10 codes\n\n")
     icd9chapters

@@ -1,108 +1,91 @@
 
 #' Demographics of a UKB sample subset
 #'
-#' Describes a subset of the UKB sample, relative to a reference subsample, on the \href{http://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=1001}{UKB primary demographics} (sex, age, ethnicity, socioeconomic status). The "reference" and "comparison" samples are defined either by a variable of interest (\code{comparison.var} - those with data form the "comparison" subset and samples with missing data are the "reference" sample), or a logical vector (\code{sample.ref} - where \code{TRUE} values define the "comparison" and \code{FALSE} the "reference" sample) . This function is intended as an exploratory data analysis and quality control tool, and as such only provides summary statistics and graphical context for an individual's data.
+#' Describes a subset of the UKB sample, relative to a reference subsample, on the \href{http://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=1001}{UKB primary demographics} (sex, age, ethnicity, socioeconomic status). The "reference" and "comparison" samples are defined either by a variable of interest (\code{nonmiss.var} - those with data form the "comparison" subset and samples with missing data are the "reference" sample), or a logical vector (\code{subset.var} - where \code{TRUE} values define the "comparison" and \code{FALSE} the "reference" sample) . This function is intended as an exploratory data analysis and quality control tool, and as such only provides summary statistics and graphical context for an individual's data.
 #'
 #' @param data A UKB dataset constructed with \code{\link{ukb_df}}.
-#' @param comparison.var The variable of interest which defines the "comparison" (samples with data) and "reference" (samples without data, i.e. NA) samples.
-#' @param age.var The demographic to be use for age, either "age_when_attended_assessment_centre_0_0" (default) or "year_of_birth_0_0" (age calculated as 2010 - "year_of_birth_0_0").
-#' @param sample.ref A logical vector defining a "comparison" subset (TRUE) and "reference" subset (FALSE). Length must equal the number of rows in your \code{data}.
+#' @param sex.var The varible to be used for sex. Default value is "sex_0_0".
+#' @param age.var The variable to be use for age. Default value is "age_when_attended_assessment_centre_0_0".
+#' @param socioeconomic.var The variable to be used for socioeconomic status. Default value is deprivation at baseline, "townsend_deprivation_index_at_recruitment_0_0".
+#' @param ethnicity.var The variable to be used for ethnicity. Default value is "ethnic_background_0_0".
+#' @param employment.var The variable to be used for employment status. Default value is employment status at baseline "current_employment_status_0_0".
+#' @param nonmiss.var The variable of interest which defines the "Subset" (samples with data) and "Reference" (samples without data, i.e., NA) samples.
+#' @param subset.var A logical vector defining a "Subset" (\code{TRUE}) and "Reference" subset (\code{FALSE}). Length must equal the number of rows in your \code{data}.
+#' @param bar.position This argument is passed to the \code{position} in \code{geom_bar}. The default value is \code{"fill"} which shows reference and subset of interest as proportions of the full dataset. Useful alternatives are \stack{"stack"} for counts and \code{"dodge"} for side-by-side bars.
 #'
 #' @seealso \code{\link{ukb_df}}
 #'
 #' @import grid
 #' @export
 #'
+ukb_context <- function(
+  data, sex.var = "sex_0_0", age.var = "age_when_attended_assessment_centre_0_0",
+  socioeconomic.var = "townsend_deprivation_index_at_recruitment_0_0",
+  ethnicity.var = "ethnic_background_0_0", employment.var = "current_employment_status_0_0",
+  nonmiss.var = NULL, subset.var = NULL, bar.position = "fill") {
 
-ukb_context <- function(data, age.var = "age_when_attended_assessment_centre_0_0", comparison.var = NULL, sample.ref = NULL) {
-
-  data$age <- if (age.var == "age_when_attended_assessment_centre_0_0") {
-    age.var
-  } else if (age.var == "year_of_birth_0_0") {
-    2010 - data[, age.var]
+  if (is.null(nonmiss.var) & is.null(subset.var)) {
+    stop("Either supply a variable of interest (nonmiss.var),
+         or a logical vector (subset.var) to define reference and comparison samples", call. = FALSE)
   }
 
-  data <- data %>%
-    mutate(
-      data_avail = if (is.null(comparison.var) && is.null(sample.ref)) {
-        stop("Either supply a comparison variable (comparison.var), or a logical vector (sample.ref) to define reference and comparison samples", call. = FALSE)
-      } else if (!is.null(comparison.var) && !is.null(sample.ref)) {
-        stop("Either supply a comparison variable (comparison.var), or a logical vector (sample.ref) to define reference and comparison samples", call. = FALSE)
-      } else if (is.null(sample.ref)) {
-        !is.na(data[, comparison.var])
-      } else if (!is.null(sample.ref) && (length(sample.ref) != nrow(data))) {
-        stop("Length of sample.ref must equal the number of rows in your data", call. = FALSE)
-      } else if (!is.null(sample.ref)) {
-        sample.ref
-      }
-    ) %>%
-    select(
-      sex_0_0,
-      age,
-      townsend_deprivation_index_at_recruitment_0_0,
-      ethnic_background_0_0,
-      data_avail
-    )
+  fill.var <- if (!is.null(nonmiss.var)) {
+    !is.na(data[, nonmiss.var])
+  } else {
+    subset.var
+  }
 
+  centre_lookup <- lookup(ukbcentre, "code", "centre")
 
-  # sex
-  gender <- data %>%
-    ggplot(
-      aes(
-        x = sex_0_0,
-        fill = data_avail
-      )) +
-    geom_bar(position = "stack", na.rm = TRUE) +
-    scale_fill_manual(
-      values = c("grey35", "hotpink"),
-      labels = c("Reference", "Subset")) +
-    theme(legend.position = "top") +
-    labs(
-      x = "Sex",
-      fill = "SAMPLE")
+  multiplot(
 
-  # age
-  years_old <- data %>%
-    ggplot(
-      aes(
-        x = age,
-        fill = data_avail,
-        color = data_avail)) +
-    geom_density(na.rm = TRUE) +
-    scale_fill_manual(values = c("grey35", NA)) +
-    scale_color_manual(values = c("grey35", "hotpink")) +
-    theme(legend.position = "none") +
-    labs(x = "Age")
+    ggplot(data, aes_string(sex.var, fill = fill.var)) +
+      geom_bar(position = bar.position, na.rm = TRUE, width = .5) +
+      scale_fill_manual(values = c("grey35", "hotpink"), labels = c("Reference", "Subset"), na.value = "grey65") +
+      coord_flip() +
+      theme(
+        legend.position = "top",
+        axis.title.y = element_text(face = "bold")
+      ) +
+      labs(x = "Sex", fill = ""),
 
+    ggplot(data, aes_string(age.var, fill = fill.var, color = fill.var)) +
+      geom_density(na.rm = TRUE) +
+      scale_fill_manual(values = c("grey35", NA)) +
+      scale_color_manual(values = c("grey35", "hotpink")) +
+      theme(legend.position = "none", axis.title.x = element_text(face = "bold")) +
+      labs(x = "Age"),
 
-  # ethnicity
-  ethnicity <- data %>%
-    ggplot(
-      aes(
-        x = ethnic_background_0_0,
-        fill = data_avail
-      )) +
-    geom_bar(position = "fill", na.rm = TRUE) +
-    scale_fill_manual(values = c("grey35", "hotpink")) +
-    coord_flip() +
-    theme(legend.position = "none") +
-    labs(
-      x = "Ethnic Background",
-      y = "Proportion"
-      )
+    ggplot(data, aes_string(socioeconomic.var, fill = fill.var, color = fill.var)) +
+      geom_density(na.rm = TRUE) +
+      scale_fill_manual(values = c("grey35", NA)) +
+      scale_color_manual(values = c("grey35", "hotpink")) +
+      theme(legend.position = "none", axis.title.x = element_text(face = "bold")) +
+      labs(x = "Townsend deprivation index"),
 
-  # ses
-  socioeconomic <- data %>%
-    ggplot(
-      aes(
-        x = townsend_deprivation_index_at_recruitment_0_0,
-        fill = data_avail,
-        color = data_avail)) +
-    geom_density(na.rm = TRUE) +
-    scale_fill_manual(values = c("grey35", NA)) +
-    scale_color_manual(values = c("grey35", "hotpink")) +
-    theme(legend.position = "none") +
-    labs(x = "Townsend deprivation index")
+    ggplot(data, aes_string(ethnicity.var, fill = fill.var)) +
+      geom_bar(position = bar.position, na.rm = TRUE, width = .7) +
+      scale_fill_manual(values = c("grey35", "hotpink"), na.value = "grey65") +
+      coord_flip() +
+      theme(legend.position = "none", axis.title.y = element_text(face = "bold")) +
+      labs(x = "Ethnic Background"),
 
-  multiplot(gender, years_old, ethnicity, socioeconomic, cols = 2)
+    data %>%
+      mutate(centre = centre_lookup[as.character(uk_biobank_assessment_centre_0_0)]) %>%
+      ggplot(aes(centre, fill = fill.var)) +
+      geom_bar(position = bar.position, na.rm = TRUE, width = .6) +
+      scale_fill_manual(values = c("grey35", "hotpink"), na.value = "grey65") +
+      coord_flip() +
+      theme(legend.position = "none", axis.title.y = element_text(face = "bold")) +
+      labs(x = "Assessment Centre"),
+
+    ggplot(data, aes_string(employment.var, fill = fill.var)) +
+      geom_bar(position = bar.position, na.rm = TRUE, width = .3) +
+      scale_fill_manual(values = c("grey35", "hotpink"), na.value = "grey65") +
+      coord_flip() +
+      theme(legend.position = "none", axis.title.y = element_text(face = "bold")) +
+      labs(x = "Employment Status"),
+
+    cols = 2
+  )
 }

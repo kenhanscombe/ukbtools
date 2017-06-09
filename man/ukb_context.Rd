@@ -4,20 +4,34 @@
 \alias{ukb_context}
 \title{Demographics of a UKB sample subset}
 \usage{
-ukb_context(data, age.var = "age_when_attended_assessment_centre_0_0",
-  comparison.var = NULL, sample.ref = NULL)
+ukb_context(data, sex.var = "sex_0_0",
+  age.var = "age_when_attended_assessment_centre_0_0",
+  socioeconomic.var = "townsend_deprivation_index_at_recruitment_0_0",
+  ethnicity.var = "ethnic_background_0_0",
+  employment.var = "current_employment_status_0_0", nonmiss.var = NULL,
+  subset.var = NULL, bar.position = "fill")
 }
 \arguments{
 \item{data}{A UKB dataset constructed with \code{\link{ukb_df}}.}
 
-\item{age.var}{The demographic to be use for age, either "age_when_attended_assessment_centre_0_0" (default) or "year_of_birth_0_0" (age calculated as 2010 - "year_of_birth_0_0").}
+\item{sex.var}{The varible to be used for sex. Default value is "sex_0_0".}
 
-\item{comparison.var}{The variable of interest which defines the "comparison" (samples with data) and "reference" (samples without data, i.e. NA) samples.}
+\item{age.var}{The variable to be use for age. Default value is "age_when_attended_assessment_centre_0_0".}
 
-\item{sample.ref}{A logical vector defining a "comparison" subset (TRUE) and "reference" subset (FALSE). Length must equal the number of rows in your \code{data}.}
+\item{socioeconomic.var}{The variable to be used for socioeconomic status. Default value is deprivation at baseline, "townsend_deprivation_index_at_recruitment_0_0".}
+
+\item{ethnicity.var}{The variable to be used for ethnicity. Default value is "ethnic_background_0_0".}
+
+\item{employment.var}{The variable to be used for employment status. Default value is employment status at baseline "current_employment_status_0_0".}
+
+\item{nonmiss.var}{The variable of interest which defines the "Subset" (samples with data) and "Reference" (samples without data, i.e., NA) samples.}
+
+\item{subset.var}{A logical vector defining a "Subset" (\code{TRUE}) and "Reference" subset (\code{FALSE}). Length must equal the number of rows in your \code{data}.}
+
+\item{bar.position}{This argument is passed to the \code{position} in \code{geom_bar}. The default value is \code{"fill"} which shows reference and subset of interest as proportions of the full dataset. Useful alternatives are \stack{"stack"} for counts and \code{"dodge"} for side-by-side bars.}
 }
 \description{
-Describes a subset of the UKB sample, relative to a reference subsample, on the \href{http://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=1001}{UKB primary demographics} (sex, age, ethnicity, socioeconomic status). The "reference" and "comparison" samples are defined either by a variable of interest (\code{comparison.var} - those with data form the "comparison" subset and samples with missing data are the "reference" sample), or a logical vector (\code{sample.ref} - where \code{TRUE} values define the "comparison" and \code{FALSE} the "reference" sample) . This function is intended as an exploratory data analysis and quality control tool, and as such only provides summary statistics and graphical context for an individual's data.
+Describes a subset of the UKB sample, relative to a reference subsample, on the \href{http://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=1001}{UKB primary demographics} (sex, age, ethnicity, socioeconomic status). The "reference" and "comparison" samples are defined either by a variable of interest (\code{nonmiss.var} - those with data form the "comparison" subset and samples with missing data are the "reference" sample), or a logical vector (\code{subset.var} - where \code{TRUE} values define the "comparison" and \code{FALSE} the "reference" sample) . This function is intended as an exploratory data analysis and quality control tool, and as such only provides summary statistics and graphical context for an individual's data.
 }
 \seealso{
 \code{\link{ukb_df}}

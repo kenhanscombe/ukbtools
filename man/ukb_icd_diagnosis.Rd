@@ -7,7 +7,7 @@
 ukb_icd_diagnosis(data, id, icd.version = NULL)
 }
 \arguments{
-\item{data}{A UKB dataset created with \code{\link{ukb_df}}.}
+\item{data}{A UKB dataset (or subset) created with \code{\link{ukb_df}}.}
 
 \item{id}{An individual's id, i.e., their unique eid reference number.}
 
@@ -17,5 +17,5 @@ ukb_icd_diagnosis(data, id, icd.version = NULL)
 Retrieves diagnoses for an individual.
 }
 \seealso{
-\code{\link{ukb_df}}
+\code{\link{ukb_df}}, \code{\link{ukb_icd_code_meaning}}, \code{\link{ukb_icd_keyword}}, \code{\link{ukb_icd_prevalence}}
 }

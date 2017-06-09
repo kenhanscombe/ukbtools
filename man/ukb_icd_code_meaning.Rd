@@ -14,3 +14,6 @@ ukb_icd_code_meaning(icd.code, icd.version)
 \description{
 Retrieves description for a ICD code.
 }
+\seealso{
+\code{\link{ukb_icd_diagnosis}}, \code{\link{ukb_icd_keyword}}, \code{\link{ukb_icd_prevalence}}
+}

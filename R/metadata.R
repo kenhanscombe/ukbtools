@@ -1,30 +1,32 @@
 
 #' Genetic metadata
 #'
-#' UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data.
+#' UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data. This function retrieves UKB assessment centre codes and assessment centre names, genetic ethnic grouping, genetically-determined sex, missingness, UKB recommended genomic analysis exclusions, BiLeve unrelatedness indicator, and BiLeve Affymetrix and genotype quality control.
 #'
 #' @export
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
 #'
 ukb_gen_meta <-  function(data) {
+
+  centre_lookup <- lookup(ukbcentre, "code", "centre")
+
   data %>%
+    mutate(
+      bileve_chip = ifelse(!is.na(ukbileve_affymetrix_quality_control_for_samples_0_0), 1, 0),
+      ukb_centre_name = centre_lookup[as.factor(uk_biobank_assessment_centre_0_0)]
+    ) %>%
     select(
       eid,
       uk_biobank_assessment_centre_0_0,
+      ukb_centre_name,
       genetic_ethnic_grouping_0_0,
-      average_x_chromosome_intensities_for_determining_sex_0_0,
-      average_y_chromosome_intensities_for_determining_sex_0_0,
       genetic_sex_0_0,
       missingness_0_0,
       recommended_genomic_analysis_exclusions_0_0,
       ukbileve_unrelatedness_indicator_0_0,
       ukbileve_affymetrix_quality_control_for_samples_0_0,
-      ukbileve_genotype_quality_control_for_samples_0_0
-    ) %>%
-    mutate(
-      bileve_chip = ifelse(
-        !is.na(ukbileve_affymetrix_quality_control_for_samples_0_0), 1, 0
-      )
+      ukbileve_genotype_quality_control_for_samples_0_0,
+      bileve_chip
     ) %>%
     as.data.frame()
 }
@@ -208,7 +210,7 @@ ukb_gen_het <- function(data, all.het = FALSE) {
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
 #' @return A dataframe with an additional column \code{ukb_centre} - UKB assessment centre names
 #'
-ukb_centre <- function(data){
+ukb_centre <- function(data) {
   centre_lookup <- lookup(ukbcentre, "code", "centre")
   data$ukb_centre <- centre_lookup[as.factor(data$uk_biobank_assessment_centre_0_0)]
 

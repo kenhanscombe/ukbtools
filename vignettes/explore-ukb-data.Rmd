@@ -9,19 +9,34 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(
+  fig.retina = 2,
+  eval = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  comment = NA
+)
+
+```
+
 <br>
 
-After downloading and decrypting your UK Biobank (UKB) data with the supplied [UKB programs](http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf), you have multiple files that need to be brought together to give you a tidy dataset to explore. The data file has column names that are the field codes from the UKB data showcase. `ukbtools` provides tools to tidy up the naming of the variables and perform exploratory analysis. 
+After downloading and decrypting your UK Biobank (UKB) data with the supplied [UKB programs](http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf), you have multiple files that need to be brought together to give you a tidy dataset to explore. The data file has column names that are the numeric field codes from the [UKB data showcase](http://www.ukbiobank.ac.uk/about-data-showcase/). `ukbtools` removes all the upfront data wrangling required to get a single dataset for statistical analysis, and provides tools to assist in quality control, query of disease diagnoses, and retrieval of genetic metadata. 
 
 <br>
 <br>
+
+
 
 
 ## 1. Preparing a UKB fileset
 
 Download^§^ then decrypt your data and create a UKB fileset (.tab, .r, .html):
 
-```{bash, eval = FALSE}
+```{bash}
 ukb_unpack ukbxxxx.enc key
 ukb_conv ukbxxxx.enc_ukb r
 ukb_conv ukbxxxx.enc_ukb docs
@@ -39,12 +54,14 @@ ukb_conv ukbxxxx.enc_ukb docs
 <br>
 
 
+
+
 ## 2. Making a dataset
 
 The function `ukb_df()` takes two arguments, the stem of your fileset and the path, and returns a dataframe with usable column names. 
 
 
-```{r, eval = FALSE}
+```{r}
 
 my_ukb_data <- ukb_df("ukbxxxx")
 
@@ -54,9 +71,9 @@ my_ukb_data <- ukb_df("ukbxxxx")
 You can also specify the path to your fileset if it is not in the current directory. For example, if your fileset is in a subdirectory of the working directory called `data`
 
 
-```{r, eval = FALSE}
+```{r}
 
-my_ukb_data <- ukb_df("ukbxxxx", path = "/full/path/to/my/data")
+my_ukb_data <- ukb_df("ukbxxxx", path = "/full/path/to/my/fileset")
 
 ```
 
@@ -68,23 +85,23 @@ __Note:__ You can move the three files in your fileset after creating them with 
 <br>
 <br>
 
+
 #### 2.1 Multiple downloads
 
 If you have multiple UKB downloads, tidy then merge them.
 
-```{r eval = FALSE}
+```{r}
 
 ukbxxxx_data <- ukb_df("ukbxxxx")
 ukbyyyy_data <- ukb_df("ukbyyyy")
 ukbzzzz_data <- ukb_df("ukbzzzz")
 
+# Merge with your preferred method
 my_ukb_data <- plyr::join_all(
-  list(
-    ukbxxxx_data,
-    ukbyyyy_data,
-    ukbzzzz_data),
+  list(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data),
   by = "eid",
-  type = "full")
+  type = "full"
+)
 
 ```
 
@@ -92,13 +109,14 @@ my_ukb_data <- plyr::join_all(
 
 __Note:__ You will have at least one variable duplicated in the different downloads, the unique individual identifier `eid`. Counting the repeated variables (and the number of repeats of each) can give you a sense of the expected number of variables in your merged dataset.
 
-```{r, eval = FALSE}
+```{r}
 
 ukb_names <- c(
   names(ukbxxxx_data),
   names(ukbyyyy_data),
   names(ukbzzzz_data)
 )
+
 count_ukb_names <- data.frame(table(ukb_names))
 dim(count_ukb_names[count_names$Freq > 1, ])
 
@@ -109,61 +127,84 @@ dim(count_ukb_names[count_names$Freq > 1, ])
 <br>
 
 
-## 3. Retreiving ICD diagnoses
 
 
-All ICD related functions begin `icd_`. Type `icd_` tab to see the family of functions. The full ICD "code-meaning" tables are available as datasets (`icd9codes`, `icd10codes`). ICD chapter-level tables describing disease blocks are also available for query as datasets (`icd9chapters`, `icd10chapters`)
+## 3. Exploring primary demographics of a UKB subset
 
+As an exploratory step you might want to look at the demographics of a particular subset of the UKB sample relative to a reference sample. For example, using the `nonmiss.var` argument of `ukb_context` will produce a plot of the primary demographics (sex, age, ethnicity, and Townsend deprivation score) and employment status and assessment centre, for the subsample with data on your variable of interest compared to those without data (i.e. `NA`).
+
+```{r}
+
+ukb_context(my_ukb_data, nonmiss.var = "my_variable_of_interest")
+
+```
+
+<br>
+
+It is also possible to supply a logical vector with `subset.var` to define the subset and reference sample. This is particularly useful for understanding a subgroup within the UKB study, e.g., obese individuals below age 50.
+
+```{r}
+
+subgroup_of_interest <- (my_ukb_data$bmi > 40 & my_ukb_data$age < 50) 
+ukb_context(my_ukb_data, subset.var = subgroup_of_interest)
+
+```
+
+
+<br>
+<br>
+
+
+## 4. Retreiving ICD diagnoses
+
+
+All ICD related functions begin `ukb_icd_`. Type `ukb_icd_` tab to see the family of functions. The full ICD "code-meaning" tables are available as datasets (`icd9codes`, `icd10codes`). ICD chapter-level tables describing disease blocks are also available for query as datasets (`icd9chapters`, `icd10chapters`)
 
 <br>
 
 To retrieve the full diagnosis of an individual
 
-```{r, eval = FALSE}
+```{r}
 
-icd_diagnosis(my_ukb_data, id = "0000000", icd.version = 10)
+ukb_icd_diagnosis(my_ukb_data, id = "0000000", icd.version = 10)
+
+```
+
+<br>
+
+
+To retrieve the "meaning" of an ICD code use `icd_code`. You can look up multiple codes by concatenating them.
+
+```{r}
+
+ukb_icd_code_meaning(icd.code = "I74", icd.version = 10)
 
 ```
 
 <br>
-<br>
 
-To retrieve the "meaning" of an ICD code use `icd_code`. (You can also look up multiple codes by concatenating them.)
+Search for a class of diseases with a keyword
 
-```{r, eval = FALSE}
+```{r}
 
-icd_code(icd.code = "H282", icd.version = 10)
-
-```
-
-
-<br>
-<br>
-
-To see the disease "blocks" that correspond to "chapters" in ICD-9 or ICD-10, `icd_chapter` takes the relevant ICD revision (or version) number
-
-```{r, eval = FALSE}
-
-icd_chapter(icd.version = 10)
+ukb_icd_keyword("cardio", icd.version = 10)
 
 ```
 
-
-<br>
 <br>
 
+You can calculate the prevalence of a diagnosis in the UKB study (or a subset of the full sample) using `ukb_icd_prevalence`. The `icd.diagnosis` argument takes a regular expression, and so can also be used to retrieve prevalence of a disease "class", i.e., the proportion of individuals with _any_ diagnosis in the disease class.
 
-## 4. Exploring a UKB sample subset
+```{r}
 
-As an exploratory step you might want to look at the demographics of a particular subset of the UKB sample relative to a reference sample. For example, the subsample with data on your variable of interest compared to those without data (i.e. `NA`). `ukb_context` takes either a comparison variable (`comparison.var`) or a logical vector (`sample.ref`) to define a reference and comparison sample.
+# ICD-10 code I74, Arterial embolism and thrombosis
+ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "I74")
 
-```{r, eval = FALSE}
+# ICD-10 chapter 9, disease block I00–I99, Diseases of the circulatory system
+ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "I")
 
-ukb_context(
-  my_ukb_data,
-  age.var = "year_of_birth_0_0",
-  sample.ref = sample(c(T,F), nrow(my_ukb_data), replace = TRUE)
-  )
+# ICD-10 chapter 2, C00-D49, Neoplasms 
+ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "C|D[0-4].")
 
 ```
 
@@ -172,7 +213,10 @@ ukb_context(
 <br>
 
 
-## 5. Genetic metadata
+
+
+
+## 5. Retrieving genetic metadata
 
 If you are doing any downstream genetic analyses, you will need the genetic metadata (which should be in you phenotype dataset). Detailed information is available on UKB [genotyping and quality control](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf) and [imputation and association](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/imputation_documentation_May2015.pdf).
 
@@ -183,7 +227,7 @@ All genetic metadata related functions begin `ukb_gen_`. Typing `ukb_gen_` tab o
 
 You can collect the genetic metadata (including recommended exclusions, genetic sex, genetic ethnicity, chip, etc.), and principal components with
 
-```{r, eval = FALSE}
+```{r}
 
 my_gen_meta <- ukb_gen_meta(my_ukb_data)
 my_gen_pcs <- ukb_gen_pcs(my_ukb_data)
@@ -195,16 +239,16 @@ my_gen_pcs <- ukb_gen_pcs(my_ukb_data)
 
 A list of IDs for recommended exclusions and heterozygosity outliers (+/- 3*SD) can be retreived
 
-```{r, eval = FALSE}
+```{r}
 
 ukb_gen_excl(my_ukb_data)
 ukb_gen_het(my_ukb_data)
 
 ```
 
-For a dataframe of raw heterozygosity data
+For a `data.frame` of raw heterozygosity data
 
-```{r, eval = FALSE}
+```{r}
 
 ukb_gen_het(my_ukb_data, all.het = TRUE)
 
@@ -214,11 +258,14 @@ ukb_gen_het(my_ukb_data, all.het = TRUE)
 <br>
 <br>
 
-`ukb_gen_rel` returns a dataframe with `id`, `pair` (a numeric identifier for related pairs), and `kinship` (kinship coefficient)
+`ukb_gen_rel` returns a `data.frame` with `id`, `pair` (a numeric identifier for related pairs), and `kinship` (kinship coefficient). For a count of related samples by degree of relatedness use `ukb_gen_rel_count`. Set the argument `plot = TRUE` to replicate the plot on page 15 of the [UKB genotyping and quality control documentation](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf), for your subgroup of interest.
 
-```{r, eval = FALSE}
+```{r}
 
 my_gen_rel <- ukb_gen_rel(my_ukb_data)
+
+# To get a count and plot of degree of relatedness
+ukb_gen_rel_count(my_ukb_data, plot = TRUE)
 
 ```
 

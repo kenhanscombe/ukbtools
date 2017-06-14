@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ken B. Hanscombe" />
 
-<meta name="date" content="2017-02-23" />
+<meta name="date" content="2017-06-14" />
 
 <title>Explore UK Biobank data</title>
 
@@ -70,12 +70,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Explore UK Biobank data</h1>
 <h4 class="author"><em>Ken B. Hanscombe</em></h4>
-<h4 class="date"><em>2017-02-23</em></h4>
+<h4 class="date"><em>2017-06-14</em></h4>
 
 
 
 <p><br></p>
-<p>After downloading and decrypting your UK Biobank (UKB) data with the supplied <a href="http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf">UKB programs</a>, you have multiple files that need to be brought together to give you a tidy dataset to explore. The data file has column names that are the field codes from the UKB data showcase. <code>ukbtools</code> provides tools to tidy up the naming of the variables and perform exploratory analysis.</p>
+<p>After downloading and decrypting your UK Biobank (UKB) data with the supplied <a href="http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf">UKB programs</a>, you have multiple files that need to be brought together to give you a tidy dataset to explore. The data file has column names that are the numeric field codes from the <a href="http://www.ukbiobank.ac.uk/about-data-showcase/">UKB data showcase</a>. <code>ukbtools</code> removes all the upfront data wrangling required to get a single dataset for statistical analysis, and provides tools to assist in quality control, query of disease diagnoses, and retrieval of genetic metadata.</p>
 <p><br> <br></p>
 <div id="preparing-a-ukb-fileset" class="section level2">
 <h2>1. Preparing a UKB fileset</h2>
@@ -93,7 +93,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>The function <code>ukb_df()</code> takes two arguments, the stem of your fileset and the path, and returns a dataframe with usable column names.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_ukb_data &lt;-<span class="st"> </span><span class="kw">ukb_df</span>(<span class="st">&quot;ukbxxxx&quot;</span>)</code></pre></div>
 <p>You can also specify the path to your fileset if it is not in the current directory. For example, if your fileset is in a subdirectory of the working directory called <code>data</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_ukb_data &lt;-<span class="st"> </span><span class="kw">ukb_df</span>(<span class="st">&quot;ukbxxxx&quot;</span>, <span class="dt">path =</span> <span class="st">&quot;/full/path/to/my/data&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_ukb_data &lt;-<span class="st"> </span><span class="kw">ukb_df</span>(<span class="st">&quot;ukbxxxx&quot;</span>, <span class="dt">path =</span> <span class="st">&quot;/full/path/to/my/fileset&quot;</span>)</code></pre></div>
 <p><br></p>
 <p><strong>Note:</strong> You can move the three files in your fileset after creating them with <code>ukb_conv</code>, but they should be kept together. <code>ukb_df()</code> automatically updates the read call in the R source file to point to the correct directory (the current directly by default, or the directory specified by <code>path</code>).</p>
 <p><br> <br></p>
@@ -104,13 +104,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ukbyyyy_data &lt;-<span class="st"> </span><span class="kw">ukb_df</span>(<span class="st">&quot;ukbyyyy&quot;</span>)
 ukbzzzz_data &lt;-<span class="st"> </span><span class="kw">ukb_df</span>(<span class="st">&quot;ukbzzzz&quot;</span>)
 
+<span class="co"># Merge with your preferred method</span>
 my_ukb_data &lt;-<span class="st"> </span>plyr::<span class="kw">join_all</span>(
-  <span class="kw">list</span>(
-    ukbxxxx_data,
-    ukbyyyy_data,
-    ukbzzzz_data),
+  <span class="kw">list</span>(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data),
   <span class="dt">by =</span> <span class="st">&quot;eid&quot;</span>,
-  <span class="dt">type =</span> <span class="st">&quot;full&quot;</span>)</code></pre></div>
+  <span class="dt">type =</span> <span class="st">&quot;full&quot;</span>
+)</code></pre></div>
 <p><br></p>
 <p><strong>Note:</strong> You will have at least one variable duplicated in the different downloads, the unique individual identifier <code>eid</code>. Counting the repeated variables (and the number of repeats of each) can give you a sense of the expected number of variables in your merged dataset.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ukb_names &lt;-<span class="st"> </span><span class="kw">c</span>(
@@ -118,37 +117,48 @@ my_ukb_data &lt;-<span class="st"> </span>plyr::<span class="kw">join_all</span>
   <span class="kw">names</span>(ukbyyyy_data),
   <span class="kw">names</span>(ukbzzzz_data)
 )
+
 count_ukb_names &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">table</span>(ukb_names))
 <span class="kw">dim</span>(count_ukb_names[count_names$Freq &gt;<span class="st"> </span><span class="dv">1</span>, ])</code></pre></div>
 <p><br> <br></p>
 </div>
 </div>
+<div id="exploring-primary-demographics-of-a-ukb-subset" class="section level2">
+<h2>3. Exploring primary demographics of a UKB subset</h2>
+<p>As an exploratory step you might want to look at the demographics of a particular subset of the UKB sample relative to a reference sample. For example, using the <code>nonmiss.var</code> argument of <code>ukb_context</code> will produce a plot of the primary demographics (sex, age, ethnicity, and Townsend deprivation score) and employment status and assessment centre, for the subsample with data on your variable of interest compared to those without data (i.e. <code>NA</code>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ukb_context</span>(my_ukb_data, <span class="dt">nonmiss.var =</span> <span class="st">&quot;my_variable_of_interest&quot;</span>)</code></pre></div>
+<p><br></p>
+<p>It is also possible to supply a logical vector with <code>subset.var</code> to define the subset and reference sample. This is particularly useful for understanding a subgroup within the UKB study, e.g., obese individuals below age 50.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">subgroup_of_interest &lt;-<span class="st"> </span>(my_ukb_data$bmi &gt;<span class="st"> </span><span class="dv">40</span> &amp;<span class="st"> </span>my_ukb_data$age &lt;<span class="st"> </span><span class="dv">50</span>) 
+<span class="kw">ukb_context</span>(my_ukb_data, <span class="dt">subset.var =</span> subgroup_of_interest)</code></pre></div>
+<p><br> <br></p>
+</div>
 <div id="retreiving-icd-diagnoses" class="section level2">
-<h2>3. Retreiving ICD diagnoses</h2>
-<p>All ICD related functions begin <code>icd_</code>. Type <code>icd_</code> tab to see the family of functions. The full ICD “code-meaning” tables are available as datasets (<code>icd9codes</code>, <code>icd10codes</code>). ICD chapter-level tables describing disease blocks are also available for query as datasets (<code>icd9chapters</code>, <code>icd10chapters</code>)</p>
+<h2>4. Retreiving ICD diagnoses</h2>
+<p>All ICD related functions begin <code>ukb_icd_</code>. Type <code>ukb_icd_</code> tab to see the family of functions. The full ICD “code-meaning” tables are available as datasets (<code>icd9codes</code>, <code>icd10codes</code>). ICD chapter-level tables describing disease blocks are also available for query as datasets (<code>icd9chapters</code>, <code>icd10chapters</code>)</p>
 <p><br></p>
 <p>To retrieve the full diagnosis of an individual</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">icd_diagnosis</span>(my_ukb_data, <span class="dt">id =</span> <span class="st">&quot;0000000&quot;</span>, <span class="dt">icd.version =</span> <span class="dv">10</span>)</code></pre></div>
-<p><br> <br></p>
-<p>To retrieve the “meaning” of an ICD code use <code>icd_code</code>. (You can also look up multiple codes by concatenating them.)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">icd_code</span>(<span class="dt">icd.code =</span> <span class="st">&quot;H282&quot;</span>, <span class="dt">icd.version =</span> <span class="dv">10</span>)</code></pre></div>
-<p><br> <br></p>
-<p>To see the disease “blocks” that correspond to “chapters” in ICD-9 or ICD-10, <code>icd_chapter</code> takes the relevant ICD revision (or version) number</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">icd_chapter</span>(<span class="dt">icd.version =</span> <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ukb_icd_diagnosis</span>(my_ukb_data, <span class="dt">id =</span> <span class="st">&quot;0000000&quot;</span>, <span class="dt">icd.version =</span> <span class="dv">10</span>)</code></pre></div>
+<p><br></p>
+<p>To retrieve the “meaning” of an ICD code use <code>icd_code</code>. You can look up multiple codes by concatenating them.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ukb_icd_code_meaning</span>(<span class="dt">icd.code =</span> <span class="st">&quot;I74&quot;</span>, <span class="dt">icd.version =</span> <span class="dv">10</span>)</code></pre></div>
+<p><br></p>
+<p>Search for a class of diseases with a keyword</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ukb_icd_keyword</span>(<span class="st">&quot;cardio&quot;</span>, <span class="dt">icd.version =</span> <span class="dv">10</span>)</code></pre></div>
+<p><br></p>
+<p>You can calculate the prevalence of a diagnosis in the UKB study (or a subset of the full sample) using <code>ukb_icd_prevalence</code>. The <code>icd.diagnosis</code> argument takes a regular expression, and so can also be used to retrieve prevalence of a disease “class”, i.e., the proportion of individuals with <em>any</em> diagnosis in the disease class.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ICD-10 code I74, Arterial embolism and thrombosis</span>
+<span class="kw">ukb_icd_prevalence</span>(my_ukb_data, <span class="dt">icd.version =</span> <span class="dv">10</span>, <span class="dt">icd.diagnosis =</span> <span class="st">&quot;I74&quot;</span>)
+
+<span class="co"># ICD-10 chapter 9, disease block I00–I99, Diseases of the circulatory system</span>
+<span class="kw">ukb_icd_prevalence</span>(my_ukb_data, <span class="dt">icd.version =</span> <span class="dv">10</span>, <span class="dt">icd.diagnosis =</span> <span class="st">&quot;I&quot;</span>)
+
+<span class="co"># ICD-10 chapter 2, C00-D49, Neoplasms </span>
+<span class="kw">ukb_icd_prevalence</span>(my_ukb_data, <span class="dt">icd.version =</span> <span class="dv">10</span>, <span class="dt">icd.diagnosis =</span> <span class="st">&quot;C|D[0-4].&quot;</span>)</code></pre></div>
 <p><br> <br></p>
 </div>
-<div id="exploring-a-ukb-sample-subset" class="section level2">
-<h2>4. Exploring a UKB sample subset</h2>
-<p>As an exploratory step you might want to look at the demographics of a particular subset of the UKB sample relative to a reference sample. For example, the subsample with data on your variable of interest compared to those without data (i.e. <code>NA</code>). <code>ukb_context</code> takes either a comparison variable (<code>comparison.var</code>) or a logical vector (<code>sample.ref</code>) to define a reference and comparison sample.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ukb_context</span>(
-  my_ukb_data,
-  <span class="dt">age.var =</span> <span class="st">&quot;year_of_birth_0_0&quot;</span>,
-  <span class="dt">sample.ref =</span> <span class="kw">sample</span>(<span class="kw">c</span>(T,F), <span class="kw">nrow</span>(my_ukb_data), <span class="dt">replace =</span> <span class="ot">TRUE</span>)
-  )</code></pre></div>
-<p><br> <br></p>
-</div>
-<div id="genetic-metadata" class="section level2">
-<h2>5. Genetic metadata</h2>
+<div id="retrieving-genetic-metadata" class="section level2">
+<h2>5. Retrieving genetic metadata</h2>
 <p>If you are doing any downstream genetic analyses, you will need the genetic metadata (which should be in you phenotype dataset). Detailed information is available on UKB <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf">genotyping and quality control</a> and <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/imputation_documentation_May2015.pdf">imputation and association</a>.</p>
 <p>All genetic metadata related functions begin <code>ukb_gen_</code>. Typing <code>ukb_gen_</code> tab opens a dropdown menu for this group of functions.</p>
 <p><br> <br></p>
@@ -159,11 +169,14 @@ my_gen_pcs &lt;-<span class="st"> </span><span class="kw">ukb_gen_pcs</span>(my_
 <p>A list of IDs for recommended exclusions and heterozygosity outliers (+/- 3*SD) can be retreived</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ukb_gen_excl</span>(my_ukb_data)
 <span class="kw">ukb_gen_het</span>(my_ukb_data)</code></pre></div>
-<p>For a dataframe of raw heterozygosity data</p>
+<p>For a <code>data.frame</code> of raw heterozygosity data</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ukb_gen_het</span>(my_ukb_data, <span class="dt">all.het =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><br> <br></p>
-<p><code>ukb_gen_rel</code> returns a dataframe with <code>id</code>, <code>pair</code> (a numeric identifier for related pairs), and <code>kinship</code> (kinship coefficient)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_gen_rel &lt;-<span class="st"> </span><span class="kw">ukb_gen_rel</span>(my_ukb_data)</code></pre></div>
+<p><code>ukb_gen_rel</code> returns a <code>data.frame</code> with <code>id</code>, <code>pair</code> (a numeric identifier for related pairs), and <code>kinship</code> (kinship coefficient). For a count of related samples by degree of relatedness use <code>ukb_gen_rel_count</code>. Set the argument <code>plot = TRUE</code> to replicate the plot on page 15 of the <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf">UKB genotyping and quality control documentation</a>, for your subgroup of interest.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_gen_rel &lt;-<span class="st"> </span><span class="kw">ukb_gen_rel</span>(my_ukb_data)
+
+<span class="co"># To get a count and plot of degree of relatedness</span>
+<span class="kw">ukb_gen_rel_count</span>(my_ukb_data, <span class="dt">plot =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><br> <br></p>
 </div>
 
@@ -174,7 +187,7 @@ my_gen_pcs &lt;-<span class="st"> </span><span class="kw">ukb_gen_pcs</span>(my_
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

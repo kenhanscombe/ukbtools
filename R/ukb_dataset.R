@@ -42,7 +42,7 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
 
 
 
-#' Makes a UKB Data-Field to variable name table for reference or lookup.
+#' Makes a UKB data-field to variable name table for reference or lookup.
 #'
 #' Makes either a table of Data-Field and description, or a named vector handy for looking up descriptive name by column names in the UKB fileset tab file.
 #'
@@ -53,12 +53,11 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
 #'
 #' @return Returns a data.frame with columns \code{field.showcase}, \code{field.html}, \code{field.data}, \code{names}. \code{field.showcase} is how the field appears in the online \href{http://biobank.ctsu.ox.ac.uk/crystal/}{UKB showcase}; \code{field.html} is how the field appears in the html file in your UKB fileset; \code{field.data} is how the field appears in the tab file in your fileset; and \code{names} is the descriptive name that \code{\link{ukb_df}} assigns to the variable. If \code{as.lookup = TRUE}, the function returns a named character vector of the descriptvive names.
 #'
-#'
 #' @seealso \code{\link{ukb_df}}
-
+#'
 #' @export
 #'
-ukb_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
+ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
   html_file <- sprintf("%s.html", fileset)
   tables <- XML::readHTMLTable(
     doc = if (path == ".") {

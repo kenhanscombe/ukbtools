@@ -63,6 +63,8 @@ The function `ukb_df()` takes two arguments, the stem of your fileset and the pa
 
 ```{r}
 
+library(ukbtools)
+
 my_ukb_data <- ukb_df("ukbxxxx")
 
 ```
@@ -78,9 +80,19 @@ my_ukb_data <- ukb_df("ukbxxxx", path = "/full/path/to/my/fileset")
 ```
 
 
+Use `ukb_df_field` to create a field-to-descriptive name key.
+
 <br>
 
 __Note:__ You can move the three files in your fileset after creating them with `ukb_conv`, but they should be kept together. `ukb_df()` automatically updates the read call in the R source file to point to the correct directory (the current directly by default, or the directory specified by `path`).
+
+<br>
+
+<br>
+
+> __Memory and efficiency__
+>
+> I highly recommend saving your new UKB dataset with `save(my_ukb_data, file = "my_ukb_data.rda")`. You can load the data with `load("my_ukb_data.rda")`. Creating a UKB dataset from my largest UKB fileset which included a 2.6 GB .tab file, took approximately 10 mins; loading the same dataset after the `save` procedure, took about 20 seconds. The saved file was about 200 MB.
 
 <br>
 <br>
@@ -89,6 +101,7 @@ __Note:__ You can move the three files in your fileset after creating them with 
 #### 2.1 Multiple downloads
 
 If you have multiple UKB downloads, tidy then merge them.
+
 
 ```{r}
 

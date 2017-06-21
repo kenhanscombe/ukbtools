@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ken B. Hanscombe" />
 
-<meta name="date" content="2017-06-14" />
+<meta name="date" content="2017-06-21" />
 
 <title>Explore UK Biobank data</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Explore UK Biobank data</h1>
 <h4 class="author"><em>Ken B. Hanscombe</em></h4>
-<h4 class="date"><em>2017-06-14</em></h4>
+<h4 class="date"><em>2017-06-21</em></h4>
 
 
 
@@ -91,11 +91,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="making-a-dataset" class="section level2">
 <h2>2. Making a dataset</h2>
 <p>The function <code>ukb_df()</code> takes two arguments, the stem of your fileset and the path, and returns a dataframe with usable column names.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_ukb_data &lt;-<span class="st"> </span><span class="kw">ukb_df</span>(<span class="st">&quot;ukbxxxx&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ukbtools)
+
+my_ukb_data &lt;-<span class="st"> </span><span class="kw">ukb_df</span>(<span class="st">&quot;ukbxxxx&quot;</span>)</code></pre></div>
 <p>You can also specify the path to your fileset if it is not in the current directory. For example, if your fileset is in a subdirectory of the working directory called <code>data</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_ukb_data &lt;-<span class="st"> </span><span class="kw">ukb_df</span>(<span class="st">&quot;ukbxxxx&quot;</span>, <span class="dt">path =</span> <span class="st">&quot;/full/path/to/my/fileset&quot;</span>)</code></pre></div>
+<p>Use <code>ukb_df_field</code> to create a field-to-descriptive name key.</p>
 <p><br></p>
 <p><strong>Note:</strong> You can move the three files in your fileset after creating them with <code>ukb_conv</code>, but they should be kept together. <code>ukb_df()</code> automatically updates the read call in the R source file to point to the correct directory (the current directly by default, or the directory specified by <code>path</code>).</p>
+<p><br></p>
+<p><br></p>
+<blockquote>
+<p><strong>Memory and efficiency</strong></p>
+<p>I highly recommend saving your new UKB dataset with <code>save(my_ukb_data, file = &quot;my_ukb_data.rda&quot;)</code>. You can load the data with <code>load(&quot;my_ukb_data.rda&quot;)</code>. Creating a UKB dataset from my largest UKB fileset which included a 2.6 GB .tab file, took approximately 10 mins; loading the same dataset after the <code>save</code> procedure, took about 20 seconds. The saved file was about 200 MB.</p>
+</blockquote>
 <p><br> <br></p>
 <div id="multiple-downloads" class="section level4">
 <h4>2.1 Multiple downloads</h4>

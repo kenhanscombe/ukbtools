@@ -11,6 +11,8 @@ knitr::opts_chunk$set(
 
 ## ------------------------------------------------------------------------
 #  
+#  library(ukbtools)
+#  
 #  my_ukb_data <- ukb_df("ukbxxxx")
 #  
 

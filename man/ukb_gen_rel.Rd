@@ -2,7 +2,7 @@
 % Please edit documentation in R/metadata.R
 \name{ukb_gen_rel}
 \alias{ukb_gen_rel}
-\title{Relatedness pairings}
+\title{Creates a table of related individuals}
 \usage{
 ukb_gen_rel(data)
 }
@@ -10,5 +10,8 @@ ukb_gen_rel(data)
 \item{data}{A UKB dataset created with \code{\link{ukb_df}}.}
 }
 \description{
-UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data.
+Makes a data.frame containing all related individuals with columns UKB ID, pair ID, \href{http://people.virginia.edu/~wc9c/KING/manual.html}{KING kinship coefficient}, and proportion of alleles IBS = 0. UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} including details on relatedness calculations for the interim genotype data.
+}
+\seealso{
+\code{\link{ukb_gen_rel_count}}
 }

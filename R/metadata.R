@@ -73,12 +73,14 @@ ukb_gen_excl <- function(data) {
 
 
 
-#' Relatedness pairings
+#' Creates a table of related individuals
 #'
-#' UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data.
+#' Makes a data.frame containing all related individuals with columns UKB ID, pair ID, \href{http://people.virginia.edu/~wc9c/KING/manual.html}{KING kinship coefficient}, and proportion of alleles IBS = 0. UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} including details on relatedness calculations for the interim genotype data.
 #'
 #' @export
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
+#'
+#' @seealso \code{\link{ukb_gen_rel_count}}
 #'
 ukb_gen_rel <- function(data) {
   rbind(
@@ -128,9 +130,13 @@ ukb_gen_rel <- function(data) {
 
 #' Relatedness count
 #'
+#' Creates a summary count table of the number of individuals and pairs at each at each degree of relatedness that occurs in the UKB sample, and an optional plot.
+#'
 #' @export
 #' @param data A dataframe of UKB ID, pair ID, \href{http://people.virginia.edu/~wc9c/KING/manual.html}{KING kinship coefficient}, and proportion of alleles IBS = 0 created with \code{\link{ukb_gen _rel}}.
 #' @return If \code{plot = FALSE} (default), a count of individuals and pairs at each level of relatedness. If \code{plot = TRUE}, reproduces the scatterplot of genetic relatedness against proportion of SNPs shared IBS=0 (each point representing a pair of related UKB individuals) from the \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{genotyping and quality control} documentation.
+#'
+#' @seealso \code{\link{ukb_gen_rel}}
 #'
 ukb_gen_rel_count <- function(data, plot = FALSE) {
 
@@ -176,13 +182,15 @@ ukb_gen_rel_count <- function(data, plot = FALSE) {
 
 #' Heterozygosity outliers
 #'
-#' UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data.
+#' Heterozygosity outliers are typically removed from genetic association analyses. This function returns either a vector of heterozygosity outliers to remove (+/- 3sd from mean heterozygosity), or a data frame with heterozygosity scores for all samples.
 #'
 #' @export
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
-#' @param all.het Set \code{all.het = TRUE} for raw heterozygosity scores for all samples. By default \code{all.het = FALSE} returns a vector of sample IDs for individuals +/-3SD from the mean heterozygosity.
+#' @param all.het Set \code{all.het = TRUE} for heterozygosity scores for all samples. By default \code{all.het = FALSE} returns a vector of sample IDs for individuals +/-3SD from the mean heterozygosity.
 #'
 #' @return A vector of IDs if \code{all.het = FALSE} (default), or a dataframe with ID, heterozygosity and PCA-corrected heterozygosity if \code{all.het = TRUE}.
+#'
+#' @details UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data.
 #'
 ukb_gen_het <- function(data, all.het = FALSE) {
   if (all.het) {
@@ -204,7 +212,7 @@ ukb_gen_het <- function(data, all.het = FALSE) {
 
 #' Inserts UKB centre names into data
 #'
-#' Useful if your UKB centre variable \code{uk_biobank_assessment_centre_0_0} has not been populated with named levels.
+#' Inserts a column with centre name, \code{ukb_centre}, into the supplied data.frame. Useful if your UKB centre variable \code{uk_biobank_assessment_centre_0_0} has not been populated with named levels.
 #'
 #' @export
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.

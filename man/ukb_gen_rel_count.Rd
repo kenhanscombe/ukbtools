@@ -13,5 +13,8 @@ ukb_gen_rel_count(data, plot = FALSE)
 If \code{plot = FALSE} (default), a count of individuals and pairs at each level of relatedness. If \code{plot = TRUE}, reproduces the scatterplot of genetic relatedness against proportion of SNPs shared IBS=0 (each point representing a pair of related UKB individuals) from the \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{genotyping and quality control} documentation.
 }
 \description{
-Relatedness count
+Creates a summary count table of the number of individuals and pairs at each at each degree of relatedness that occurs in the UKB sample, and an optional plot.
+}
+\seealso{
+\code{\link{ukb_gen_rel}}
 }

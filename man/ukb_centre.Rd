@@ -13,5 +13,5 @@ ukb_centre(data)
 A dataframe with an additional column \code{ukb_centre} - UKB assessment centre names
 }
 \description{
-Useful if your UKB centre variable \code{uk_biobank_assessment_centre_0_0} has not been populated with named levels.
+Inserts a column with centre name, \code{ukb_centre}, into the supplied data.frame. Useful if your UKB centre variable \code{uk_biobank_assessment_centre_0_0} has not been populated with named levels.
 }

@@ -1,7 +1,7 @@
 
 #' Demographics of a UKB sample subset
 #'
-#' Describes a subset of the UKB sample, relative to a reference subsample, on the \href{http://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=1001}{UKB primary demographics} (sex, age, ethnicity, socioeconomic status). The "reference" and "comparison" samples are defined either by a variable of interest (\code{nonmiss.var} - those with data form the "comparison" subset and samples with missing data are the "reference" sample), or a logical vector (\code{subset.var} - where \code{TRUE} values define the "comparison" and \code{FALSE} the "reference" sample) . This function is intended as an exploratory data analysis and quality control tool, and as such only provides summary statistics and graphical context for an individual's data.
+#' Describes a subset of the UKB sample, relative to a reference subsample, on the \href{http://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=1001}{UKB primary demographics} (sex, age, ethnicity, Townsend deprivation) and assessment centre and current employment status. The "subset" and "reference" samples are defined either by a variable of interest (\code{nonmiss.var} - those with data form the "subset" of interest and samples with missing data are the "reference" sample), or a logical vector (\code{subset.var} - where \code{TRUE} values define the "subset" and \code{FALSE} the "reference" samples) . This function is intended as an exploratory data analysis and quality control tool.
 #'
 #' @param data A UKB dataset constructed with \code{\link{ukb_df}}.
 #' @param sex.var The varible to be used for sex. Default value is "sex_0_0".
@@ -9,9 +9,9 @@
 #' @param socioeconomic.var The variable to be used for socioeconomic status. Default value is deprivation at baseline, "townsend_deprivation_index_at_recruitment_0_0".
 #' @param ethnicity.var The variable to be used for ethnicity. Default value is "ethnic_background_0_0".
 #' @param employment.var The variable to be used for employment status. Default value is employment status at baseline "current_employment_status_0_0".
-#' @param nonmiss.var The variable of interest which defines the "Subset" (samples with data) and "Reference" (samples without data, i.e., NA) samples.
-#' @param subset.var A logical vector defining a "Subset" (\code{TRUE}) and "Reference" subset (\code{FALSE}). Length must equal the number of rows in your \code{data}.
-#' @param bar.position This argument is passed to the \code{position} in \code{geom_bar}. The default value is \code{"fill"} which shows reference and subset of interest as proportions of the full dataset. Useful alternatives are \stack{"stack"} for counts and \code{"dodge"} for side-by-side bars.
+#' @param nonmiss.var The variable of interest which defines the "subset" (samples with data) and "reference" (samples without data, i.e., NA) samples.
+#' @param subset.var A logical vector defining a "subset" (\code{TRUE}) and "reference" subset (\code{FALSE}). Length must equal the number of rows in your \code{data}.
+#' @param bar.position This argument is passed to the \code{position} in \code{geom_bar}. The default value is \code{"fill"} which shows reference and subset of interest as proportions of the full dataset. Useful alternatives are \code{"stack"} for counts and \code{"dodge"} for side-by-side bars.
 #'
 #' @seealso \code{\link{ukb_df}}
 #'

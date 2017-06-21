@@ -25,14 +25,14 @@ ukb_gen_read_sample <- function(file, col.names = c("id_1", "id_2", "missing"),
 
 #' Writes a plink format phenotype or covariate file
 #'
-#' This function writes a tab-delimited file with header, with the obligatory first two columns FID and IID.
+#' This function writes a tab-delimited file with header, with the obligatory first two columns FID and IID. Use this function to write phenotype and covariate files for downstream genetic analysis in \href{https://www.cog-genomics.org/plink2}{plink} - the format is the same.
 #'
 #' @param x A data frame to write to disk.
 #' @param path A path to a file.
 #' @param ukb.variables A character vector of either the phenotypes for a plink phenotype file, or covariates for a plink covariate file.
-#' @param ukb.id The eid variable name (default = "eid").
+#' @param ukb.id The id variable name (default = "eid").
 #'
-  #' @details Use the \code{--pheno-name} and \code{--covar-name} plink flags to select columns by name. See the plink documentation for \code{--pheno}, \code{--mpheno}, \code{--pheno-name}, and \code{--covar}, \code{--covar-name}, \code{--covar-number} flags.
+  #' @details The function writes the id variable in your dataset to the first two columns of the output file with the names FID and IID - you do not need to have two id columns in the data.frame passed to the argument \code{x}. Use the \code{--pheno-name} and \code{--covar-name} plink flags to select columns by name. See the plink documentation for the \code{--pheno}, \code{--mpheno}, \code{--pheno-name}, and \code{--covar}, \code{--covar-name}, \code{--covar-number} flags.
 #'
 #' @seealso  \code{\link{ukb_gen_read_sample}} to read a sample file, and \code{\link{ukb_gen_write_bgenie}} to write phenotype and covariate files to BGENIE format.
 #'
@@ -54,7 +54,7 @@ ukb_gen_write_plink <- function(x, path, ukb.variables, ukb.id = "eid") {
 
 #' Writes a BGENIE format phenotype or covariate file.
 #'
-#' Writes a space-delimited file with a header, with missing character set to "-999", and observations (i.e. UKB subject ids) in sample file order.
+#' Writes a space-delimited file with a header, missing character set to "-999", and observations (i.e. UKB subject ids) in sample file order. Use this function to write phenotype and covariate files for downstream genetic analysis in \href{https://jmarchini.org/bgenie/}{BGENIE} - the format is the same.
 #'
 #' @param x A data frame to write to disk.
 #' @param path A path to a file.

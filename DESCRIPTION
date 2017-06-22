@@ -1,8 +1,8 @@
 Package: ukbtools
-Version: 0.0.0.9000
+Version: 0.1.0
 Title: A set of tools to manipulate and explore UK Biobank data
 Authors@R: person("Ken", "Hanscombe", email = "ken.hanscombe@gmail.com", role = c("aut", "cre"))
-Maintainer: The package maintainer <yourself@somewhere.net>
+Maintainer: Ken Hanscombe <ken.hanscombe@gmail.com>
 Description: A set of tools to create a single UK Biobank dataset
     from a UKB fileset (.tab, .r, .html), visualize a sample subset in context,
     explore ICD diagnoses, and extract genetic metadata for genetic analyses.

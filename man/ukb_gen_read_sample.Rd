@@ -8,9 +8,9 @@ ukb_gen_read_sample(file, col.names = c("id_1", "id_2", "missing"),
   row.skip = 2)
 }
 \arguments{
-\item{file}{A path to a file.}
+\item{file}{A path to a sample file.}
 
-\item{col.names}{A character vector of column names.}
+\item{col.names}{A character vector of column names. Default: c("id_1", "id_2", "missing")}
 
 \item{row.skip}{Number of lines to skip before reading data.}
 }

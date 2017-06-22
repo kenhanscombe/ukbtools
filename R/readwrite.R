@@ -3,24 +3,38 @@
 #'
 #' This is a wrapper for \code{read_table} that reads an Oxford format .sample file. If you use the unedited sample file as supplied with your genetic data, you should aonly need to specifiy the first argument, file.
 #'
-#' @param file A path to a file.
-#' @param col.names A character vector of column names.
+#' @param file A path to a sample file.
+#' @param col.names A character vector of column names. Default: c("id_1", "id_2", "missing")
 #' @param row.skip Number of lines to skip before reading data.
 #'
 #' @export
 #'
-ukb_gen_read_sample <- function(file, col.names = c("id_1", "id_2", "missing"),
-                                row.skip = 2) {
+ukb_gen_read_sample <- function(
+  file, col.names = c("id_1", "id_2", "missing"), row.skip = 2) {
   read_table(file, skip = row.skip, col_names = col.names)
 }
 
-#ukb_gen_read_fam <- function(file, col.names) {}
 
 
 
+#' Reads a plink format fam file
+#'
+#' This is wrapper for read_table that reads a basic plink fam file. For plink hard-called data, it may be useful to use the fam file ids as a filter for your phenotype and covariate data.
+#'
+#' @param file A path to a fam file.
+#' @param col.names A character vector of column names. Default: c("FID", "IID", "paternalID", "maternalID", "sex", "phenotype")
+#' @param na.strings Character vector of strings to use for missing values. Default "-9". Set this option to character() to indicate no missing values.
+#'
+#' @seealso
+#'
+#' @export
+#'
+ukb_gen_read_fam <- function(
+  file, col.names = c("FID", "IID", "paternalID", "maternalID", "sex", "phenotype"), na.strings = "-9") {
+  read_table(file, col_names = col.names, na = na.strings)
+}
 
-# Write plink files -------------------------------------------------------
-# All plink output files should be FID IID ...
+
 
 
 #' Writes a plink format phenotype or covariate file
@@ -50,7 +64,74 @@ ukb_gen_write_plink <- function(x, path, ukb.variables, ukb.id = "eid", na.strin
 
 
 
-# Write BGENIE files ------------------------------------------------------
+#' Writes a plink format file for combined exclusions
+#'
+#' For exclusion of individuals from a genetic analysis, the plink flag \code{--remove} accepts a space/tab-delimited text file with family IDs in the first column and within-family IDs in the second column (i.e., FID IID), without a header. This function writes a combined exclusions file including UKB recommended exclusions, heterozygosity exclusions (+/- 3*sd from mean), genetic ethnicity exclusions (based on the UKB genetic ethnic grouping variable, field 1002), and relatedness exclusions (a randomly-selected member of each related pair).
+#'
+#' @param data A UKB dataset (or subset of) created with \code{\link{ukb_df}}.
+#' @param recommend.excl An integer vector of UKB ids created with \link{\code{ukb_gen_excl}}.
+#' @param het.excl An integer vector of UKB ids created with \link{\code{ukb_gen_het}}.
+#' @param gen.excl Default value "genetic_ethnic_grouping_0_0".
+#' @param rel.excl A data.frame created with \link{\code{ukb_gen_rel}}.
+#'
+#' @details  \strong{Note.} The exclusion list for related individuals is created as a random selection of one member in each pair. Set a random number generation seed with \link{\code{set.seed}} if you think you may write exclusions out again and would like to replicate the same list of relateds to remove.
+#'
+#' @seealso \link{\code{ukb_gen_meta}}, \link{\code{ukb_gen_pcs}} which retrieve variables to be included in a covariate file. \link{\code{ukb_gen_write_plink}}, \link{\code{ukb_gen_write_bgenie}}
+#'
+#' @export
+#'
+ukb_gen_write_plink_excl <- function(data, ukb.path, recommend.excl, het.excl, gen.excl = "genetic_ethnic_grouping_0_0", rel.excl) {
+
+  recommended_exclusions <- data_frame(FID = recommend.excl, IID = recommend.excl)
+  heterozygosity_exclusions <- data_frame(FID = het.excl, IID = het.excl)
+  genetic_ethnic_exclusions <- data %>%
+    filter(is.na(data[, gen.excl])) %>%
+    mutate(FID = eid) %>%
+    select(FID, IID = eid)
+
+  # Related individuals
+  # KING robust estimator kinship coefficient
+  # Duplicate/MZ: > 0.354;  1st: > 0.177;  2nd: > 0.088;  3rd: > 0.044
+
+  # Retain IDs not in pair
+  ukb_unpaired <- as.numeric(names(table(rel.excl$pair)[table(rel.excl$pair)!=2]))
+  ukb_unpaired_id <- rel[rel$pair == ukb_unpaired, "eid"]
+  if (length(ukb_unpaired_id) >= 1) {message(paste("Unpaired related individuals (not excluded):", ukb_unpaired_id))}
+
+  rel_excl <- rel.excl[!(rel.excl$pair %in% ukb_unpaired), ]
+  rel_excl <- rel_excl[order(rel_excl$pair), ]
+
+  # Select a random member of each pair to exclude
+  rel_excl_index <- vector(mode = "logical")
+  for (i in 1:(nrow(rel_excl)/2)){
+    rel_excl_index <- append(
+      rel_excl_index,
+      sample(c(T,F), 2, replace = FALSE)
+    )
+  }
+
+  related_exclusions <- tbl_df(rel_excl) %>%
+    filter(rel_excl_index) %>%
+    mutate(FID = eid, IID = eid) %>%
+    select(FID, IID)
+
+  # Combine sample exclusions
+  ukb_exclusions <- recommended_exclusions %>%
+    bind_rows(heterozygosity_exclusions) %>%
+    bind_rows(related_exclusions) %>%
+    bind_rows(genetic_ethnic_exclusions) %>%
+    unique()
+
+  write.table(
+    ukb_exclusions,
+    file = ukb.path,
+    quote = FALSE,
+    row.names = FALSE,
+    col.names = FALSE
+  )
+}
+
+
 
 
 #' Writes a BGENIE format phenotype or covariate file.
@@ -78,23 +159,3 @@ ukb_gen_write_bgenie <- function(x, ukb.sample, path, ukb.variables,
     select_(.dots = ukb.variables) %>%
     write_delim(path = path, na = na.strings, col_names = TRUE)
 }
-
-
-
-
-# Matthew’s requests ------------------------------------------------------
-
-# 1. Generate a phenotype based on certain criteria from the genetic metadata, e.g., stroke cases versus controls in europeans after removing suggested exclusions and all related individuals
-
-# ukb_gen_make_pheno <- function(x, ukb.excl) {
-#   x[ukb.excl] <- NA
-# }
-
-
-# 2. how to generate a set of related individuals to remove from analyses (not sure if this is optimal):
-
-# data<-data[order(data$RelID1),]
-# data<-subset(data,!(duplicated(data$RelID1) & !is.na(data$RelID1)))
-# data<-subset(data,!(duplicated(data$RelID2) & !is.na(data$RelID2)))
-# data<-subset(data,!(duplicated(data$RelID3) & !is.na(data$RelID3)))
-# data<-subset(data,!(duplicated(data$RelID4) & !is.na(data$RelID4)))

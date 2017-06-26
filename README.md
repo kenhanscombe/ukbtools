@@ -13,8 +13,6 @@ After downloading and decrypting your UK Biobank (UKB) data with the supplied [U
 
 ## Installation
 
-You can install this development version from github
-
 ```{r, eval = FALSE}
 
 library(devtools)
@@ -56,6 +54,8 @@ The function `ukb_df()` takes two arguments, the stem of your fileset and the pa
 
 
 ```{r, eval = FALSE}
+
+library(ukbtools)
 
 my_ukb_data <- ukb_df("ukbxxxx")
 

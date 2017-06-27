@@ -17,3 +17,6 @@ ukb_gen_read_sample(file, col.names = c("id_1", "id_2", "missing"),
 \description{
 This is a wrapper for \code{read_table} that reads an Oxford format .sample file. If you use the unedited sample file as supplied with your genetic data, you should aonly need to specifiy the first argument, file.
 }
+\seealso{
+\code{\link{ukb_gen_read_fam}} to read a fam file
+}

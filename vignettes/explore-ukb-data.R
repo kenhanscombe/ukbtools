@@ -110,3 +110,37 @@ knitr::opts_chunk$set(
 #  ukb_gen_rel_count(my_ukb_data, plot = TRUE)
 #  
 
+## ---- eval = FALSE-------------------------------------------------------
+#  
+#  # Read .sample file supplied with bulk genetic data
+#  my_sample_file <- ukb_gen_read_sample("path/to/sample_file")
+#  
+#  # Write a BGENIE format phenotype or covariate file
+#  ukb_gen_write_bgenie(
+#    my_ukb_data,
+#    path = "path/to/bgenie_input_file",
+#    ukb.sample = my_sample_file,
+#    ukb.variables = c("variable1", "variable2", "variable3")
+#  )
+#  
+
+## ---- eval = FALSE-------------------------------------------------------
+#  
+#  # Write a PLINK format phenotype or covariate file
+#  ukb_gen_write_plink(
+#    my_ukb_data,
+#    path = "path/to/plink_input_file",
+#    ukb.variables = c("variable1", "variable2", "variable3")
+#  )
+#  
+
+## ---- eval = FALSE-------------------------------------------------------
+#  
+#  my_ukb_data$height_excl_na <- ukb_gen_excl_to_na(my_ukb_data, x = "height")
+#  
+
+## ---- eval = FALSE-------------------------------------------------------
+#  
+#  ukb_gen_write_plink_excl()
+#  
+

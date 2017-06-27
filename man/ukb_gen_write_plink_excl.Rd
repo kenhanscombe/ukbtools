@@ -4,26 +4,14 @@
 \alias{ukb_gen_write_plink_excl}
 \title{Writes a plink format file for combined exclusions}
 \usage{
-ukb_gen_write_plink_excl(data, ukb.path, recommend.excl, het.excl,
-  gen.excl = "genetic_ethnic_grouping_0_0", rel.excl)
+ukb_gen_write_plink_excl(ukb.path)
 }
 \arguments{
-\item{data}{A UKB dataset (or subset of) created with \code{\link{ukb_df}}.}
-
-\item{recommend.excl}{An integer vector of UKB ids created with \link{\code{ukb_gen_excl}}.}
-
-\item{het.excl}{An integer vector of UKB ids created with \link{\code{ukb_gen_het}}.}
-
-\item{gen.excl}{Default value "genetic_ethnic_grouping_0_0".}
-
-\item{rel.excl}{A data.frame created with \link{\code{ukb_gen_rel}}.}
+\item{ukb.path}{}
 }
 \description{
-For exclusion of individuals from a genetic analysis, the plink flag \code{--remove} accepts a space/tab-delimited text file with family IDs in the first column and within-family IDs in the second column (i.e., FID IID), without a header. This function writes a combined exclusions file including UKB recommended exclusions, heterozygosity exclusions (+/- 3*sd from mean), genetic ethnicity exclusions (based on the UKB genetic ethnic grouping variable, field 1002), and relatedness exclusions (a randomly-selected member of each related pair).
-}
-\details{
-\strong{Note.} The exclusion list for related individuals is created as a random selection of one member in each pair. Set a random number generation seed with \link{\code{set.seed}} if you think you may write exclusions out again and would like to replicate the same list of relateds to remove.
+Writes a combined exclusions file including UKB recommended exclusions, heterozygosity exclusions (+/- 3*sd from mean), genetic ethnicity exclusions (based on the UKB genetic ethnic grouping variable, field 1002), and relatedness exclusions (a randomly-selected member of each related pair). For exclusion of individuals from a genetic analysis, the plink flag \code{--remove} accepts a space/tab-delimited text file with family IDs in the first column and within-family IDs in the second column (i.e., FID IID), without a header.
 }
 \seealso{
-\link{\code{ukb_gen_meta}}, \link{\code{ukb_gen_pcs}} which retrieve variables to be included in a covariate file. \link{\code{ukb_gen_write_plink}}, \link{\code{ukb_gen_write_bgenie}}
+\link{\code{ukb_gen_meta}}, \link{\code{ukb_gen_pcs}} which retrieve variables to be included in a covariate file. \link{\code{ukb_gen_excl_to_na}} to update a phenotype with NAs for samples to-be-excluded based on genetic metadata, and \link{\code{ukb_gen_write_plink}} and \link{\code{ukb_gen_write_bgenie}}
 }

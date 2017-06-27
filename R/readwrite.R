@@ -7,11 +7,14 @@
 #' @param col.names A character vector of column names. Default: c("id_1", "id_2", "missing")
 #' @param row.skip Number of lines to skip before reading data.
 #'
+#' @seealso \code{\link{ukb_gen_read_fam}} to read a fam file
+#'
 #' @export
 #'
 ukb_gen_read_sample <- function(
   file, col.names = c("id_1", "id_2", "missing"), row.skip = 2) {
-  read_table(file, skip = row.skip, col_names = col.names)
+  sample <- read_table(file, skip = row.skip, col_names = col.names)
+  as.data.frame(sample)
 }
 
 
@@ -25,13 +28,14 @@ ukb_gen_read_sample <- function(
 #' @param col.names A character vector of column names. Default: c("FID", "IID", "paternalID", "maternalID", "sex", "phenotype")
 #' @param na.strings Character vector of strings to use for missing values. Default "-9". Set this option to character() to indicate no missing values.
 #'
-#' @seealso
+#' @seealso \code{\link{ukb_gen_read_sample}} to read a sample file
 #'
 #' @export
 #'
 ukb_gen_read_fam <- function(
   file, col.names = c("FID", "IID", "paternalID", "maternalID", "sex", "phenotype"), na.strings = "-9") {
-  read_table(file, col_names = col.names, na = na.strings)
+  fam <- read_table(file, col_names = col.names, na = na.strings)
+  as.data.frame(fam)
 }
 
 
@@ -66,20 +70,15 @@ ukb_gen_write_plink <- function(x, path, ukb.variables, ukb.id = "eid", na.strin
 
 #' Writes a plink format file for combined exclusions
 #'
-#' For exclusion of individuals from a genetic analysis, the plink flag \code{--remove} accepts a space/tab-delimited text file with family IDs in the first column and within-family IDs in the second column (i.e., FID IID), without a header. This function writes a combined exclusions file including UKB recommended exclusions, heterozygosity exclusions (+/- 3*sd from mean), genetic ethnicity exclusions (based on the UKB genetic ethnic grouping variable, field 1002), and relatedness exclusions (a randomly-selected member of each related pair).
+#' Writes a combined exclusions file including UKB recommended exclusions, heterozygosity exclusions (+/- 3*sd from mean), genetic ethnicity exclusions (based on the UKB genetic ethnic grouping variable, field 1002), and relatedness exclusions (a randomly-selected member of each related pair). For exclusion of individuals from a genetic analysis, the plink flag \code{--remove} accepts a space/tab-delimited text file with family IDs in the first column and within-family IDs in the second column (i.e., FID IID), without a header.
 #'
-#' @param data A UKB dataset (or subset of) created with \code{\link{ukb_df}}.
-#' @param recommend.excl An integer vector of UKB ids created with \link{\code{ukb_gen_excl}}.
-#' @param het.excl An integer vector of UKB ids created with \link{\code{ukb_gen_het}}.
-#' @param gen.excl Default value "genetic_ethnic_grouping_0_0".
-#' @param rel.excl A data.frame created with \link{\code{ukb_gen_rel}}.
+#' @param ukb.path
 #'
-#' @details  \strong{Note.} The exclusion list for related individuals is created as a random selection of one member in each pair. Set a random number generation seed with \link{\code{set.seed}} if you think you may write exclusions out again and would like to replicate the same list of relateds to remove.
-#'
-#' @seealso \link{\code{ukb_gen_meta}}, \link{\code{ukb_gen_pcs}} which retrieve variables to be included in a covariate file. \link{\code{ukb_gen_write_plink}}, \link{\code{ukb_gen_write_bgenie}}
+#' @seealso \link{\code{ukb_gen_meta}}, \link{\code{ukb_gen_pcs}} which retrieve variables to be included in a covariate file. \link{\code{ukb_gen_excl_to_na}} to update a phenotype with NAs for samples to-be-excluded based on genetic metadata, and \link{\code{ukb_gen_write_plink}} and \link{\code{ukb_gen_write_bgenie}}
 #'
 #' @export
 #'
+<<<<<<< HEAD
 ukb_gen_write_plink_excl <- function(data, ukb.path, recommend.excl, het.excl, gen.excl = "genetic_ethnic_grouping_0_0", rel.excl) {
 
   recommended_exclusions <- data_frame(FID = recommend.excl, IID = recommend.excl)
@@ -121,9 +120,12 @@ ukb_gen_write_plink_excl <- function(data, ukb.path, recommend.excl, het.excl, g
     bind_rows(related_exclusions) %>%
     bind_rows(genetic_ethnic_exclusions) %>%
     unique()
+=======
+ukb_gen_write_plink_excl <- function(ukb.path) {
+>>>>>>> genetic
 
   write.table(
-    ukb_exclusions,
+    ukb_meta_excl_plink,
     file = ukb.path,
     quote = FALSE,
     row.names = FALSE,
@@ -146,7 +148,7 @@ ukb_gen_write_plink_excl <- function(data, ukb.path, recommend.excl, het.excl, g
 #'
 #' @details See [BGENIE usage](https://jmarchini.org/bgenie-usage/) for descriptions of the \code{--pheno} and \code{--covar} flags to read phenotype and covariate data into BGENIE.
 #'
-#' @seealso \code{\link{ukb_gen_read_sample}} to read a sample file, and \code{\link{ukb_gen_write_plink}} to write phenotype and covariate files to plink format.
+#' @seealso \code{\link{ukb_gen_read_sample}} to read a sample file, \code{\link{ukb_gen_excl_to_na}} to update a phenotype with NAs for samples to-be-excluded based on genetic metadata, and \code{\link{ukb_gen_write_plink}} to write phenotype and covariate files to plink format.
 #'
 #' @export
 #'

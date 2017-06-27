@@ -78,51 +78,7 @@ ukb_gen_write_plink <- function(x, path, ukb.variables, ukb.id = "eid", na.strin
 #'
 #' @export
 #'
-<<<<<<< HEAD
-ukb_gen_write_plink_excl <- function(data, ukb.path, recommend.excl, het.excl, gen.excl = "genetic_ethnic_grouping_0_0", rel.excl) {
-
-  recommended_exclusions <- data_frame(FID = recommend.excl, IID = recommend.excl)
-  heterozygosity_exclusions <- data_frame(FID = het.excl, IID = het.excl)
-  genetic_ethnic_exclusions <- data %>%
-    filter(is.na(data[, gen.excl])) %>%
-    mutate(FID = eid) %>%
-    select(FID, IID = eid)
-
-  # Related individuals
-  # KING robust estimator kinship coefficient
-  # Duplicate/MZ: > 0.354;  1st: > 0.177;  2nd: > 0.088;  3rd: > 0.044
-
-  # Retain IDs not in pair
-  ukb_unpaired <- as.numeric(names(table(rel.excl$pair)[table(rel.excl$pair)!=2]))
-  ukb_unpaired_id <- rel.excl[rel.excl$pair == ukb_unpaired, "eid"]
-  if (length(ukb_unpaired_id) >= 1) {message(paste("Unpaired related individuals (not excluded):", ukb_unpaired_id))}
-
-  rel_pairs <- rel.excl[!(rel.excl$pair %in% ukb_unpaired), ]
-  rel_pairs <- rel_pairs[order(rel_pairs$pair), ]
-
-  # Select a random member of each pair to exclude
-  rel_excl_index <- vector(mode = "logical")
-  for (i in 1:(nrow(rel_pairs)/2)){
-    rel_excl_index <- append(
-      rel_excl_index,
-      sample(c(T,F), 2, replace = FALSE)
-    )
-  }
-
-  related_exclusions <- tbl_df(rel_pairs) %>%
-    filter(rel_excl_index) %>%
-    mutate(FID = eid, IID = eid) %>%
-    select(FID, IID)
-
-  # Combine sample exclusions
-  ukb_exclusions <- recommended_exclusions %>%
-    bind_rows(heterozygosity_exclusions) %>%
-    bind_rows(related_exclusions) %>%
-    bind_rows(genetic_ethnic_exclusions) %>%
-    unique()
-=======
 ukb_gen_write_plink_excl <- function(ukb.path) {
->>>>>>> genetic
 
   write.table(
     ukb_meta_excl_plink,

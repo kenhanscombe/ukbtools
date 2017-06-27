@@ -95,22 +95,22 @@ ukb_gen_write_plink_excl <- function(data, ukb.path, recommend.excl, het.excl, g
 
   # Retain IDs not in pair
   ukb_unpaired <- as.numeric(names(table(rel.excl$pair)[table(rel.excl$pair)!=2]))
-  ukb_unpaired_id <- rel[rel$pair == ukb_unpaired, "eid"]
+  ukb_unpaired_id <- rel.excl[rel.excl$pair == ukb_unpaired, "eid"]
   if (length(ukb_unpaired_id) >= 1) {message(paste("Unpaired related individuals (not excluded):", ukb_unpaired_id))}
 
-  rel_excl <- rel.excl[!(rel.excl$pair %in% ukb_unpaired), ]
-  rel_excl <- rel_excl[order(rel_excl$pair), ]
+  rel_pairs <- rel.excl[!(rel.excl$pair %in% ukb_unpaired), ]
+  rel_pairs <- rel_pairs[order(rel_pairs$pair), ]
 
   # Select a random member of each pair to exclude
   rel_excl_index <- vector(mode = "logical")
-  for (i in 1:(nrow(rel_excl)/2)){
+  for (i in 1:(nrow(rel_pairs)/2)){
     rel_excl_index <- append(
       rel_excl_index,
       sample(c(T,F), 2, replace = FALSE)
     )
   }
 
-  related_exclusions <- tbl_df(rel_excl) %>%
+  related_exclusions <- tbl_df(rel_pairs) %>%
     filter(rel_excl_index) %>%
     mutate(FID = eid, IID = eid) %>%
     select(FID, IID)

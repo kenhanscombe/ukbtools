@@ -25,5 +25,5 @@ Writes a space-delimited file with a header, missing character set to "-999", an
 See [BGENIE usage](https://jmarchini.org/bgenie-usage/) for descriptions of the \code{--pheno} and \code{--covar} flags to read phenotype and covariate data into BGENIE.
 }
 \seealso{
-\code{\link{ukb_gen_read_sample}} to read a sample file, and \code{\link{ukb_gen_write_plink}} to write phenotype and covariate files to plink format.
+\code{\link{ukb_gen_read_sample}} to read a sample file, \code{\link{ukb_gen_excl_to_na}} to update a phenotype with NAs for samples to-be-excluded based on genetic metadata, and \code{\link{ukb_gen_write_plink}} to write phenotype and covariate files to plink format.
 }

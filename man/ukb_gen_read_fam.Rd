@@ -18,5 +18,5 @@ ukb_gen_read_fam(file, col.names = c("FID", "IID", "paternalID", "maternalID",
 This is wrapper for read_table that reads a basic plink fam file. For plink hard-called data, it may be useful to use the fam file ids as a filter for your phenotype and covariate data.
 }
 \seealso{
-
+\code{\link{ukb_gen_read_sample}} to read a sample file
 }

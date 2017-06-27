@@ -202,6 +202,40 @@ ukb_gen_het <- function(data, all.het = FALSE) {
 }
 
 
+
+
+#' Inserts NA into phenotype for genetic metadata exclusions
+#'
+#' Replaces data values in a vector (a UKB phenotype) with \code{NA} where the sample is to-be-excluded, i.e., is either a UKB recommended exclusion, a heterozygosity outlier, a genetic ethnicity outlier, or a randomly-selected member of a related pair.
+#'
+#' @param data A UKB dataset created with \code{\link{ukb_df}}.
+#' @param x The phenotype to be updated (as it is named in \code{data}) e.g. "height"
+#' @param ukb.id The name of the ID variable in \code{data}. Default is "eid"
+#' @param data.frame A logical vector indicating whether to return a vector or a data.frame (header: id, meta_excl, pheno, pheno_meta_na) containing the original and updated variable. Default = FALSE returns a vector.
+#'
+#' @seealso
+#'
+#' @export
+#'
+ukb_gen_excl_to_na <- function(data, x, ukb.id = "eid", data.frame = FALSE) {
+
+  ids <- as.character(data[[ukb.id]])
+
+  meta_excl <- ukb_meta_excl_lookup[ids]
+
+  pheno_meta_na <- data[[x]]
+  pheno_meta_na[meta_excl] <- NA
+
+  if (data.frame) {
+    data.frame(id = ids, meta_excl = meta_excl, pheno = data[[x]], pheno_meta_na = pheno_meta_na)
+  } else {
+    return(pheno_meta_na)
+  }
+}
+
+
+
+
 #' Inserts UKB centre names into data
 #'
 #' Useful if your UKB centre variable \code{uk_biobank_assessment_centre_0_0} has not been populated with named levels.

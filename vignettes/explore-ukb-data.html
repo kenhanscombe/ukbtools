@@ -12,11 +12,7 @@
 
 <meta name="author" content="Ken B. Hanscombe" />
 
-<<<<<<< HEAD
-<meta name="date" content="2017-06-21" />
-=======
 <meta name="date" content="2017-06-27" />
->>>>>>> genetic
 
 <title>Explore UK Biobank data</title>
 
@@ -74,11 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Explore UK Biobank data</h1>
 <h4 class="author"><em>Ken B. Hanscombe</em></h4>
-<<<<<<< HEAD
-<h4 class="date"><em>2017-06-21</em></h4>
-=======
 <h4 class="date"><em>2017-06-27</em></h4>
->>>>>>> genetic
 
 
 
@@ -114,8 +106,27 @@ my_ukb_data &lt;-<span class="st"> </span><span class="kw">ukb_df</span>(<span c
 <p>I highly recommend saving your new UKB dataset with <code>save(my_ukb_data, file = &quot;my_ukb_data.rda&quot;)</code>. You can load the data with <code>load(&quot;my_ukb_data.rda&quot;)</code>. Creating a UKB dataset from my largest UKB fileset which included a 2.6 GB .tab file, took approximately 10 mins; loading the same dataset after the <code>save</code> procedure, took about 20 seconds. The saved file was about 200 MB.</p>
 </blockquote>
 <p><br> <br></p>
-<div id="multiple-downloads" class="section level3">
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+</div>
+<div id="multiple-downloads" class="section level1">
+<h1>#### 2.1 Multiple downloads</h1>
+<div id="multiple-downloads-1" class="section level3">
 <h3>2.1 Multiple downloads</h3>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>genetic</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <p>If you have multiple UKB downloads, tidy then merge them.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ukbxxxx_data &lt;-<span class="st"> </span><span class="kw">ukb_df</span>(<span class="st">&quot;ukbxxxx&quot;</span>)
 ukbyyyy_data &lt;-<span class="st"> </span><span class="kw">ukb_df</span>(<span class="st">&quot;ukbyyyy&quot;</span>)
@@ -138,7 +149,6 @@ my_ukb_data &lt;-<span class="st"> </span>plyr::<span class="kw">join_all</span>
 count_ukb_names &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">table</span>(ukb_names))
 <span class="kw">dim</span>(count_ukb_names[count_names$Freq &gt;<span class="st"> </span><span class="dv">1</span>, ])</code></pre></div>
 <p><br> <br></p>
-</div>
 </div>
 <div id="exploring-primary-demographics-of-a-ukb-subset" class="section level2">
 <h2>3. Exploring primary demographics of a UKB subset</h2>
@@ -229,7 +239,8 @@ my_sample_file &lt;-<span class="st"> </span><span class="kw">ukb_gen_read_sampl
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_ukb_data$height_excl_na &lt;-<span class="st"> </span><span class="kw">ukb_gen_excl_to_na</span>(my_ukb_data, <span class="dt">x =</span> <span class="st">&quot;height&quot;</span>)</code></pre></div>
 <p><br></p>
 <p><strong>PLINK</strong> <code>--remove</code> takes a space- or tab-delimited file with family IDs in the first column and individual IDs in the second column, without column names. See <a href="https://www.cog-genomics.org/plink/1.9/filter#indiv">PLINK input filtering</a> for further details. (The missing value approach described above also works for PLINK.)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ukb_gen_write_plink_excl</span>()</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ukb_gen_write_plink_excl</span>(<span class="st">&quot;path/to/plink_input_file&quot;</span>)</code></pre></div>
+</div>
 </div>
 </div>
 

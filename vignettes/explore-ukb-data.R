@@ -141,6 +141,6 @@ knitr::opts_chunk$set(
 
 ## ---- eval = FALSE-------------------------------------------------------
 #  
-#  ukb_gen_write_plink_excl()
+#  ukb_gen_write_plink_excl("path/to/plink_input_file")
 #  
 

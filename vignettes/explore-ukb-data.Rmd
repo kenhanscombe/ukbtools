@@ -359,6 +359,6 @@ __PLINK__ `--remove` takes a space- or tab-delimited file with family IDs in the
 
 ```{r, eval = FALSE}
 
-ukb_gen_write_plink_excl()
+ukb_gen_write_plink_excl("path/to/plink_input_file")
 
 ```

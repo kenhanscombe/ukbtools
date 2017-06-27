@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ken B. Hanscombe" />
 
-<meta name="date" content="2017-02-23" />
+<meta name="date" content="2017-06-27" />
 
 <title>Explore UK Biobank data</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Explore UK Biobank data</h1>
 <h4 class="author"><em>Ken B. Hanscombe</em></h4>
-<h4 class="date"><em>2017-02-23</em></h4>
+<h4 class="date"><em>2017-06-27</em></h4>
 
 
 
@@ -97,8 +97,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p><br></p>
 <p><strong>Note:</strong> You can move the three files in your fileset after creating them with <code>ukb_conv</code>, but they should be kept together. <code>ukb_df()</code> automatically updates the read call in the R source file to point to the correct directory (the current directly by default, or the directory specified by <code>path</code>).</p>
 <p><br> <br></p>
-<div id="multiple-downloads" class="section level4">
-<h4>2.1 Multiple downloads</h4>
+<div id="multiple-downloads" class="section level3">
+<h3>2.1 Multiple downloads</h3>
 <p>If you have multiple UKB downloads, tidy then merge them.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ukbxxxx_data &lt;-<span class="st"> </span><span class="kw">ukb_df</span>(<span class="st">&quot;ukbxxxx&quot;</span>)
 ukbyyyy_data &lt;-<span class="st"> </span><span class="kw">ukb_df</span>(<span class="st">&quot;ukbyyyy&quot;</span>)
@@ -166,6 +166,42 @@ my_gen_pcs &lt;-<span class="st"> </span><span class="kw">ukb_gen_pcs</span>(my_
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_gen_rel &lt;-<span class="st"> </span><span class="kw">ukb_gen_rel</span>(my_ukb_data)</code></pre></div>
 <p><br> <br></p>
 </div>
+<div id="read-and-write" class="section level2">
+<h2>6. Read and write</h2>
+<p><code>ukbtools</code> includes functions to write phenotype and covariate files for <a href="https://jmarchini.org/bgenie/">BGENIE</a> and <a href="https://www.cog-genomics.org/plink2">PLINK</a>. <strong>BGENIE</strong> phenotype and covariate files are space-delimited, include column names, and have missing values coded as -999. They must also be in .sample file order. <code>ukb_gen_write_bgenie</code> sorts input data to match .sample file id order and writes the data to disk.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Read .sample file supplied with bulk genetic data</span>
+my_sample_file &lt;-<span class="st"> </span><span class="kw">ukb_gen_read_sample</span>(<span class="st">&quot;path/to/sample_file&quot;</span>)
+
+<span class="co"># Write a BGENIE format phenotype or covariate file</span>
+<span class="kw">ukb_gen_write_bgenie</span>(
+  my_ukb_data, 
+  <span class="dt">path =</span> <span class="st">&quot;path/to/bgenie_input_file&quot;</span>, 
+  <span class="dt">ukb.sample =</span> my_sample_file, 
+  <span class="dt">ukb.variables =</span> <span class="kw">c</span>(<span class="st">&quot;variable1&quot;</span>, <span class="st">&quot;variable2&quot;</span>, <span class="st">&quot;variable3&quot;</span>)
+)</code></pre></div>
+<p><br></p>
+<p><strong>Note.</strong> The <a href="https://jmarchini.org/bgenie-usage/">BGENIE usage page</a> uses the example files example.pheno and example.cov - it is not clear whether the suffixes are obligatory. Use them to be safe.</p>
+<p><br> <br></p>
+<p><strong>PLINK</strong> phenotype and covariate files are either space- or tab-delimited, column names are optional, first two columns must contain family ID and individual ID respectively, and missing values are “normally expected to be encoded as -9” but also “nonnumeric values such as ‘NA’ … (are) treated as missing”. <code>ukb_gen_write_plink</code> writes a space-delimited file with column names, UKB ID is automatically written to column 1 and 2 and labelled FID IID, and missing values are coded as <code>NA</code>. The missing value to be used can be changed with the <code>na.strings</code> argument. See <a href="https://www.cog-genomics.org/plink/1.9/input#pheno">PLINK standard data input</a> for further details.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Write a PLINK format phenotype or covariate file</span>
+<span class="kw">ukb_gen_write_plink</span>(
+  my_ukb_data, 
+  <span class="dt">path =</span> <span class="st">&quot;path/to/plink_input_file&quot;</span>, 
+  <span class="dt">ukb.variables =</span> <span class="kw">c</span>(<span class="st">&quot;variable1&quot;</span>, <span class="st">&quot;variable2&quot;</span>, <span class="st">&quot;variable3&quot;</span>)
+)</code></pre></div>
+<p><strong>PLINK</strong> does not require that individuals in phenotype and covariate files are in any particular order, but you may want to reconcile the individuals you include in your analysis with those in the fam file (from your hard-called data). Read the fam file into R with <code>ukb_gen_read_fam</code></p>
+<p><br> <br></p>
+<div id="exclusions" class="section level3">
+<h3>6.1 Exclusions</h3>
+<p><strong>Note.</strong> The exclusions referred to in this section are the combined UKB recommended exclusions, Affymetrix quality control for samples, bileve genotype quality control, heterozygosity outliers (+/- 3*SD), genetic ethnicity outliers (based on Genetic Ethnic Grouping, field code 22006), and one random member of each related pair (including Duplicates/MZ twins, 1st-, 2nd-, and 3rd-degree relatives).</p>
+<p><br></p>
+<p><strong>BGENIE</strong> does not have an option to read exclusions. You can replace data values in a phenotype with <code>NA</code> where the individual is to-be-excluded based on genetic metadata considerations. Writing the updated variable to your phenotype file (with the supplied write functions), effectively excludes the individuals from any analysis.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_ukb_data$height_excl_na &lt;-<span class="st"> </span><span class="kw">ukb_gen_excl_to_na</span>(my_ukb_data, <span class="dt">x =</span> <span class="st">&quot;height&quot;</span>)</code></pre></div>
+<p><br></p>
+<p><strong>PLINK</strong> <code>--remove</code> takes a space- or tab-delimited file with family IDs in the first column and individual IDs in the second column, without column names. See <a href="https://www.cog-genomics.org/plink/1.9/filter#indiv">PLINK input filtering</a> for further details. (The missing value approach described above also works for PLINK.)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ukb_gen_write_plink_excl</span>()</code></pre></div>
+</div>
+</div>
 
 
 
@@ -174,7 +210,7 @@ my_gen_pcs &lt;-<span class="st"> </span><span class="kw">ukb_gen_pcs</span>(my_
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

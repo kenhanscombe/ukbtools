@@ -74,7 +74,7 @@ ukb_gen_write_plink <- function(x, path, ukb.variables, ukb.id = "eid", na.strin
 #'
 #' @param ukb.path
 #'
-#' @seealso \link{\code{ukb_gen_meta}}, \link{\code{ukb_gen_pcs}} which retrieve variables to be included in a covariate file. \code{\link{ukb_gen_excl_to_na}} to update a phenotype with NAs for samples to-be-excluded based on genetic metadata, and \link{\code{ukb_gen_write_plink}} and \link{\code{ukb_gen_write_bgenie}}
+#' @seealso \link{\code{ukb_gen_meta}}, \link{\code{ukb_gen_pcs}} which retrieve variables to be included in a covariate file. \link{\code{ukb_gen_excl_to_na}} to update a phenotype with NAs for samples to-be-excluded based on genetic metadata, and \link{\code{ukb_gen_write_plink}} and \link{\code{ukb_gen_write_bgenie}}
 #'
 #' @export
 #'

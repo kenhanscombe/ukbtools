@@ -101,6 +101,7 @@ ukb_gen_write_plink_excl <- function(path) {
 #' @param ukb.sample Path to the UKB sample file.
 #' @param ukb.variables A character vector of either the phenotypes for a BGENIE phenotype file, or covariates for a BGENIE covariate file.
 #' @param ukb.id The eid variable name (default = "eid").
+#' @param na.strings Characer string to be used for missing value in output file. Default = "-999"
 #'
 #' @details See href{https://jmarchini.org/bgenie-usage/}{BGENIE usage} for descriptions of the \code{--pheno} and \code{--covar} flags to read phenotype and covariate data into BGENIE.
 #'

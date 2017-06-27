@@ -17,6 +17,8 @@ ukb_gen_write_bgenie(x, ukb.sample, path, ukb.variables, ukb.id = "eid",
 \item{ukb.variables}{A character vector of either the phenotypes for a BGENIE phenotype file, or covariates for a BGENIE covariate file.}
 
 \item{ukb.id}{The eid variable name (default = "eid").}
+
+\item{na.strings}{Characer string to be used for missing value in output file. Default = "-999"}
 }
 \description{
 Writes a space-delimited file with a header, missing character set to "-999", and observations (i.e. UKB subject ids) in sample file order. Use this function to write phenotype and covariate files for downstream genetic analysis in \href{https://jmarchini.org/bgenie/}{BGENIE} - the format is the same.

@@ -8,6 +8,8 @@ ukb_gen_rel_count(data, plot = FALSE)
 }
 \arguments{
 \item{data}{A dataframe of UKB ID, pair ID, \href{http://people.virginia.edu/~wc9c/KING/manual.html}{KING kinship coefficient}, and proportion of alleles IBS = 0 created with \code{\link{ukb_gen _rel}}.}
+
+\item{plot}{Logical indicating whether to plot relatedness figure. Default = FALSE.}
 }
 \value{
 If \code{plot = FALSE} (default), a count of individuals and pairs at each level of relatedness. If \code{plot = TRUE}, reproduces the scatterplot of genetic relatedness against proportion of SNPs shared IBS=0 (each point representing a pair of related UKB individuals) from the \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{genotyping and quality control} documentation.

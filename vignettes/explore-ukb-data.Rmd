@@ -97,12 +97,10 @@ __Note:__ You can move the three files in your fileset after creating them with 
 <br>
 <br>
 
-<<<<<<< HEAD
 
-#### 2.1 Multiple downloads
-=======
+
+
 ### 2.1 Multiple downloads
->>>>>>> genetic
 
 If you have multiple UKB downloads, tidy then merge them.
 

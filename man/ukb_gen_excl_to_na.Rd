@@ -19,5 +19,5 @@ ukb_gen_excl_to_na(data, x, ukb.id = "eid", data.frame = FALSE)
 Replaces data values in a vector (a UKB phenotype) with \code{NA} where the sample is to-be-excluded, i.e., is either a UKB recommended exclusion, a heterozygosity outlier, a genetic ethnicity outlier, or a randomly-selected member of a related pair.
 }
 \seealso{
-
+\code{\link{ukb_gen_write_plink_excl}}
 }

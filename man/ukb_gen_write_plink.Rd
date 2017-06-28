@@ -8,7 +8,7 @@ ukb_gen_write_plink(x, path, ukb.variables, ukb.id = "eid",
   na.strings = "NA")
 }
 \arguments{
-\item{x}{A data frame to write to disk.}
+\item{x}{A UKB dataset.}
 
 \item{path}{A path to a file.}
 

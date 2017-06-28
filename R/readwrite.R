@@ -9,11 +9,12 @@
 #'
 #' @seealso \code{\link{ukb_gen_read_fam}} to read a fam file
 #'
+#' @import readr
 #' @export
 #'
 ukb_gen_read_sample <- function(
   file, col.names = c("id_1", "id_2", "missing"), row.skip = 2) {
-  sample <- read_table(file, skip = row.skip, col_names = col.names)
+  sample <- readr::read_table(file, skip = row.skip, col_names = col.names)
   as.data.frame(sample)
 }
 
@@ -30,11 +31,12 @@ ukb_gen_read_sample <- function(
 #'
 #' @seealso \code{\link{ukb_gen_read_sample}} to read a sample file
 #'
+#' @import readr
 #' @export
 #'
 ukb_gen_read_fam <- function(
   file, col.names = c("FID", "IID", "paternalID", "maternalID", "sex", "phenotype"), na.strings = "-9") {
-  fam <- read_table(file, col_names = col.names, na = na.strings)
+  fam <- readr::read_table(file, col_names = col.names, na = na.strings)
   as.data.frame(fam)
 }
 
@@ -45,7 +47,7 @@ ukb_gen_read_fam <- function(
 #'
 #' This function writes a space-delimited file with header, with the obligatory first two columns FID and IID. Use this function to write phenotype and covariate files for downstream genetic analysis in \href{https://www.cog-genomics.org/plink2}{plink} - the format is the same.
 #'
-#' @param x A data frame to write to disk.
+#' @param x A UKB dataset.
 #' @param path A path to a file.
 #' @param ukb.variables A character vector of either the phenotypes for a plink phenotype file, or covariates for a plink covariate file.
 #' @param ukb.id The id variable name (default = "eid").
@@ -55,14 +57,16 @@ ukb_gen_read_fam <- function(
 #'
 #' @seealso  \code{\link{ukb_gen_read_sample}} to read a sample file, and \code{\link{ukb_gen_write_bgenie}} to write phenotype and covariate files to BGENIE format.
 #'
+#' @import dplyr readr
+#' @importFrom magrittr "%>%"
 #' @export
 #'
 ukb_gen_write_plink <- function(x, path, ukb.variables, ukb.id = "eid", na.strings = "NA") {
 
-  x %>%
-    mutate_(FID = ukb.id, IID = ukb.id) %>%
-    select_("FID", "IID", .dots = ukb.variables) %>%
-    write_delim(path = path, na = na.strings, col_names = TRUE)
+  ids <- dplyr::transmute_(x, FID = ukb.id, IID = ukb.id)
+  vars <- dplyr::select_(x, .dots = ukb.variables)
+
+  readr::write_delim(cbind(ids, vars), path = path, na = na.strings, col_names = TRUE)
 }
 
 
@@ -76,11 +80,12 @@ ukb_gen_write_plink <- function(x, path, ukb.variables, ukb.id = "eid", na.strin
 #'
 #' @seealso \code{\link{ukb_gen_meta}}, \code{\link{ukb_gen_pcs}} which retrieve variables to be included in a covariate file. \code{\link{ukb_gen_excl_to_na}} to update a phenotype with NAs for samples to-be-excluded based on genetic metadata, and \code{\link{ukb_gen_write_plink}} and \code{\link{ukb_gen_write_bgenie}}
 #'
+#' @importFrom utils write.table
 #' @export
 #'
 ukb_gen_write_plink_excl <- function(path) {
 
-  write.table(
+  utils::write.table(
     ukb_meta_excl_plink,
     file = path,
     quote = FALSE,
@@ -96,7 +101,7 @@ ukb_gen_write_plink_excl <- function(path) {
 #'
 #' Writes a space-delimited file with a header, missing character set to "-999", and observations (i.e. UKB subject ids) in sample file order. Use this function to write phenotype and covariate files for downstream genetic analysis in \href{https://jmarchini.org/bgenie/}{BGENIE} - the format is the same.
 #'
-#' @param x A data frame to write to disk.
+#' @param x A UKB dataset.
 #' @param path A path to a file.
 #' @param ukb.sample Path to the UKB sample file.
 #' @param ukb.variables A character vector of either the phenotypes for a BGENIE phenotype file, or covariates for a BGENIE covariate file.
@@ -107,14 +112,16 @@ ukb_gen_write_plink_excl <- function(path) {
 #'
 #' @seealso \code{\link{ukb_gen_read_sample}} to read a sample file, \code{\link{ukb_gen_excl_to_na}} to update a phenotype with NAs for samples to-be-excluded based on genetic metadata, and \code{\link{ukb_gen_write_plink}} to write phenotype and covariate files to PLINK format.
 #'
+#' @import dplyr readr
+#' @importFrom magrittr "%>%"
 #' @export
 #'
 ukb_gen_write_bgenie <- function(x, ukb.sample, path, ukb.variables,
                                  ukb.id = "eid", na.strings = "-999") {
-  names(ukb_sample)[1] <- ukb.id
+  names(ukb.sample)[1] <- ukb.id
 
-  ukb_sample %>%
-    left_join(ukb, by = ukb.id) %>%
-    select_(.dots = ukb.variables) %>%
-    write_delim(path = path, na = na.strings, col_names = TRUE)
+  ukb.sample %>%
+    dplyr::left_join(x, by = ukb.id) %>%
+    dplyr::select_(.dots = ukb.variables) %>%
+    readr::write_delim(path = path, na = na.strings, col_names = TRUE)
 }

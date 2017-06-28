@@ -1,9 +1,10 @@
 
+globalVariables(c(".", "eid", "pair", "ibs0", "kinship", "category_related", "ped_related", "code", "heterozygosity_0_0"))
+
 #' Reads a UK Biobank phenotype fileset and returns a single dataset.
 #'
 #' A UK Biobank \emph{fileset} includes a \emph{.tab} file containing the raw data with field codes instead of variable names, an \emph{.r} (\emph{sic}) file containing code to read raw data (inserts categorical variable levels and labels), and an \emph{.html} file containing tables mapping field code to variable name, and labels and levels for categorical variables.
 #'
-#' @export
 #' @param fileset The prefix for a UKB fileset, e.g., ukbxxxx (for ukbxxxx.tab, ukbxxxx.r, ukbxxxx.html)
 #' @param path The path to the directory containing your UKB fileset. The default value is the currect directory.
 #' @param data.pos Locates the data in your .html file. The .html file is read into a list; the default value data.pos = 2 indicates the second item in the list. (The first item in the list is the title of the table). You will probably not need to change this value, but if the need arises you can open the .html file in a browser and identify where in the file the data is.
@@ -12,7 +13,10 @@
 #'
 #' @return A dataframe with variable names in snake_case (lowercase and separated by an underscore).
 #'
-#' @seealso \code{\link{ukb_field}}
+#' @seealso \code{\link{ukb_df_field}}
+#'
+#' @import XML
+#' @export
 #'
 ukb_df <- function(fileset, path = ".", data.pos = 2) {
   html_file <- sprintf("%s.html", fileset)
@@ -55,6 +59,7 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
 #'
 #' @seealso \code{\link{ukb_df}}
 #'
+#' @import XML
 #' @export
 #'
 ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
@@ -87,10 +92,10 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
 
 
 
-#' Fills Description and Type columns where missing at follow-up assessments.
-#'
-#' @param data Field-to-description table from html file
-#'
+# Fills Description and Type columns where missing at follow-up assessments.
+#
+# @param data Field-to-description table from html file
+#
 .fill_missing_description <-  function(data) {
   udi <- gsub(pattern = "-.*$", "", data[, "UDI"])
   for (i in 2:nrow(data)) {
@@ -104,10 +109,10 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
 
 
 
-#' Creates a variable name from the field description.
-#'
-#' @param data Field-to-description table from html file
-#'
+# Creates a variable name from the field description.
+#
+# @param data Field-to-description table from html file
+#
 .description_to_name <-  function(data) {
 
   name <- tolower(data[, "Description"])
@@ -129,11 +134,11 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
 
 
 
-#' Matches field (as in tab file) to variable name
-#'
-#' @param data Field-to-description table from html file
-#' @return A named character vector. Names are fields, values are variable names made from description
-#'
+# Matches field (as in tab file) to variable name
+#
+# @param data Field-to-description table from html file
+# @return A named character vector. Names are fields, values are variable names made from description
+#
 .column_name_lookup <-  function(data){
   df <- .fill_missing_description(data)
   lookup <- .description_to_name(df)
@@ -143,13 +148,13 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
 
 
 
-#' Corrects path to tab file in R source
-#'
-#' In particular, if you have moved the fileset from the directory containing the foo.enc file on which you called gconv. NB. gconv writes absolute path to directory containing foo.enc, into foo.r read.table() call
-#'
-#' @param fileset prefix for UKB fileset
-#' @param path The path to the directory containing your UKB fileset. The default value is the currect directory.
-#'
+# Corrects path to tab file in R source
+#
+# In particular, if you have moved the fileset from the directory containing the foo.enc file on which you called gconv. NB. gconv writes absolute path to directory containing foo.enc, into foo.r read.table() call
+#
+# @param fileset prefix for UKB fileset
+# @param path The path to the directory containing your UKB fileset. The default value is the currect directory.
+#
 .update_tab_path <- function(fileset, path = ".") {
   r_file <- sprintf("%s.r", fileset)
   tab_file <- sprintf("%s.tab", fileset)

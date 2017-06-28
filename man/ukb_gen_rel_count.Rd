@@ -7,7 +7,7 @@
 ukb_gen_rel_count(data, plot = FALSE)
 }
 \arguments{
-\item{data}{A dataframe of UKB ID, pair ID, \href{http://people.virginia.edu/~wc9c/KING/manual.html}{KING kinship coefficient}, and proportion of alleles IBS = 0 created with \code{\link{ukb_gen _rel}}.}
+\item{data}{A dataframe of UKB ID, pair ID, \href{http://people.virginia.edu/~wc9c/KING/manual.html}{KING kinship coefficient}, and proportion of alleles IBS = 0 created with \code{\link{ukb_gen_rel}}.}
 
 \item{plot}{Logical indicating whether to plot relatedness figure. Default = FALSE.}
 }

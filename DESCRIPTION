@@ -3,14 +3,18 @@ Version: 0.1.0
 Title: A set of tools to manipulate and explore UK Biobank data
 Authors@R: person("Ken", "Hanscombe", email = "ken.hanscombe@gmail.com", role = c("aut", "cre"))
 Maintainer: Ken Hanscombe <ken.hanscombe@gmail.com>
-Description: A set of tools to create a single UK Biobank dataset
-    from a UKB fileset (.tab, .r, .html), visualize a sample subset in context,
-    explore ICD diagnoses, and extract genetic metadata for genetic analyses.
-License: What license is it under?
+Description: A set of tools to create a UK Biobank dataset from a UKB fileset (.tab, .r, .html),
+    visualize primary demographic data for a sample subset, query ICD diagnoses,
+    retrieve genetic metadata, read and write standard file formats for genetic analyses.
+License: GPL-2
 Encoding: UTF-8
 LazyData: true
-Depends: tidyverse
+Depends: R (>= 2.10)
 Imports: 
+    dplyr,
+    purrr,
+    readr,
+    ggplot2,
     XML,
     magrittr,
     grid

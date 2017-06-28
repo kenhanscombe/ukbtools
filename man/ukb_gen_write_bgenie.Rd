@@ -8,7 +8,7 @@ ukb_gen_write_bgenie(x, ukb.sample, path, ukb.variables, ukb.id = "eid",
   na.strings = "-999")
 }
 \arguments{
-\item{x}{A data frame to write to disk.}
+\item{x}{A UKB dataset.}
 
 \item{ukb.sample}{Path to the UKB sample file.}
 

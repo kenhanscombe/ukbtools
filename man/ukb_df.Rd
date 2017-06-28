@@ -23,5 +23,5 @@ A UK Biobank \emph{fileset} includes a \emph{.tab} file containing the raw data 
 The \strong{index} and \strong{array} from the UKB field code are preserved in the variable name, as two numbers separated by underscores at the end of the name e.g. \emph{variable_index_array}. \strong{index} refers the assessment instance (or visit). \strong{array} captures multiple answers to the same "question". See UKB documentation for detailed descriptions of \href{http://biobank.ctsu.ox.ac.uk/crystal/instance.cgi?id=2}{index} and \href{http://biobank.ctsu.ox.ac.uk/crystal/help.cgi?cd=array}{array}.
 }
 \seealso{
-\code{\link{ukb_field}}
+\code{\link{ukb_df_field}}
 }

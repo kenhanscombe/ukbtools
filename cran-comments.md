@@ -48,6 +48,6 @@ Possibly mis-spelled words in DESCRIPTION:
   
 
 
-
-
 ## Downstream dependencies
+
+There are currently no downstream dependencies for this package

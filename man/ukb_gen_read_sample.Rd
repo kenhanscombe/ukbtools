@@ -15,7 +15,7 @@ ukb_gen_read_sample(file, col.names = c("id_1", "id_2", "missing"),
 \item{row.skip}{Number of lines to skip before reading data.}
 }
 \description{
-This is a wrapper for \code{read_table} that reads an Oxford format .sample file. If you use the unedited sample file as supplied with your genetic data, you should aonly need to specifiy the first argument, file.
+This is a wrapper for \code{read_table} that reads an Oxford format .sample file. If you use the unedited sample file as supplied with your genetic data, you should only need to specify the first argument, file.
 }
 \seealso{
 \code{\link{ukb_gen_read_fam}} to read a fam file

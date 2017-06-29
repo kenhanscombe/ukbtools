@@ -7,7 +7,7 @@
 #' @param nonmiss.var The variable of interest which defines the "subset" (samples with data) and "reference" (samples without data, i.e., NA) samples.
 #' @param subset.var A logical vector defining a "subset" (\code{TRUE}) and "reference" subset (\code{FALSE}). Length must equal the number of rows in your \code{data}.
 #' @param bar.position This argument is passed to the \code{position} in \code{geom_bar}. The default value is \code{"fill"} which shows reference and subset of interest as proportions of the full dataset. Useful alternatives are \code{"stack"} for counts and \code{"dodge"} for side-by-side bars.
-#' @param sex.var The varible to be used for sex. Default value is "sex_0_0".
+#' @param sex.var The variable to be used for sex. Default value is "sex_0_0".
 #' @param age.var The variable to be use for age. Default value is "age_when_attended_assessment_centre_0_0".
 #' @param socioeconomic.var The variable to be used for socioeconomic status. Default value is deprivation at baseline, "townsend_deprivation_index_at_recruitment_0_0".
 #' @param ethnicity.var The variable to be used for ethnicity. Default value is "ethnic_background_0_0".

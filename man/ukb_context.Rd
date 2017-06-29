@@ -21,7 +21,7 @@ ukb_context(data, nonmiss.var = NULL, subset.var = NULL,
 
 \item{bar.position}{This argument is passed to the \code{position} in \code{geom_bar}. The default value is \code{"fill"} which shows reference and subset of interest as proportions of the full dataset. Useful alternatives are \code{"stack"} for counts and \code{"dodge"} for side-by-side bars.}
 
-\item{sex.var}{The varible to be used for sex. Default value is "sex_0_0".}
+\item{sex.var}{The variable to be used for sex. Default value is "sex_0_0".}
 
 \item{age.var}{The variable to be use for age. Default value is "age_when_attended_assessment_centre_0_0".}
 

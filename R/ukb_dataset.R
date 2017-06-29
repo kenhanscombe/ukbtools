@@ -6,7 +6,7 @@ globalVariables(c(".", "eid", "pair", "ibs0", "kinship", "category_related", "pe
 #' A UK Biobank \emph{fileset} includes a \emph{.tab} file containing the raw data with field codes instead of variable names, an \emph{.r} (\emph{sic}) file containing code to read raw data (inserts categorical variable levels and labels), and an \emph{.html} file containing tables mapping field code to variable name, and labels and levels for categorical variables.
 #'
 #' @param fileset The prefix for a UKB fileset, e.g., ukbxxxx (for ukbxxxx.tab, ukbxxxx.r, ukbxxxx.html)
-#' @param path The path to the directory containing your UKB fileset. The default value is the currect directory.
+#' @param path The path to the directory containing your UKB fileset. The default value is the current directory.
 #' @param data.pos Locates the data in your .html file. The .html file is read into a list; the default value data.pos = 2 indicates the second item in the list. (The first item in the list is the title of the table). You will probably not need to change this value, but if the need arises you can open the .html file in a browser and identify where in the file the data is.
 #'
 #' @details The \strong{index} and \strong{array} from the UKB field code are preserved in the variable name, as two numbers separated by underscores at the end of the name e.g. \emph{variable_index_array}. \strong{index} refers the assessment instance (or visit). \strong{array} captures multiple answers to the same "question". See UKB documentation for detailed descriptions of \href{http://biobank.ctsu.ox.ac.uk/crystal/instance.cgi?id=2}{index} and \href{http://biobank.ctsu.ox.ac.uk/crystal/help.cgi?cd=array}{array}.
@@ -51,11 +51,11 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
 #' Makes either a table of Data-Field and description, or a named vector handy for looking up descriptive name by column names in the UKB fileset tab file.
 #'
 #' @param fileset The prefix for a UKB fileset, e.g., ukbxxxx (for ukbxxxx.tab, ukbxxxx.r, ukbxxxx.html)
-#' @param path The path to the directory containing your UKB fileset. The default value is the currect directory.
+#' @param path The path to the directory containing your UKB fileset. The default value is the current directory.
 #' @param data.pos Locates the data in your .html file. The .html file is read into a list; the default value data.pos = 2 indicates the second item in the list. (The first item in the list is the title of the table). You will probably not need to change this value, but if the need arises you can open the .html file in a browser and identify where in the file the data is.
 #' @param as.lookup If set to TRUE, returns a named \code{vector}. The default \code{as.look = FALSE} returns a dataframe with columns: field.showcase (as used in the UKB online showcase), field.data (as used in the tab file), name (descriptive name created by \code{\link{ukb_df}})
 #'
-#' @return Returns a data.frame with columns \code{field.showcase}, \code{field.html}, \code{field.data}, \code{names}. \code{field.showcase} is how the field appears in the online \href{http://biobank.ctsu.ox.ac.uk/crystal/}{UKB showcase}; \code{field.html} is how the field appears in the html file in your UKB fileset; \code{field.data} is how the field appears in the tab file in your fileset; and \code{names} is the descriptive name that \code{\link{ukb_df}} assigns to the variable. If \code{as.lookup = TRUE}, the function returns a named character vector of the descriptvive names.
+#' @return Returns a data.frame with columns \code{field.showcase}, \code{field.html}, \code{field.data}, \code{names}. \code{field.showcase} is how the field appears in the online \href{http://biobank.ctsu.ox.ac.uk/crystal/}{UKB showcase}; \code{field.html} is how the field appears in the html file in your UKB fileset; \code{field.data} is how the field appears in the tab file in your fileset; and \code{names} is the descriptive name that \code{\link{ukb_df}} assigns to the variable. If \code{as.lookup = TRUE}, the function returns a named character vector of the descriptive names.
 #'
 #' @seealso \code{\link{ukb_df}}
 #'
@@ -153,7 +153,7 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
 # In particular, if you have moved the fileset from the directory containing the foo.enc file on which you called gconv. NB. gconv writes absolute path to directory containing foo.enc, into foo.r read.table() call
 #
 # @param fileset prefix for UKB fileset
-# @param path The path to the directory containing your UKB fileset. The default value is the currect directory.
+# @param path The path to the directory containing your UKB fileset. The default value is the current directory.
 #
 .update_tab_path <- function(fileset, path = ".") {
   r_file <- sprintf("%s.r", fileset)

@@ -9,14 +9,14 @@ ukb_df_field(fileset, path = ".", data.pos = 2, as.lookup = FALSE)
 \arguments{
 \item{fileset}{The prefix for a UKB fileset, e.g., ukbxxxx (for ukbxxxx.tab, ukbxxxx.r, ukbxxxx.html)}
 
-\item{path}{The path to the directory containing your UKB fileset. The default value is the currect directory.}
+\item{path}{The path to the directory containing your UKB fileset. The default value is the current directory.}
 
 \item{data.pos}{Locates the data in your .html file. The .html file is read into a list; the default value data.pos = 2 indicates the second item in the list. (The first item in the list is the title of the table). You will probably not need to change this value, but if the need arises you can open the .html file in a browser and identify where in the file the data is.}
 
 \item{as.lookup}{If set to TRUE, returns a named \code{vector}. The default \code{as.look = FALSE} returns a dataframe with columns: field.showcase (as used in the UKB online showcase), field.data (as used in the tab file), name (descriptive name created by \code{\link{ukb_df}})}
 }
 \value{
-Returns a data.frame with columns \code{field.showcase}, \code{field.html}, \code{field.data}, \code{names}. \code{field.showcase} is how the field appears in the online \href{http://biobank.ctsu.ox.ac.uk/crystal/}{UKB showcase}; \code{field.html} is how the field appears in the html file in your UKB fileset; \code{field.data} is how the field appears in the tab file in your fileset; and \code{names} is the descriptive name that \code{\link{ukb_df}} assigns to the variable. If \code{as.lookup = TRUE}, the function returns a named character vector of the descriptvive names.
+Returns a data.frame with columns \code{field.showcase}, \code{field.html}, \code{field.data}, \code{names}. \code{field.showcase} is how the field appears in the online \href{http://biobank.ctsu.ox.ac.uk/crystal/}{UKB showcase}; \code{field.html} is how the field appears in the html file in your UKB fileset; \code{field.data} is how the field appears in the tab file in your fileset; and \code{names} is the descriptive name that \code{\link{ukb_df}} assigns to the variable. If \code{as.lookup = TRUE}, the function returns a named character vector of the descriptive names.
 }
 \description{
 Makes either a table of Data-Field and description, or a named vector handy for looking up descriptive name by column names in the UKB fileset tab file.

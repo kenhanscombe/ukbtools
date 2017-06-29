@@ -1,7 +1,7 @@
 
 #' Reads an Oxford format sample file
 #'
-#' This is a wrapper for \code{read_table} that reads an Oxford format .sample file. If you use the unedited sample file as supplied with your genetic data, you should aonly need to specifiy the first argument, file.
+#' This is a wrapper for \code{read_table} that reads an Oxford format .sample file. If you use the unedited sample file as supplied with your genetic data, you should only need to specify the first argument, file.
 #'
 #' @param file A path to a sample file.
 #' @param col.names A character vector of column names. Default: c("id_1", "id_2", "missing")
@@ -106,9 +106,9 @@ ukb_gen_write_plink_excl <- function(path) {
 #' @param ukb.sample Path to the UKB sample file.
 #' @param ukb.variables A character vector of either the phenotypes for a BGENIE phenotype file, or covariates for a BGENIE covariate file.
 #' @param ukb.id The eid variable name (default = "eid").
-#' @param na.strings Characer string to be used for missing value in output file. Default = "-999"
+#' @param na.strings Character string to be used for missing value in output file. Default = "-999"
 #'
-#' @details See href{https://jmarchini.org/bgenie-usage/}{BGENIE usage} for descriptions of the \code{--pheno} and \code{--covar} flags to read phenotype and covariate data into BGENIE.
+#' @details See \href{https://jmarchini.org/bgenie-usage/}{BGENIE usage} for descriptions of the \code{--pheno} and \code{--covar} flags to read phenotype and covariate data into BGENIE.
 #'
 #' @seealso \code{\link{ukb_gen_read_sample}} to read a sample file, \code{\link{ukb_gen_excl_to_na}} to update a phenotype with NAs for samples to-be-excluded based on genetic metadata, and \code{\link{ukb_gen_write_plink}} to write phenotype and covariate files to PLINK format.
 #'

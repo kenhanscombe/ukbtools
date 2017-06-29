@@ -12,3 +12,10 @@ ukb_gen_excl(data)
 \description{
 This list of sample exclusions includes UKB's "recommended", "affymetrix quality control", and "genotype quality control" exclusions. UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data.
 }
+\examples{
+\dontrun{
+# For a vector of IDs
+recommended_excl_ids <- ukb_gen_excl(my_ukb_df)
+}
+
+}

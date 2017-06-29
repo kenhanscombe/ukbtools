@@ -18,6 +18,27 @@ globalVariables(c(".", "eid", "pair", "ibs0", "kinship", "category_related", "pe
 #' @import XML
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#' # Simply provide the stem of the UKB fileset.
+#' # To read ukb1234.tab, ukb1234.r, ukb1234.html
+#'
+#' my_ukb_data <- ukb_df("ukb1234")
+#'
+#'
+#' If you have multiple UKB filesets, tidy then merge.
+#'
+#' ukb1234_data <- ukb_df("ukb1234")
+#' ukb2345_data <- ukb_df("ukb2345")
+#' ukb3456_data <- ukb_df("ukb3456")
+#'
+#' my_ukb_data <- plyr::join_all(
+#'   list(ukb1234_data, ukb2345_data, ukb3456_data),
+#'   by = "eid",
+#'   type = "full"
+#' )
+#' }
+#'
 ukb_df <- function(fileset, path = ".", data.pos = 2) {
   html_file <- sprintf("%s.html", fileset)
   r_file <- sprintf("%s.r", fileset)
@@ -61,6 +82,12 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
 #'
 #' @import XML
 #' @export
+#' @examples
+#' \dontrun{
+#' # UKB field-to-description for ukb1234.tab, ukb1234.r, ukb1234.html
+#'
+#' ukb_df_field("ukb1234")
+#' }
 #'
 ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
   html_file <- sprintf("%s.html", fileset)

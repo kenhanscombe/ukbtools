@@ -60,6 +60,23 @@ ukb_gen_read_fam <- function(
 #' @import dplyr readr
 #' @importFrom magrittr "%>%"
 #' @export
+#' @examples
+#' \dontrun{
+#'
+#' # Automatically inserts FID IID columns required by PLINK
+#'
+#' ukb_gen_write_plink(
+#'    my_ukb_data,
+#'    path = "my_ukb_plink.pheno",
+#'    ukb.variables = c("height", "weight", "iq")
+#' )
+#'
+#' ukb_gen_write_plink(
+#'    my_ukb_data,
+#'    path = "my_ukb_plink.cov",
+#'    ukb.variables = c("age", "socioeconomic_status", "genetic_pcs")
+#' )
+#' }
 #'
 ukb_gen_write_plink <- function(x, path, ukb.variables, ukb.id = "eid", na.strings = "NA") {
 
@@ -82,6 +99,11 @@ ukb_gen_write_plink <- function(x, path, ukb.variables, ukb.id = "eid", na.strin
 #'
 #' @importFrom utils write.table
 #' @export
+#' @examples
+#' \dontrun{
+#' # Supply name of a file to write PLINK format combined exclusions
+#' ukb_gen_write_plink_excl("combined_exclusions.txt")
+#' }
 #'
 ukb_gen_write_plink_excl <- function(path) {
 
@@ -108,13 +130,34 @@ ukb_gen_write_plink_excl <- function(path) {
 #' @param ukb.id The eid variable name (default = "eid").
 #' @param na.strings Character string to be used for missing value in output file. Default = "-999"
 #'
-#' @details See \href{https://jmarchini.org/bgenie-usage/}{BGENIE usage} for descriptions of the \code{--pheno} and \code{--covar} flags to read phenotype and covariate data into BGENIE.
+#' @details Uses a \code{dplyr::left_join} to the sample file to match sample file order. Any IDs in the sample file not included in the phenotype or covariate data will be missing for all variables selected. See \href{https://jmarchini.org/bgenie-usage/}{BGENIE usage} for descriptions of the \code{--pheno} and \code{--covar} flags to read phenotype and covariate data into BGENIE.
 #'
 #' @seealso \code{\link{ukb_gen_read_sample}} to read a sample file, \code{\link{ukb_gen_excl_to_na}} to update a phenotype with NAs for samples to-be-excluded based on genetic metadata, and \code{\link{ukb_gen_write_plink}} to write phenotype and covariate files to PLINK format.
 #'
 #' @import dplyr readr
 #' @importFrom magrittr "%>%"
 #' @export
+#' @examples
+#' \dontrun{
+#'
+#' # Automatically sorts observations to match UKB sample file and writes missing values as -999
+#'
+#' my_ukb_sample <- ukb_gen_read_sample("ukb.sample")
+#'
+#' ukb_gen_write_bgenie(
+#'    my_ukb_data,
+#'    ukb.sample = my_ukb_sample,
+#'    path = "my_ukb_bgenie.pheno",
+#'    ukb.variables = c("height", "weight", "iq")
+#' )
+#'
+#' ukb_gen_write_bgenie(
+#'    my_ukb_data,
+#'    ukb.sample = my_ukb_sample,
+#'    path = "my_ukb_bgenie.cov",
+#'    ukb.variables = c("age", "socioeconomic_status", "genetic_pcs")
+#' )
+#' }
 #'
 ukb_gen_write_bgenie <- function(x, ukb.sample, path, ukb.variables,
                                  ukb.id = "eid", na.strings = "-999") {

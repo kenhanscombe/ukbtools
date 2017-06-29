@@ -21,6 +21,14 @@ Returns a data.frame with columns \code{field.showcase}, \code{field.html}, \cod
 \description{
 Makes either a table of Data-Field and description, or a named vector handy for looking up descriptive name by column names in the UKB fileset tab file.
 }
+\examples{
+\dontrun{
+# UKB field-to-description for ukb1234.tab, ukb1234.r, ukb1234.html
+
+ukb_df_field("ukb1234")
+}
+
+}
 \seealso{
 \code{\link{ukb_df}}
 }

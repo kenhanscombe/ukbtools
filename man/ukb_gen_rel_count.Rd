@@ -17,6 +17,15 @@ If \code{plot = FALSE} (default), a count of individuals and pairs at each level
 \description{
 Creates a summary count table of the number of individuals and pairs at each at each degree of relatedness that occurs in the UKB sample, and an optional plot.
 }
+\examples{
+\dontrun{
+rel <- ukb_gen_rel(my_ukb_data)
+ukb_gen_rel_count(rel)
+
+ukb_gen_rel_count(rel, plot = TRUE)
+}
+
+}
 \seealso{
 \code{\link{ukb_gen_rel}}
 }

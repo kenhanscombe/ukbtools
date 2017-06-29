@@ -10,6 +10,10 @@
 #' @import dplyr
 #' @importFrom magrittr "%>%"
 #' @export
+#' @examples
+#' \dontrun{
+#' ukb_icd_diagnosis(my_ukb_data, id = "123456", icd.version = 10)
+#' }
 #'
 ukb_icd_diagnosis <- function(data, id, icd.version = NULL) {
   if (!is.null(icd.version) && !(icd.version %in% 9:10)) {
@@ -54,6 +58,8 @@ ukb_icd_diagnosis <- function(data, id, icd.version = NULL) {
 #' @import dplyr
 #' @importFrom magrittr "%>%"
 #' @export
+#' @examples
+#' ukb_icd_code_meaning(icd.code = "I74", icd.version = 10)
 #'
 ukb_icd_code_meaning <- function(icd.code, icd.version) {
   icd <- if (icd.version == 9) {
@@ -84,6 +90,8 @@ ukb_icd_code_meaning <- function(icd.code, icd.version) {
 #' @import dplyr
 #' @importFrom magrittr "%>%"
 #' @export
+#' @examples
+#' ukb_icd_keyword("cardio", icd.version = 10)
 #'
 ukb_icd_keyword <- function(icd.version, description) {
   icd <- if (icd.version == 9) {
@@ -110,6 +118,17 @@ ukb_icd_keyword <- function(icd.version, description) {
 #' @importFrom magrittr "%>%"
 #' @importFrom purrr map_df
 #' @export
+#' @examples
+#' \dontrun{
+#' # ICD-10 code I74, Arterial embolism and thrombosis
+#' ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "I74")
+#'
+#' # ICD-10 chapter 9, disease block I00–I99, Diseases of the circulatory system
+#' ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "I")
+#'
+#' # ICD-10 chapter 2, C00-D49, Neoplasms
+#' ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "C|D[0-4].")
+#' }
 #'
 ukb_icd_prevalence <- function(data, icd.version, icd.code) {
 

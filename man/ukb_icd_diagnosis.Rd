@@ -16,6 +16,12 @@ ukb_icd_diagnosis(data, id, icd.version = NULL)
 \description{
 Retrieves diagnoses for an individual.
 }
+\examples{
+\dontrun{
+ukb_icd_diagnosis(my_ukb_data, id = "123456", icd.version = 10)
+}
+
+}
 \seealso{
 \code{\link{ukb_df}}, \code{\link{ukb_icd_code_meaning}}, \code{\link{ukb_icd_keyword}}, \code{\link{ukb_icd_prevalence}}
 }

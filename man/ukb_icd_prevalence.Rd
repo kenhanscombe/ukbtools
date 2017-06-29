@@ -16,6 +16,19 @@ ukb_icd_prevalence(data, icd.version, icd.code)
 \description{
 Returns the prevalence for an ICD diagnosis
 }
+\examples{
+\dontrun{
+# ICD-10 code I74, Arterial embolism and thrombosis
+ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "I74")
+
+# ICD-10 chapter 9, disease block I00–I99, Diseases of the circulatory system
+ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "I")
+
+# ICD-10 chapter 2, C00-D49, Neoplasms
+ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "C|D[0-4].")
+}
+
+}
 \seealso{
 \code{\link{ukb_icd_diagnosis}}, \code{\link{ukb_icd_code_meaning}}, \code{\link{ukb_icd_keyword}}
 }

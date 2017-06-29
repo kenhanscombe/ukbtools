@@ -24,7 +24,30 @@ ukb_gen_write_bgenie(x, ukb.sample, path, ukb.variables, ukb.id = "eid",
 Writes a space-delimited file with a header, missing character set to "-999", and observations (i.e. UKB subject ids) in sample file order. Use this function to write phenotype and covariate files for downstream genetic analysis in \href{https://jmarchini.org/bgenie/}{BGENIE} - the format is the same.
 }
 \details{
-See \href{https://jmarchini.org/bgenie-usage/}{BGENIE usage} for descriptions of the \code{--pheno} and \code{--covar} flags to read phenotype and covariate data into BGENIE.
+Uses a \code{dplyr::left_join} to the sample file to match sample file order. Any IDs in the sample file not included in the phenotype or covariate data will be missing for all variables selected. See \href{https://jmarchini.org/bgenie-usage/}{BGENIE usage} for descriptions of the \code{--pheno} and \code{--covar} flags to read phenotype and covariate data into BGENIE.
+}
+\examples{
+\dontrun{
+
+# Automatically sorts observations to match UKB sample file and writes missing values as -999
+
+my_ukb_sample <- ukb_gen_read_sample("ukb.sample")
+
+ukb_gen_write_bgenie(
+   my_ukb_data,
+   ukb.sample = my_ukb_sample,
+   path = "my_ukb_bgenie.pheno",
+   ukb.variables = c("height", "weight", "iq")
+)
+
+ukb_gen_write_bgenie(
+   my_ukb_data,
+   ukb.sample = my_ukb_sample,
+   path = "my_ukb_bgenie.cov",
+   ukb.variables = c("age", "socioeconomic_status", "genetic_pcs")
+)
+}
+
 }
 \seealso{
 \code{\link{ukb_gen_read_sample}} to read a sample file, \code{\link{ukb_gen_excl_to_na}} to update a phenotype with NAs for samples to-be-excluded based on genetic metadata, and \code{\link{ukb_gen_write_plink}} to write phenotype and covariate files to PLINK format.

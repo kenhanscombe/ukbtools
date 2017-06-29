@@ -64,6 +64,11 @@ ukb_gen_pcs <- function(data) {
 #' @import dplyr
 #' @importFrom magrittr "%>%"
 #' @export
+#' @examples
+#' \dontrun{
+#' # For a vector of IDs
+#' recommended_excl_ids <- ukb_gen_excl(my_ukb_df)
+#' }
 #'
 ukb_gen_excl <- function(data) {
   data %>%
@@ -153,6 +158,13 @@ ukb_gen_rel <- function(data) {
 #' @import dplyr ggplot2
 #' @importFrom magrittr "%>%"
 #' @export
+#' @examples
+#' \dontrun{
+#' rel <- ukb_gen_rel(my_ukb_data)
+#' ukb_gen_rel_count(rel)
+#'
+#' ukb_gen_rel_count(rel, plot = TRUE)
+#' }
 #'
 ukb_gen_rel_count <- function(data, plot = FALSE) {
 
@@ -211,6 +223,14 @@ ukb_gen_rel_count <- function(data, plot = FALSE) {
 #' @importFrom magrittr "%>%"
 #' @importFrom stats sd
 #' @export
+#' @examples
+#' \dontrun{
+#' #' # Heterozygosity outliers (+/-3SD)
+#' outlier_het_ids <- ukb_gen_het(my_ukb_data)
+#'
+#' # Retrieve all raw and pca-corrected heterozygosity scores
+#' ukb_het <- ukb_gen_het(my_ukb_data, all.het = TRUE)
+#' }
 #'
 ukb_gen_het <- function(data, all.het = FALSE) {
   if (all.het) {
@@ -244,6 +264,10 @@ ukb_gen_het <- function(data, all.het = FALSE) {
 #' @seealso \code{\link{ukb_gen_write_plink_excl}}
 #'
 #' @export
+#' @examples
+#' \dontrun{
+#' my_ukb_data$height_excl_na <- ukb_gen_excl_to_na(my_ukb_data, x = "height")
+#' }
 #'
 ukb_gen_excl_to_na <- function(data, x, ukb.id = "eid", data.frame = FALSE) {
 

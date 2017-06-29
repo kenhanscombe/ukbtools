@@ -14,6 +14,10 @@ ukb_icd_keyword(icd.version, description)
 \description{
 Retrieves diagnoses containing a description.
 }
+\examples{
+ukb_icd_keyword("cardio", icd.version = 10)
+
+}
 \seealso{
 \code{\link{ukb_icd_diagnosis}}, \code{\link{ukb_icd_code_meaning}}, \code{\link{ukb_icd_prevalence}}
 }

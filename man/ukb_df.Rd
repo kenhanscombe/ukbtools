@@ -22,6 +22,28 @@ A UK Biobank \emph{fileset} includes a \emph{.tab} file containing the raw data 
 \details{
 The \strong{index} and \strong{array} from the UKB field code are preserved in the variable name, as two numbers separated by underscores at the end of the name e.g. \emph{variable_index_array}. \strong{index} refers the assessment instance (or visit). \strong{array} captures multiple answers to the same "question". See UKB documentation for detailed descriptions of \href{http://biobank.ctsu.ox.ac.uk/crystal/instance.cgi?id=2}{index} and \href{http://biobank.ctsu.ox.ac.uk/crystal/help.cgi?cd=array}{array}.
 }
+\examples{
+\dontrun{
+# Simply provide the stem of the UKB fileset.
+# To read ukb1234.tab, ukb1234.r, ukb1234.html
+
+my_ukb_data <- ukb_df("ukb1234")
+
+
+If you have multiple UKB filesets, tidy then merge.
+
+ukb1234_data <- ukb_df("ukb1234")
+ukb2345_data <- ukb_df("ukb2345")
+ukb3456_data <- ukb_df("ukb3456")
+
+my_ukb_data <- plyr::join_all(
+  list(ukb1234_data, ukb2345_data, ukb3456_data),
+  by = "eid",
+  type = "full"
+)
+}
+
+}
 \seealso{
 \code{\link{ukb_df_field}}
 }

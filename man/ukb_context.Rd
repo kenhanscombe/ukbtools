@@ -36,6 +36,17 @@ ukb_context(data, nonmiss.var = NULL, subset.var = NULL,
 \description{
 Describes a subset of the UKB sample, relative to a reference subsample, on the \href{http://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=1001}{UKB primary demographics} (sex, age, ethnicity, Townsend deprivation) and assessment centre and current employment status. The "subset" and "reference" samples are defined either by a variable of interest (\code{nonmiss.var} - those with data form the "subset" of interest and samples with missing data are the "reference" sample), or a logical vector (\code{subset.var} - where \code{TRUE} values define the "subset" and \code{FALSE} the "reference" samples) . This function is intended as an exploratory data analysis and quality control tool.
 }
+\examples{
+\dontrun{
+# Compare those with data to those without
+ukb_context(my_ukb_data, nonmiss.var = "my_variable_of_interest")
+
+# Define a subset of interest as a logical vector
+subgroup_of_interest <- (my_ukb_data$bmi > 40 & my_ukb_data$age < 50)
+ukb_context(my_ukb_data, subset.var = subgroup_of_interest)
+}
+
+}
 \seealso{
 \code{\link{ukb_df}}
 }

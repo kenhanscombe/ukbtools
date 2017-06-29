@@ -24,6 +24,25 @@ This function writes a space-delimited file with header, with the obligatory fir
 \details{
 The function writes the id variable in your dataset to the first two columns of the output file with the names FID and IID - you do not need to have two id columns in the data.frame passed to the argument \code{x}. Use the \code{--pheno-name} and \code{--covar-name} plink flags to select columns by name. See the plink documentation for the \code{--pheno}, \code{--mpheno}, \code{--pheno-name}, and \code{--covar}, \code{--covar-name}, \code{--covar-number} flags.
 }
+\examples{
+\dontrun{
+
+# Automatically inserts FID IID columns required by PLINK
+
+ukb_gen_write_plink(
+   my_ukb_data,
+   path = "my_ukb_plink.pheno",
+   ukb.variables = c("height", "weight", "iq")
+)
+
+ukb_gen_write_plink(
+   my_ukb_data,
+   path = "my_ukb_plink.cov",
+   ukb.variables = c("age", "socioeconomic_status", "genetic_pcs")
+)
+}
+
+}
 \seealso{
 \code{\link{ukb_gen_read_sample}} to read a sample file, and \code{\link{ukb_gen_write_bgenie}} to write phenotype and covariate files to BGENIE format.
 }

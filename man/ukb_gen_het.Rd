@@ -20,3 +20,13 @@ Heterozygosity outliers are typically removed from genetic association analyses.
 \details{
 UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data.
 }
+\examples{
+\dontrun{
+#' # Heterozygosity outliers (+/-3SD)
+outlier_het_ids <- ukb_gen_het(my_ukb_data)
+
+# Retrieve all raw and pca-corrected heterozygosity scores
+ukb_het <- ukb_gen_het(my_ukb_data, all.het = TRUE)
+}
+
+}

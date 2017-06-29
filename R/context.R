@@ -19,6 +19,15 @@
 #' @import grid ggplot2 dplyr
 #' @importFrom magrittr "%>%"
 #' @export
+#' @examples
+#' \dontrun{
+#' # Compare those with data to those without
+#' ukb_context(my_ukb_data, nonmiss.var = "my_variable_of_interest")
+#'
+#' # Define a subset of interest as a logical vector
+#' subgroup_of_interest <- (my_ukb_data$bmi > 40 & my_ukb_data$age < 50)
+#' ukb_context(my_ukb_data, subset.var = subgroup_of_interest)
+#' }
 #'
 ukb_context <- function(
   data, nonmiss.var = NULL, subset.var = NULL, bar.position = "fill",

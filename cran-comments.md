@@ -37,12 +37,12 @@ Maintainer: 'Ken Hanscombe <ken.hanscombe@gmail.com>'
 New submission
 
 Possibly mis-spelled words in DESCRIPTION:
-  Biobank (3:52, 6:44)
+  Biobank (3:34, 6:44)
   ICD (7:67)
-  UKB (6:67)
-  dataset (6:52)
-  fileset (6:71)
-  html (6:91)
+  UKB (6:97)
+  dataset (6:82)
+  fileset (6:101)
+  html (6:121)
   metadata (8:22)
   
   

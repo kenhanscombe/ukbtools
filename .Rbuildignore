@@ -5,4 +5,3 @@
 ^inst/extdata/$
 ^\./R/context_body\.R$
 ^cran-comments\.md$
-^NEWS\.md$

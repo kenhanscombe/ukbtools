@@ -1,4 +1,11 @@
 
+## Example data
+
+I've left a couple of examples to run, e.g., some of the ICD functions that query publicly available data that I've incorporated as queryable datasets. Most functions however rely on a "UKB dataset" created with ukb_df. ukb_df itself requires raw data (files) from a approved UK Biobank study so this is not feasible. The UK Biobank is very sensitive data (primary demographic data, genetic data, etc.). It would not be easy to generate example data for all the variables required, that is representative of the UK Biobank, without making the UK Biobank and it's participants very uncomfortable.
+
+
+
+
 ## Test environments
 
 * local OS X El Capitan 10.11.6, R 3.4.0

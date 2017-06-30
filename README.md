@@ -1,6 +1,8 @@
 
 # ukbtools: A set of tools to manipulate UK Biobank data
 
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ukbtools)](https://cran.r-project.org/package=ukbtools)
+
 __Co-authors:__ Joni Coleman, Matthew Traylor, Cathryn Lewis
 
 <br>

@@ -2,6 +2,7 @@
 # ukbtools: A set of tools to manipulate UK Biobank data
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ukbtools)](https://cran.r-project.org/package=ukbtools)
+[![Travis-CI Build Status](https://travis-ci.org/kenhanscombe/ukbtools.svg?branch=master)](https://travis-ci.org/kenhanscombe/ukbtools)
 
 __Co-authors:__ Joni Coleman, Matthew Traylor, Cathryn Lewis
 
@@ -9,7 +10,7 @@ __Co-authors:__ Joni Coleman, Matthew Traylor, Cathryn Lewis
 
 ## Overview
 
-After downloading and decrypting your UK Biobank (UKB) data with the supplied [UKB programs] (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf), you have multiple files that need to be brought together to give you a dataset to explore. The data file has column names that are edited field-codes from the [UKB data showcase](http://www.ukbiobank.ac.uk/data-showcase/). `ukbtools` makes it easy to collapse the multiple UKB files into a single dataset for analysis, in the process giving meaningful names to the variables. The package also includes functionality to retreive ICD diagnoses, explore a sample subset in the context of the UKB sample, and collect genetic metadata.
+After downloading and decrypting your UK Biobank (UKB) data with the supplied [UKB programs] (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf), you have multiple files that need to be brought together to give you a dataset to explore. The data file has column names that are edited field-codes from the [UKB data showcase](http://www.ukbiobank.ac.uk/data-showcase/). `ukbtools` makes it easy to collapse the multiple UKB files into a single dataset for analysis, in the process giving meaningful names to the variables. The package also includes functionality to retrieve ICD diagnoses, explore a sample subset in the context of the UKB sample, and collect genetic metadata.
 
 <br>
 
@@ -17,14 +18,17 @@ After downloading and decrypting your UK Biobank (UKB) data with the supplied [U
 
 ```{r, eval = FALSE}
 
-library(devtools)
-install_github("kenhanscombe/ukbtools", build_vignettes = TRUE, dependencies = TRUE)
+# Install from CRAN
+install.packages("ukbtools")
+
+# Install latest development version
+devtools::install_github("kenhanscombe/ukbtools", build_vignettes = TRUE, dependencies = TRUE)
 
 ```
 
 <br>
 
-__Note:__ This package is in beta - it is feature complete but may contain unknown bugs. If anything does not work, first re-install the package `install_github("kenhanscombe/ukbtools", build_vignettes = TRUE, dependencies = TRUE, force = TRUE)` to get the latest development version. If it is still not working, [let me know](https://github.com/kenhanscombe/ukbtools/issues) and I'll fix it.
+__Note:__ This package is in beta - it is feature complete but may contain unknown bugs. If anything does not work, first re-install the package `devtools::install_github("kenhanscombe/ukbtools", build_vignettes = TRUE, dependencies = TRUE, force = TRUE)` to get the latest development version. If it is still not working, [let me know](https://github.com/kenhanscombe/ukbtools/issues) and I'll fix it.
 
 <br>
 

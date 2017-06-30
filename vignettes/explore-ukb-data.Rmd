@@ -170,7 +170,7 @@ ukb_context(my_ukb_data, subset.var = subgroup_of_interest)
 <br>
 
 
-## 4. Retreiving ICD diagnoses
+## 4. Retrieving ICD diagnoses
 
 
 All ICD related functions begin `ukb_icd_`. Type `ukb_icd_` tab to see the family of functions. The full ICD "code-meaning" tables are available as datasets (`icd9codes`, `icd10codes`). ICD chapter-level tables describing disease blocks are also available for query as datasets (`icd9chapters`, `icd10chapters`)
@@ -252,7 +252,7 @@ my_gen_pcs <- ukb_gen_pcs(my_ukb_data)
 <br>
 <br>
 
-A list of IDs for recommended exclusions and heterozygosity outliers (+/- 3*SD) can be retreived
+A list of IDs for recommended exclusions and heterozygosity outliers (+/- 3*SD) can be retrieved
 
 ```{r}
 

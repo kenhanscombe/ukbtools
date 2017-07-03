@@ -1,10 +1,16 @@
 
-# ukbtools: A set of tools to manipulate UK Biobank data
+# ukbtools: Manipulate and Explore UK Biobank data
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ukbtools)](https://cran.r-project.org/package=ukbtools)
 [![Travis-CI Build Status](https://travis-ci.org/kenhanscombe/ukbtools.svg?branch=master)](https://travis-ci.org/kenhanscombe/ukbtools)
 
-__Co-authors:__ Joni Coleman, Matthew Traylor, Cathryn Lewis
+<br>
+
+> __ukbtools: An R package to manage and query UK Biobank data__
+>
+> Ken B Hanscombe, Jonathan R I Coleman, Matthew Traylor, Cathryn M Lewis
+>
+> bioRxiv 158113; doi: https://doi.org/10.1101/158113
 
 <br>
 

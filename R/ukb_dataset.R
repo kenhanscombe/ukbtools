@@ -201,3 +201,34 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
     readLines(r_location))
   cat(f, file = r_location, sep = "\n")
 }
+
+
+
+#' Recursively join a list of UKB datasets
+#'
+#' A thin wrapper around \code{plyr::join_all} to merge multiple UKB datasets.
+#'
+#' @param ... Supply unquoted names of to-be-merged UKB datasets created with \code{\link{ukb_df}}. Arguments are passed to \code{list}, and then to the \code{plyr::join_all} argument \code{dfs}, which takes a list of dataframes.
+#' @param by Variable used to merge multiple dataframes (default = "eid").
+#'
+#' @importFrom plyr join_all
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # If you have multiple UKB filesets, tidy then merge them.
+#'
+#' ukb1234_data <- ukb_df("ukb1234")
+#' ukb2345_data <- ukb_df("ukb2345")
+#' ukb3456_data <- ukb_df("ukb3456")
+#'
+#' my_ukb_data <- ukb_df_join_all(ukb1234_data, ukb2345_data, ukb3456_data)
+#' }
+#'
+ukb_df_join_all <- function(..., by = "eid") {
+  plyr::join_all(
+    list(...),
+    by = by,
+    type = "full"
+  )
+}

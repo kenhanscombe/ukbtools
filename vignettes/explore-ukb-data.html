@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ken B. Hanscombe" />
 
-<meta name="date" content="2017-06-29" />
+<meta name="date" content="2017-09-19" />
 
 <title>Explore UK Biobank data</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Explore UK Biobank data</h1>
 <h4 class="author"><em>Ken B. Hanscombe</em></h4>
-<h4 class="date"><em>2017-06-29</em></h4>
+<h4 class="date"><em>2017-09-19</em></h4>
 
 
 
@@ -129,6 +129,9 @@ my_ukb_data &lt;-<span class="st"> </span>plyr::<span class="kw">join_all</span>
 
 count_ukb_names &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">table</span>(ukb_names))
 <span class="kw">dim</span>(count_ukb_names[count_names$Freq &gt;<span class="st"> </span><span class="dv">1</span>, ])</code></pre></div>
+<p><br></p>
+<p>The function <code>ukb_df_join_all</code> is a thin wrapper around <code>plyr::join_all</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ukb_df_join_all</span>(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data)</code></pre></div>
 <p><br> <br></p>
 </div>
 </div>
@@ -142,8 +145,8 @@ count_ukb_names &lt;-<span class="st"> </span><span class="kw">data.frame</span>
 <span class="kw">ukb_context</span>(my_ukb_data, <span class="dt">subset.var =</span> subgroup_of_interest)</code></pre></div>
 <p><br> <br></p>
 </div>
-<div id="retreiving-icd-diagnoses" class="section level2">
-<h2>4. Retreiving ICD diagnoses</h2>
+<div id="retrieving-icd-diagnoses" class="section level2">
+<h2>4. Retrieving ICD diagnoses</h2>
 <p>All ICD related functions begin <code>ukb_icd_</code>. Type <code>ukb_icd_</code> tab to see the family of functions. The full ICD “code-meaning” tables are available as datasets (<code>icd9codes</code>, <code>icd10codes</code>). ICD chapter-level tables describing disease blocks are also available for query as datasets (<code>icd9chapters</code>, <code>icd10chapters</code>)</p>
 <p><br></p>
 <p>To retrieve the full diagnosis of an individual</p>
@@ -175,7 +178,7 @@ count_ukb_names &lt;-<span class="st"> </span><span class="kw">data.frame</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_gen_meta &lt;-<span class="st"> </span><span class="kw">ukb_gen_meta</span>(my_ukb_data)
 my_gen_pcs &lt;-<span class="st"> </span><span class="kw">ukb_gen_pcs</span>(my_ukb_data)</code></pre></div>
 <p><br> <br></p>
-<p>A list of IDs for recommended exclusions and heterozygosity outliers (+/- 3*SD) can be retreived</p>
+<p>A list of IDs for recommended exclusions and heterozygosity outliers (+/- 3*SD) can be retrieved</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ukb_gen_excl</span>(my_ukb_data)
 <span class="kw">ukb_gen_het</span>(my_ukb_data)</code></pre></div>
 <p>For a <code>data.frame</code> of raw heterozygosity data</p>

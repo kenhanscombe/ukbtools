@@ -137,6 +137,15 @@ dim(count_ukb_names[count_names$Freq > 1, ])
 
 ```
 
+<br>
+
+The function `ukb_df_join_all` is a thin wrapper around `plyr::join_all`
+
+```{r}
+
+ukb_df_join_all(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data)
+
+```
 
 <br>
 <br>

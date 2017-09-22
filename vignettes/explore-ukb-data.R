@@ -49,6 +49,11 @@ knitr::opts_chunk$set(
 
 ## ------------------------------------------------------------------------
 #  
+#  ukb_df_join_all(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data)
+#  
+
+## ------------------------------------------------------------------------
+#  
 #  ukb_context(my_ukb_data, nonmiss.var = "my_variable_of_interest")
 #  
 

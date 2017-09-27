@@ -80,7 +80,7 @@ ukb_icd_diagnosis <- function(data, id, icd.version = NULL) {
 #' @examples
 #' ukb_icd_code_meaning(icd.code = "I74", icd.version = 10)
 #'
-ukb_icd_code_meaning <- function(icd.code, icd.version) {
+ukb_icd_code_meaning <- function(icd.code, icd.version = 10) {
   icd <- if (icd.version == 9) {
     ukbtools::icd9codes
   } else if (icd.version == 10){
@@ -101,8 +101,10 @@ ukb_icd_code_meaning <- function(icd.code, icd.version) {
 
 #' Retrieves diagnoses containing a description.
 #'
-#' @param icd.version The ICD version (or revision) number, 9 or 10.
-#' @param description A regular expression to be looked up in the ICD descriptions, e.g., "cardiovascular"
+#' Returns a dataframe of ICD code and descriptions for all entries including any supplied keyword.
+#'
+#' @param icd.version The ICD version (or revision) number, 9 or 10. Default = 10.
+#' @param description A character vector of one or more keywords to be looked up in the ICD descriptions, e.g., "cardio", c("cardio", "lymphoma"). Each keyword can be a regular expression, e.g. "lymph*".
 #'
 #' @seealso \code{\link{ukb_icd_diagnosis}}, \code{\link{ukb_icd_code_meaning}}, \code{\link{ukb_icd_prevalence}}
 #'
@@ -112,7 +114,7 @@ ukb_icd_code_meaning <- function(icd.code, icd.version) {
 #' @examples
 #' ukb_icd_keyword("cardio", icd.version = 10)
 #'
-ukb_icd_keyword <- function(icd.version, description) {
+ukb_icd_keyword <- function(description, icd.version = 10) {
   icd <- if (icd.version == 9) {
     ukbtools::icd9codes
   } else if (icd.version == 10){
@@ -120,7 +122,7 @@ ukb_icd_keyword <- function(icd.version, description) {
   }
 
   icd %>%
-    dplyr::filter(grepl(description, .$meaning))
+    dplyr::filter(grepl(paste(description, collapse = "|"), .$meaning, perl = TRUE))
 }
 
 
@@ -128,7 +130,7 @@ ukb_icd_keyword <- function(icd.version, description) {
 #' Returns the prevalence for an ICD diagnosis
 #'
 #' @param data A UKB dataset (or subset) created with \code{\link{ukb_df}}.
-#' @param icd.version The ICD version (or revision) number, 9 or 10.
+#' @param icd.version The ICD version (or revision) number, 9 or 10. Default = 10.
 #' @param icd.code An ICD disease code e.g. "I74". Use a regular expression to specify a broader set of diagnoses, e.g. "I" captures all Diseases of the circulatory system, I00-I99, "C|D[0-4]." captures all Neoplasms, C00-D49.
 #'
 #' @seealso \code{\link{ukb_icd_diagnosis}}, \code{\link{ukb_icd_code_meaning}}, \code{\link{ukb_icd_keyword}}
@@ -149,7 +151,7 @@ ukb_icd_keyword <- function(icd.version, description) {
 #' ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "C|D[0-4].")
 #' }
 #'
-ukb_icd_prevalence <- function(data, icd.version, icd.code) {
+ukb_icd_prevalence <- function(data, icd.version = 10, icd.code) {
 
   n_observations <- nrow(data)
 

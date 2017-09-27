@@ -4,7 +4,7 @@
 \alias{ukb_icd_code_meaning}
 \title{Retrieves description for a ICD code.}
 \usage{
-ukb_icd_code_meaning(icd.code, icd.version)
+ukb_icd_code_meaning(icd.code, icd.version = 10)
 }
 \arguments{
 \item{icd.code}{The ICD diagnosis code to be looked up.}

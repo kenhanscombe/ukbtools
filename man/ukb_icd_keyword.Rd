@@ -4,15 +4,15 @@
 \alias{ukb_icd_keyword}
 \title{Retrieves diagnoses containing a description.}
 \usage{
-ukb_icd_keyword(icd.version, description)
+ukb_icd_keyword(description, icd.version = 10)
 }
 \arguments{
-\item{icd.version}{The ICD version (or revision) number, 9 or 10.}
+\item{description}{A character vector of one or more keywords to be looked up in the ICD descriptions, e.g., "cardio", c("cardio", "lymphoma"). Each keyword can be a regular expression, e.g. "lymph*".}
 
-\item{description}{A regular expression to be looked up in the ICD descriptions, e.g., "cardiovascular"}
+\item{icd.version}{The ICD version (or revision) number, 9 or 10. Default = 10.}
 }
 \description{
-Retrieves diagnoses containing a description.
+Returns a dataframe of ICD code and descriptions for all entries including any supplied keyword.
 }
 \examples{
 ukb_icd_keyword("cardio", icd.version = 10)

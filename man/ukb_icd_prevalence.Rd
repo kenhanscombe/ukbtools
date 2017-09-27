@@ -4,12 +4,12 @@
 \alias{ukb_icd_prevalence}
 \title{Returns the prevalence for an ICD diagnosis}
 \usage{
-ukb_icd_prevalence(data, icd.version, icd.code)
+ukb_icd_prevalence(data, icd.version = 10, icd.code)
 }
 \arguments{
 \item{data}{A UKB dataset (or subset) created with \code{\link{ukb_df}}.}
 
-\item{icd.version}{The ICD version (or revision) number, 9 or 10.}
+\item{icd.version}{The ICD version (or revision) number, 9 or 10. Default = 10.}
 
 \item{icd.code}{An ICD disease code e.g. "I74". Use a regular expression to specify a broader set of diagnoses, e.g. "I" captures all Diseases of the circulatory system, I00-I99, "C|D[0-4]." captures all Neoplasms, C00-D49.}
 }

@@ -41,7 +41,7 @@ ukb_icd_diagnosis <- function(data, id, icd.version = NULL) {
   }
 
   individual_codes <- data %>%
-    dplyr::filter(eid == id) %>%
+    dplyr::filter(eid %in% id) %>%
     dplyr::select(matches(paste("^diagnoses.*icd", icd.version, sep = ""))) %>%
     dplyr::select_if(colSums(!is.na(.)) > 0) %>%
     t() %>%
@@ -49,16 +49,19 @@ ukb_icd_diagnosis <- function(data, id, icd.version = NULL) {
 
   colnames(individual_codes) <- id
 
-
-  # Re-write to message "no diagnoses" individuals and produce a dataframe for those with
   if(ncol(individual_codes) == 1 & sum(!is.na(individual_codes[[1]])) < 1) {
     message(paste("ID", id, "has no ICD", icd.version, "diagnoses", sep = " "))
   } else {
-    message("ID(s) ", paste(id, " "), "\nICD ", icd.version, " diagnoses")
 
-    individual_codes %>%
+    d <- individual_codes %>%
       purrr::map(~ ukb_icd_code_meaning(c(.), icd.version)) %>%
       dplyr::bind_rows(.id = "sample")
+
+    no_icd <- id[!(id %in% unique(d$sample))]
+    if(length(no_icd) > 0) message("ID(s) ", paste(no_icd, " "), "have no ICD ", icd.version, " diagnoses.")
+
+    return(d)
+
   }
 }
 

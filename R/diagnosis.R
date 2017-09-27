@@ -9,6 +9,8 @@
 #'
 #' @import dplyr
 #' @importFrom magrittr "%>%"
+#' @importFrom purrr map
+#' @importFrom tibble as_tibble
 #' @export
 #' @examples
 #' \dontrun{
@@ -16,6 +18,14 @@
 #' }
 #'
 ukb_icd_diagnosis <- function(data, id, icd.version = NULL) {
+
+  if (!all(id %in% data$eid)) {
+    stop(
+      "Invalid UKB sample id. Check all ids are included in the supplied data",
+      call. = FALSE
+    )
+  }
+
   if (!is.null(icd.version) && !(icd.version %in% 9:10)) {
     stop(
       "`icd.version` is an invalid ICD revision number.
@@ -35,14 +45,20 @@ ukb_icd_diagnosis <- function(data, id, icd.version = NULL) {
     dplyr::select(matches(paste("^diagnoses.*icd", icd.version, sep = ""))) %>%
     dplyr::select_if(colSums(!is.na(.)) > 0) %>%
     t() %>%
-    as.vector()
+    tibble::as_tibble()
 
-  if(sum(!is.na(individual_codes)) < 1) {
+  colnames(individual_codes) <- id
+
+
+  # Re-write to message "no diagnoses" individuals and produce a dataframe for those with
+  if(ncol(individual_codes) == 1 & sum(!is.na(individual_codes[[1]])) < 1) {
     message(paste("ID", id, "has no ICD", icd.version, "diagnoses", sep = " "))
   } else {
-    message(paste("ID", id, "has ICD", icd.version, "diagnoses:", sep = " "))
-    print(ukb_icd_code_meaning(c(individual_codes), icd.version))
-    cat("\n")
+    message("ID(s) ", paste(id, " "), "\nICD ", icd.version, " diagnoses")
+
+    individual_codes %>%
+      purrr::map(~ ukb_icd_code_meaning(c(.), icd.version)) %>%
+      dplyr::bind_rows(.id = "sample")
   }
 }
 
@@ -136,8 +152,80 @@ ukb_icd_prevalence <- function(data, icd.version, icd.code) {
 
   ukb_case <- data %>%
     dplyr::select(matches(paste("^diagnoses.*icd", icd.version, sep = ""))) %>%
-    purrr::map_df(~ grepl(icd.code, .)) %>%
+    purrr::map_df(~ grepl(icd.code, ., perl = TRUE)) %>%
     (function(x) apply(x, 1, any))(.)
 
   sum(ukb_case)/n_observations
+}
+
+
+
+#' Frequency of an ICD diagnosis by a target variable
+#'
+#' @param data A UKB dataset (or subset) created with \code{\link{ukb_df}}.
+#' @param icd.code ICD disease code(s) e.g. "I74". Use a regular expression to specify a broader set of diagnoses, e.g. "I" captures all Diseases of the circulatory system, I00-I99, "C|D[0-4]." captures all Neoplasms, C00-D49. Default is the WHO top 6 causes of death globally in 2015, see \url{http://www.who.int/healthinfo/global_burden_disease/GlobalCOD_method_2000_2015.pdf?ua=1}.
+#' @param reference.var UKB ICD frequencies will be calculated by levels of this variable. If continuous, by default it is cut into 10 intervals of approximately equal size (set with n.groups).
+#' @param n.groups Number of approximately equal-sized groups to split a continous variable into.
+#' @param icd.version The ICD version (or revision) number, 9 or 10.
+#' @param freq.plot If TRUE returns a plot of ICD diagnosis by target variable. If FALSE (default) returns a dataframe
+#' @param icd.labels Character vector of ICD labels for the plot legend. Default = V1 to VN.
+#' @param plot.title Title for the plot. Default describes the default icd.codes, WHO top 6 cause of death 2015.
+#'
+#' @import dplyr ggplot2
+#' @importFrom magrittr "%>%"
+#' @importFrom tidyr gather
+#' @importFrom scales percent
+#' @export
+#'
+ukb_icd_freq_by <- function(data, icd.code = c("^(I2[0-5])", "^(I6[0-9])", "^(J09|J1[0-9]|J2[0-2]|P23|U04)", "^(J4[0-4]|J47)",  "^(C33|C34)", "^((?!E102|E112|E122|E132|E142)E1[00-49])"), reference.var, n.groups = 10, icd.version = 10, freq.plot = FALSE, icd.labels = c("coronary artery disease (CAD)", "cerebrovascular disease/ stroke", "lower respiratory tract infection (LRTI)", "chronic obstructive pulmonary disease (COPD)", "trachea, bronchus, lung cancers", "diabetes mellitus"), plot.title = "Top 6 Causes of Death Globally (World Health Organization, 2015)") {
+  df <- data[stats::complete.cases(data[[reference.var]]), ]
+
+  # Include categorical variable
+  if (is.factor(df[[reference.var]]) | is.ordered(df[[reference.var]])) {
+    categorized_var <- df[[reference.var]]
+  } else {
+    categorized_var <- factor(
+      ggplot2::cut_number(df[[reference.var]], n = n.groups),
+      ordered = TRUE
+    )
+  }
+
+  l <- split(df, categorized_var)
+  x <- data.frame(group = names(l))
+  for (i in seq_along(l)) {
+    for (j in seq_along(icd.code)) {
+      x[i, j + 1] <- ukb_icd_prevalence(l[[i]], icd.version = 10, icd.code = icd.code[j])
+    }
+  }
+
+  o <- order(as.numeric(gsub("[[:punct:]]", "", gsub(",.*$", "", levels(x$group)))))
+  levels(x$group)[o]
+  x$group <- factor(x$group, levels = levels(x$group)[o])
+
+  if(freq.plot) {
+    x %>%
+      with(x, tidyr::gather(icd_code, frequency, -group, factor_key = TRUE)) %>%
+      ggplot2::ggplot(aes_string(x = "group", y = "frequency", color = "icd_code", group = "icd_code")) +
+      geom_line(size = 0.5) +
+      geom_point(size = 2, alpha = 0.5) +
+      labs(
+        x = "Reference variable",
+        y = "UKB frequency",
+        title = plot.title,
+        color = ""
+      ) +
+      theme(
+        title = element_text(face = "bold"),
+        panel.background = element_blank(),
+        legend.key = element_blank(),
+        legend.position = "bottom"
+      ) +
+      guides(color = guide_legend(ncol = 2), size = FALSE) +
+      scale_color_discrete(
+        labels = icd.labels
+      ) +
+      scale_y_continuous(labels = scales::percent)
+  } else {
+    return(x)
+  }
 }

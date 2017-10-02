@@ -55,12 +55,16 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
     local = TRUE
   )
 
-  tables <- XML::readHTMLTable(
-    doc = file.path(path, html_file),
-    stringsAsFactors = FALSE
+  html_internal_doc <- XML::htmlParse(file.path(path, html_file))
+  html_table_nodes <- XML::getNodeSet(html_internal_doc, "//table")
+  html_table = XML::readHTMLTable(
+    html_table_nodes[[data.pos]],
+    as.data.frame = TRUE,
+    stringsAsFactors = FALSE,
+    colClasses = c("integer", "character", "integer", "character", "character")
   )
 
-  variable_names <- .column_name_lookup(tables[[data.pos]])
+  variable_names <- .column_name_lookup(html_table)
   names(bd) <- variable_names[names(bd)]
   return(bd)
 }
@@ -76,7 +80,7 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
 #' @param data.pos Locates the data in your .html file. The .html file is read into a list; the default value data.pos = 2 indicates the second item in the list. (The first item in the list is the title of the table). You will probably not need to change this value, but if the need arises you can open the .html file in a browser and identify where in the file the data is.
 #' @param as.lookup If set to TRUE, returns a named \code{vector}. The default \code{as.look = FALSE} returns a dataframe with columns: field.showcase (as used in the UKB online showcase), field.data (as used in the tab file), name (descriptive name created by \code{\link{ukb_df}})
 #'
-#' @return Returns a data.frame with columns \code{field.showcase}, \code{field.html}, \code{field.data}, \code{names}. \code{field.showcase} is how the field appears in the online \href{http://biobank.ctsu.ox.ac.uk/crystal/}{UKB showcase}; \code{field.html} is how the field appears in the html file in your UKB fileset; \code{field.data} is how the field appears in the tab file in your fileset; and \code{names} is the descriptive name that \code{\link{ukb_df}} assigns to the variable. If \code{as.lookup = TRUE}, the function returns a named character vector of the descriptive names.
+#' @return Returns a data.frame with columns \code{field.showcase}, \code{field.html}, \code{field.tab}, \code{names}. \code{field.showcase} is how the field appears in the online \href{http://biobank.ctsu.ox.ac.uk/crystal/}{UKB showcase}; \code{field.html} is how the field appears in the html file in your UKB fileset; \code{field.tab} is how the field appears in the tab file in your fileset; and \code{names} is the descriptive name that \code{\link{ukb_df}} assigns to the variable. If \code{as.lookup = TRUE}, the function returns a named character vector of the descriptive names.
 #'
 #' @seealso \code{\link{ukb_df}}
 #'
@@ -91,16 +95,16 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
 #'
 ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
   html_file <- sprintf("%s.html", fileset)
-  tables <- XML::readHTMLTable(
-    doc = if (path == ".") {
-      file.path(getwd(), html_file)
-    } else {
-      file.path(path, html_file)
-    },
-    stringsAsFactors = FALSE
+  html_internal_doc <- XML::htmlParse(file.path(path, html_file))
+  html_table_nodes <- XML::getNodeSet(html_internal_doc, "//table")
+  html_table = XML::readHTMLTable(
+    html_table_nodes[[data.pos]],
+    as.data.frame = TRUE,
+    stringsAsFactors = FALSE,
+    colClasses = c("integer", "character", "integer", "character", "character")
   )
 
-  df <- .fill_missing_description(tables[[data.pos]])
+  df <- .fill_missing_description(html_table)
   lookup <- .description_to_name(df)
   old_var_names <- paste("f.", gsub("-", ".", df[, "UDI"]), sep = "")
 
@@ -111,7 +115,7 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
     lookup.reference <- data.frame(
       field.showcase = gsub("-.*$", "", df[, "UDI"]),
         field.html = df[, "UDI"],
-      field.data = old_var_names,
+      field.tab = old_var_names,
       names = lookup)
     return(lookup.reference)
   }
@@ -206,12 +210,19 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
 
 #' Recursively join a list of UKB datasets
 #'
-#' A thin wrapper around \code{plyr::join_all} to merge multiple UKB datasets.
+#' A thin wrapper around \code{purrr::reduce} and \code{dplyr::full_join} to merge multiple UKB datasets.
 #'
-#' @param ... Supply unquoted names of to-be-merged UKB datasets created with \code{\link{ukb_df}}. Arguments are passed to \code{list}, and then to the \code{plyr::join_all} argument \code{dfs}, which takes a list of dataframes.
+#' @param ... Supply comma separated unquoted names of to-be-merged UKB datasets (created with \code{\link{ukb_df}}). Arguments are passed to \code{list}.
 #' @param by Variable used to merge multiple dataframes (default = "eid").
 #'
-#' @importFrom plyr join_all
+#' @details The function takes a comma separated list of unquoted datasets. By explicitly setting the join key to "eid" only (Default value of the \code{by} parameter), any additional variables common to any two tables will have ".x" and ".y" appended to their names. If you are satisfied the additional variables are identical to the original, the copies can be safely deleted. For example, if \code{setequal(my_ukb_data$var, my_ukb_data$var.x)} is \code{TRUE}, then my_ukb_data$var.x can be dropped. A \code{dlyr::full_join} is like the set operation union in that all abservation from all tables are included, i.e., all samples are included even if they are not included in all datasets.
+#'
+#' NB. \code{ukb_df_full_join} will fail if any variable names are repeated **within** a single UKB dataset. This is unlikely to occur, however, \code{ukb_df} creates variable names by combining a snake_case descriptor with the variable's **index** and **array**. If an index_array combination is incorrectly repeated, this will result in a duplicated variable. If the join fails, you can use \code{\link{ukb_df_duplicated_name}} to find duplicated names. See \code{vignette(topic = "explore-ukb-data", package = "ukbtools")} for further details.
+#'
+#' @seealso \code{\link{ukb_df_duplicated_name}}
+#'
+#' @importFrom purrr reduce
+#' @importFrom dplyr full_join
 #' @export
 #'
 #' @examples
@@ -222,13 +233,37 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
 #' ukb2345_data <- ukb_df("ukb2345")
 #' ukb3456_data <- ukb_df("ukb3456")
 #'
-#' my_ukb_data <- ukb_df_join_all(ukb1234_data, ukb2345_data, ukb3456_data)
+#' my_ukb_data <- ukb_df_full_join(ukb1234_data, ukb2345_data, ukb3456_data)
 #' }
 #'
-ukb_df_join_all <- function(..., by = "eid") {
-  plyr::join_all(
+ukb_df_full_join <- function(..., by = "eid") {
+  purrr::reduce(
     list(...),
-    by = by,
-    type = "full"
+    dplyr::full_join,
+    by = by
   )
+}
+
+
+
+#' Checks for duplicated names within a UKB dataset
+#'
+#' @param data A UKB dataset created with \code{\link{ukb_df}}.
+#'
+#' @return Returns a named list of numeric vectors, one for each duplicated variable name. The numeric vectors contain the column indeces of duplicates.
+#'
+#' @details Duplicates *within* a UKB dataset are unlikely to occur, however, \code{ukb_df} creates variable names by combining a snake_case descriptor with the variable's **index** and **array**. If an index_array combination is incorrectly repeated in the original UKB data, this will result in a duplicated variable name. . See \code{vignette(topic = "explore-ukb-data", package = "ukbtools")} for further details.
+#'
+#' @importFrom purrr map
+#' @export
+#'
+ukb_df_duplicated_name <- function(data) {
+  dup_names <- names(data)[base::duplicated(names(data))]
+  dup_pos <- purrr::map(dup_names, ~ grep(paste(., collapse = "|"), names(data), perl = TRUE))
+  names(dup_pos) <- dup_names
+  if (length(dup_pos) > 0) {
+    return(dup_pos)
+  } else {
+    message("No duplicated variable names")
+  }
 }

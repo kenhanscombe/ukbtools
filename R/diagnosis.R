@@ -168,11 +168,13 @@ ukb_icd_prevalence <- function(data, icd.version = 10, icd.code) {
 #' Frequency of an ICD diagnosis by a target variable
 #'
 #' @param data A UKB dataset (or subset) created with \code{\link{ukb_df}}.
-#' @param icd.code ICD disease code(s) e.g. "I74". Use a regular expression to specify a broader set of diagnoses, e.g. "I" captures all Diseases of the circulatory system, I00-I99, "C|D[0-4]." captures all Neoplasms, C00-D49. Default is the WHO top 6 causes of death globally in 2015, see \url{http://www.who.int/healthinfo/global_burden_disease/GlobalCOD_method_2000_2015.pdf?ua=1}.
+#' @param icd.code ICD disease code(s) e.g. "I74". Use a regular expression to specify a broader set of diagnoses, e.g. "I" captures all Diseases of the circulatory system, I00-I99, "C|D[0-4]." captures all Neoplasms, C00-D49. Default is the WHO top 3 causes of death globally in 2015, see \url{http://www.who.int/healthinfo/global_burden_disease/GlobalCOD_method_2000_2015.pdf?ua=1}.
 #' @param reference.var UKB ICD frequencies will be calculated by levels of this variable. If continuous, by default it is cut into 10 intervals of approximately equal size (set with n.groups).
 #' @param n.groups Number of approximately equal-sized groups to split a continous variable into.
 #' @param icd.version The ICD version (or revision) number, 9 or 10.
-#' @param freq.plot If TRUE returns a plot of ICD diagnosis by target variable. If FALSE (default) returns a dataframe
+#' @param freq.plot If TRUE returns a plot of ICD diagnosis by target variable. If FALSE (default) returns a dataframe.
+#' @param legend.col Number of columns for the legend. (Defeault = 1).
+#' @param legend.pos Legend position, default = "right".
 #' @param icd.labels Character vector of ICD labels for the plot legend. Default = V1 to VN.
 #' @param plot.title Title for the plot. Default describes the default icd.codes, WHO top 6 cause of death 2015.
 #'
@@ -182,8 +184,18 @@ ukb_icd_prevalence <- function(data, icd.version = 10, icd.code) {
 #' @importFrom scales percent
 #' @export
 #'
-ukb_icd_freq_by <- function(data, icd.code = c("^(I2[0-5])", "^(I6[0-9])", "^(J09|J1[0-9]|J2[0-2]|P23|U04)", "^(J4[0-4]|J47)",  "^(C33|C34)", "^((?!E102|E112|E122|E132|E142)E1[00-49])"), reference.var, n.groups = 10, icd.version = 10, freq.plot = FALSE, icd.labels = c("coronary artery disease (CAD)", "cerebrovascular disease/ stroke", "lower respiratory tract infection (LRTI)", "chronic obstructive pulmonary disease (COPD)", "trachea, bronchus, lung cancers", "diabetes mellitus"), plot.title = "Top 6 Causes of Death Globally (World Health Organization, 2015)") {
-  df <- data[stats::complete.cases(data[[reference.var]]), ]
+ukb_icd_freq_by <- function(
+  data, reference.var,
+  n.groups = 10,
+  icd.code = c("^(I2[0-5])", "^(I6[0-9])", "^(J09|J1[0-9]|J2[0-2]|P23|U04)"),
+  icd.labels = c("coronary artery disease (CAD)", "cerebrovascular disease/ stroke", "lower respiratory tract infection (LRTI)"),
+  plot.title = "",
+  legend.col = 1,
+  legend.pos = "right",
+  icd.version = 10,
+  freq.plot = FALSE
+) {
+  df <- data %>% filter(!is.na(data[[reference.var]]))
 
   # Include categorical variable
   if (is.factor(df[[reference.var]]) | is.ordered(df[[reference.var]])) {
@@ -203,13 +215,16 @@ ukb_icd_freq_by <- function(data, icd.code = c("^(I2[0-5])", "^(I6[0-9])", "^(J0
     }
   }
 
-  o <- order(as.numeric(gsub("[[:punct:]]", "", gsub(",.*$", "", levels(x$group)))))
-  levels(x$group)[o]
-  x$group <- factor(x$group, levels = levels(x$group)[o])
+  rm(l)
+
+  if(is.numeric(df[[reference.var]])) {
+    o <- order(as.numeric(gsub("[[:punct:]]", "", gsub(",.*$", "", levels(x$group)))))
+    levels(x$group)[o]
+    x$group <- factor(x$group, levels = levels(x$group)[o])
+  }
 
   if(freq.plot) {
-    x %>%
-      with(x, tidyr::gather(icd_code, frequency, -group, factor_key = TRUE)) %>%
+    p <- with(x, tidyr::gather(x, icd_code, frequency, -group, factor_key = TRUE)) %>%
       ggplot2::ggplot(aes_string(x = "group", y = "frequency", color = "icd_code", group = "icd_code")) +
       geom_line(size = 0.5) +
       geom_point(size = 2, alpha = 0.5) +
@@ -221,15 +236,25 @@ ukb_icd_freq_by <- function(data, icd.code = c("^(I2[0-5])", "^(I6[0-9])", "^(J0
       ) +
       theme(
         title = element_text(face = "bold"),
-        panel.background = element_blank(),
+        panel.grid = element_blank(),
         legend.key = element_blank(),
-        legend.position = "bottom"
+        legend.position = legend.pos,
+        axis.ticks.x = element_blank()
       ) +
-      guides(color = guide_legend(ncol = 2), size = FALSE) +
+      guides(
+        color = guide_legend(ncol = legend.col),
+        size = FALSE
+        ) +
       scale_color_discrete(
         labels = icd.labels
       ) +
       scale_y_continuous(labels = scales::percent)
+
+    if(is.numeric(df[[reference.var]])){
+      p + scale_x_discrete(labels = c("Low", rep("", n.groups - 2), "High"))
+    } else {
+      p
+    }
   } else {
     return(x)
   }

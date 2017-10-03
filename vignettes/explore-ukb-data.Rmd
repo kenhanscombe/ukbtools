@@ -80,7 +80,14 @@ my_ukb_data <- ukb_df("ukbxxxx", path = "/full/path/to/my/fileset")
 ```
 
 
-Use `ukb_df_field` to create a field-to-descriptive name key.
+Use `ukb_df_field` to create a field-to-descriptive name key, as dataframe or named lookup vector.
+
+```{r}
+
+my_ukb_key <- ukb_df_field("ukbxxxx", path = "/full/path/to/my/fileset")
+
+```
+
 
 <br>
 
@@ -92,7 +99,7 @@ __Note:__ You can move the three files in your fileset after creating them with 
 
 > __Memory and efficiency__
 >
-> I highly recommend saving your new UKB dataset with `save(my_ukb_data, file = "my_ukb_data.rda")`. You can load the data with `load("my_ukb_data.rda")`. Creating a UKB dataset from my largest UKB fileset which included a 2.6 GB .tab file, took approximately 10 mins; loading the same dataset after the `save` procedure, took about 20 seconds. The saved file was about 200 MB.
+> I highly recommend saving your new UKB dataset with `save(my_ukb_data, file = "my_ukb_data.rda")`. You can load the data with `load("my_ukb_data.rda")`. Creating a UKB dataset from my largest UKB fileset which included a 2.6 GB .tab file, took approximately 8 mins; loading the same dataset after the `save` procedure, took about 20 seconds. The saved file was about 200 MB.
 
 <br>
 <br>
@@ -102,8 +109,7 @@ __Note:__ You can move the three files in your fileset after creating them with 
 
 ### 2.1 Multiple downloads
 
-If you have multiple UKB downloads, tidy then merge them.
-
+If you have multiple UKB downloads, first read then merge them with your preferred method. `ukbtools` includes the function `ukb_df_full_join` which is a thin wrapper around `dplyr::full_join` applied recursively with `purrr::reduce`.
 
 ```{r}
 
@@ -111,41 +117,17 @@ ukbxxxx_data <- ukb_df("ukbxxxx")
 ukbyyyy_data <- ukb_df("ukbyyyy")
 ukbzzzz_data <- ukb_df("ukbzzzz")
 
-# Merge with your preferred method
-my_ukb_data <- plyr::join_all(
-  list(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data),
-  by = "eid",
-  type = "full"
-)
+ukb_df_full_join(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data)
 
 ```
 
 <br>
 
-__Note:__ You will have at least one variable duplicated in the different downloads, the unique individual identifier `eid`. Counting the repeated variables (and the number of repeats of each) can give you a sense of the expected number of variables in your merged dataset.
-
-```{r}
-
-ukb_names <- c(
-  names(ukbxxxx_data),
-  names(ukbyyyy_data),
-  names(ukbzzzz_data)
-)
-
-count_ukb_names <- data.frame(table(ukb_names))
-dim(count_ukb_names[count_names$Freq > 1, ])
-
-```
+__Note:__ The join key is set to "eid" only (default value of the `by` parameter). Any additional variables common to any two tables will have ".x" and ".y" appended to their names. If you are satisfied the additional variables are identical to the original, the copies can be safely deleted. For example, if `setequal(my_ukb_data$var, my_ukb_data$var.x)` is `TRUE`, then my_ukb_data$var.x can be dropped. A `dlyr::full_join` is like the set operation union in that all abservation from all tables are included, i.e., all samples are included even if they are not included in all datasets.
 
 <br>
 
-The function `ukb_df_join_all` is a thin wrapper around `plyr::join_all`
-
-```{r}
-
-ukb_df_join_all(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data)
-
-```
+Repeated variable names **within** UKB datasets are unlikely to occur. `ukb_df` creates variable names by combining a snake_case descriptor with the variable's *index* and *array*. This should be sufficient to uniquely identify the variable. However, if an *index_array* combination is incorrectly repeated in the original UKB data, this will result in a duplicated variable name. We observed two instances. The variables were encoded *<field>–0.0*, *<field>–1.0*, *<field>––1.0*, and `ukb_df` created a variable named *var_0_0*, *var_1_0*, *var_1_0*. This is probably a typo that should have been *<field>–0.0*, *<field>–1.0*, *<field>–2.0*, consistent with UKB official documentation describing the field as having 3 values for index. We have provided `ukb_df_duplicated_names` to identify duplicated names within a dataset. This will allow the user to make changes as appropriate. We expect the occurrence of such duplicates will be rare.
 
 <br>
 <br>
@@ -186,7 +168,7 @@ All ICD related functions begin `ukb_icd_`. Type `ukb_icd_` tab to see the famil
 
 <br>
 
-To retrieve the full diagnosis of an individual
+To retrieve the full diagnosis of an individual (combine multiple individuals with `c()`)
 
 ```{r}
 
@@ -197,7 +179,7 @@ ukb_icd_diagnosis(my_ukb_data, id = "0000000", icd.version = 10)
 <br>
 
 
-To retrieve the "meaning" of an ICD code use `icd_code`. You can look up multiple codes by concatenating them.
+To retrieve the "meaning" of an ICD code use `icd_code`. Again, you can look up multiple codes by combining them with `c()`.
 
 ```{r}
 
@@ -207,7 +189,7 @@ ukb_icd_code_meaning(icd.code = "I74", icd.version = 10)
 
 <br>
 
-Search for a class of diseases with a keyword
+Search for a class of diseases with a keyword. Supplying multiple keywords with `c()`, will return all ICD entries containing *any* of the keywords.
 
 ```{r}
 
@@ -229,6 +211,17 @@ ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "I")
 
 # ICD-10 chapter 2, C00-D49, Neoplasms 
 ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "C|D[0-4].")
+
+```
+
+
+<br>
+
+To retrieve frequency for one or more ICD diagnoses by the levels of a reference variable, e.g., sex (male or female) use `ukb_icd_freq_by`. If the variable is continuous, it is divided into N approximately equal-sized groups () within which ICD diagnosis frequency is calculated. ukb_icd_freq_by also includes an option to produce a figure of ICD diagnosis frequency by reference variable. 
+
+```{r}
+
+ukb_icd_freq_by(my_ukb_data, reference.var = , freq.plot = TRUE)
 
 ```
 

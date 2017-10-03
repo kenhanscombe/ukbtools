@@ -23,33 +23,16 @@ knitr::opts_chunk$set(
 
 ## ------------------------------------------------------------------------
 #  
+#  my_ukb_key <- ukb_df_field("ukbxxxx", path = "/full/path/to/my/fileset")
+#  
+
+## ------------------------------------------------------------------------
+#  
 #  ukbxxxx_data <- ukb_df("ukbxxxx")
 #  ukbyyyy_data <- ukb_df("ukbyyyy")
 #  ukbzzzz_data <- ukb_df("ukbzzzz")
 #  
-#  # Merge with your preferred method
-#  my_ukb_data <- plyr::join_all(
-#    list(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data),
-#    by = "eid",
-#    type = "full"
-#  )
-#  
-
-## ------------------------------------------------------------------------
-#  
-#  ukb_names <- c(
-#    names(ukbxxxx_data),
-#    names(ukbyyyy_data),
-#    names(ukbzzzz_data)
-#  )
-#  
-#  count_ukb_names <- data.frame(table(ukb_names))
-#  dim(count_ukb_names[count_names$Freq > 1, ])
-#  
-
-## ------------------------------------------------------------------------
-#  
-#  ukb_df_join_all(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data)
+#  ukb_df_full_join(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data)
 #  
 
 ## ------------------------------------------------------------------------
@@ -88,6 +71,11 @@ knitr::opts_chunk$set(
 #  
 #  # ICD-10 chapter 2, C00-D49, Neoplasms
 #  ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "C|D[0-4].")
+#  
+
+## ------------------------------------------------------------------------
+#  
+#  ukb_icd_freq_by(my_ukb_data, reference.var = , freq.plot = TRUE)
 #  
 
 ## ------------------------------------------------------------------------

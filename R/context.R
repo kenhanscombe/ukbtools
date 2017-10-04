@@ -60,7 +60,8 @@ ukb_context <- function(
       coord_flip() +
       theme(
         legend.position = "top",
-        axis.title.y = element_text(face = "bold")
+        axis.title.y = element_text(face = "bold"),
+        panel.grid = element_blank()
       ) +
       labs(x = "Sex", fill = ""),
 
@@ -68,35 +69,35 @@ ukb_context <- function(
       geom_density(na.rm = TRUE) +
       scale_fill_manual(values = c("grey35", NA)) +
       scale_color_manual(values = c("grey35", "hotpink")) +
-      theme(legend.position = "none", axis.title.x = element_text(face = "bold")) +
+      theme(legend.position = "none", axis.title.x = element_text(face = "bold"), panel.grid = element_blank()) +
       labs(x = "Age"),
 
     ggplot2::ggplot(data, aes_string(socioeconomic.var, fill = fill.var, color = fill.var)) +
       geom_density(na.rm = TRUE) +
       scale_fill_manual(values = c("grey35", NA)) +
       scale_color_manual(values = c("grey35", "hotpink")) +
-      theme(legend.position = "none", axis.title.x = element_text(face = "bold")) +
+      theme(legend.position = "none", axis.title.x = element_text(face = "bold"), panel.grid = element_blank()) +
       labs(x = "Townsend deprivation index"),
 
     ggplot2::ggplot(data, aes_string(ethnicity.var, fill = fill.var)) +
       geom_bar(position = bar.position, na.rm = TRUE, width = .7) +
       scale_fill_manual(values = c("grey35", "hotpink"), na.value = "grey65") +
       coord_flip() +
-      theme(legend.position = "none", axis.title.y = element_text(face = "bold")) +
+      theme(legend.position = "none", axis.title.y = element_text(face = "bold"), panel.grid = element_blank()) +
       labs(x = "Ethnic Background"),
 
     ggplot2::ggplot(data, aes_string("centre", fill = fill.var)) +
       geom_bar(position = bar.position, na.rm = TRUE, width = .6) +
       scale_fill_manual(values = c("grey35", "hotpink"), na.value = "grey65") +
       coord_flip() +
-      theme(legend.position = "none", axis.title.y = element_text(face = "bold")) +
+      theme(legend.position = "none", axis.title.y = element_text(face = "bold"), panel.grid = element_blank()) +
       labs(x = "Assessment Centre"),
 
     ggplot2::ggplot(data, aes_string(employment.var, fill = fill.var)) +
       geom_bar(position = bar.position, na.rm = TRUE, width = .3) +
       scale_fill_manual(values = c("grey35", "hotpink"), na.value = "grey65") +
       coord_flip() +
-      theme(legend.position = "none", axis.title.y = element_text(face = "bold")) +
+      theme(legend.position = "none", axis.title.y = element_text(face = "bold"), panel.grid = element_blank()) +
       labs(x = "Employment Status"),
 
     cols = 2

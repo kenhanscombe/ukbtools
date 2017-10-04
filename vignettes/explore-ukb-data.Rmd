@@ -217,14 +217,18 @@ ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "C|D[0-4].")
 
 <br>
 
-To retrieve frequency for one or more ICD diagnoses by the levels of a reference variable, e.g., sex (male or female) use `ukb_icd_freq_by`. If the variable is continuous, it is divided into N approximately equal-sized groups () within which ICD diagnosis frequency is calculated. ukb_icd_freq_by also includes an option to produce a figure of ICD diagnosis frequency by reference variable. 
+To retrieve frequency for one or more ICD diagnoses by the levels of a reference variable, e.g., sex (male or female) use `ukb_icd_freq_by`. If the variable is continuous, it is divided into N approximately equal-sized groups (default = 10) within which ICD diagnosis frequency is calculated. ukb_icd_freq_by also includes an option to produce a figure of ICD diagnosis frequency by reference variable. Diagnoses of interest are passed to `icd.code`. The default ICD codes are the WHO top 3 cause of death worldwide (2015): coronary artery disease (CAD), cerebrovascular disease/ stroke, lower respiratory tract infection (LTRI).
 
 ```{r}
 
-ukb_icd_freq_by(my_ukb_data, reference.var = , freq.plot = TRUE)
+# To plot the frequency of the default ICD codes with respect to BMI
+ukb_icd_freq_by(my_ukb_data, reference.var = "body_mass_index_bmi_0_0", freq.plot = TRUE)
 
 ```
 
+<br>
+
+__Note.__ Setting `freq.plot = FALSE` (default) returns a dataframe of the frequencies. Values for the reference variable group ranges are in the column "group".
 
 <br>
 <br>
@@ -282,7 +286,7 @@ ukb_gen_het(my_ukb_data, all.het = TRUE)
 my_gen_rel <- ukb_gen_rel(my_ukb_data)
 
 # To get a count and plot of degree of relatedness
-ukb_gen_rel_count(my_ukb_data, plot = TRUE)
+ukb_gen_rel_count(my_gen_rel, plot = TRUE)
 
 ```
 

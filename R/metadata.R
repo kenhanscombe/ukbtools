@@ -193,7 +193,10 @@ ukb_gen_rel_count <- function(data, plot = FALSE) {
         y = "KING kinship coefficient",
         color = "Relatedness"
       ) +
-      theme(legend.position = "bottom")
+      theme(
+        legend.position = "bottom",
+        panel.grid = element_blank()
+      )
   } else {
     relatedness %>%
       count(ped_related) %>%

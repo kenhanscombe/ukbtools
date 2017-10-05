@@ -151,16 +151,14 @@ ukb_icd_keyword <- function(description, icd.version = 10) {
 #' ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "C|D[0-4].")
 #' }
 #'
-ukb_icd_prevalence <- function(data, icd.version = 10, icd.code) {
-
-  n_observations <- nrow(data)
+ukb_icd_prevalence <- function(data, icd.code, icd.version = 10) {
 
   ukb_case <- data %>%
     dplyr::select(matches(paste("^diagnoses.*icd", icd.version, sep = ""))) %>%
     purrr::map_df(~ grepl(icd.code, ., perl = TRUE)) %>%
-    (function(x) apply(x, 1, any))(.)
+    rowSums() > 0
 
-  sum(ukb_case)/n_observations
+  sum(ukb_case, na.rm = TRUE) / length(ukb_case)
 }
 
 
@@ -207,7 +205,10 @@ ukb_icd_freq_by <- function(
     )
   }
 
-  l <- split(df, categorized_var)
+  l <- split(
+    dplyr::select(df, matches(paste("^diagnoses.*icd", icd.version, sep = ""))),
+    categorized_var
+  )
   x <- data.frame(group = names(l))
   for (i in seq_along(l)) {
     for (j in seq_along(icd.code)) {

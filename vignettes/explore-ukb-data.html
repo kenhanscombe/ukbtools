@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ken B. Hanscombe" />
 
-<meta name="date" content="2017-10-03" />
+<meta name="date" content="2017-10-05" />
 
 <title>Explore UK Biobank data</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Explore UK Biobank data</h1>
 <h4 class="author"><em>Ken B. Hanscombe</em></h4>
-<h4 class="date"><em>2017-10-03</em></h4>
+<h4 class="date"><em>2017-10-05</em></h4>
 
 
 
@@ -155,8 +155,11 @@ ukbzzzz_data &lt;-<span class="st"> </span><span class="kw">ukb_df</span>(<span 
 <span class="co"># ICD-10 chapter 2, C00-D49, Neoplasms </span>
 <span class="kw">ukb_icd_prevalence</span>(my_ukb_data, <span class="dt">icd.version =</span> <span class="dv">10</span>, <span class="dt">icd.diagnosis =</span> <span class="st">&quot;C|D[0-4].&quot;</span>)</code></pre></div>
 <p><br></p>
-<p>To retrieve frequency for one or more ICD diagnoses by the levels of a reference variable, e.g., sex (male or female) use <code>ukb_icd_freq_by</code>. If the variable is continuous, it is divided into N approximately equal-sized groups () within which ICD diagnosis frequency is calculated. ukb_icd_freq_by also includes an option to produce a figure of ICD diagnosis frequency by reference variable.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ukb_icd_freq_by</span>(my_ukb_data, <span class="dt">reference.var =</span> , <span class="dt">freq.plot =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>To retrieve frequency for one or more ICD diagnoses by the levels of a reference variable, e.g., sex (male or female) use <code>ukb_icd_freq_by</code>. If the variable is continuous, it is divided into N approximately equal-sized groups (default = 10) within which ICD diagnosis frequency is calculated. ukb_icd_freq_by also includes an option to produce a figure of ICD diagnosis frequency by reference variable. Diagnoses of interest are passed to <code>icd.code</code>. The default ICD codes are the WHO top 3 cause of death worldwide (2015): coronary artery disease (CAD), cerebrovascular disease/ stroke, lower respiratory tract infection (LTRI).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># To plot the frequency of the default ICD codes with respect to BMI</span>
+<span class="kw">ukb_icd_freq_by</span>(my_ukb_data, <span class="dt">reference.var =</span> <span class="st">&quot;body_mass_index_bmi_0_0&quot;</span>, <span class="dt">freq.plot =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p><br></p>
+<p><strong>Note.</strong> Setting <code>freq.plot = FALSE</code> (default) returns a dataframe of the frequencies. Values for the reference variable group ranges are in the column “group”.</p>
 <p><br> <br></p>
 </div>
 <div id="retrieving-genetic-metadata" class="section level2">
@@ -178,7 +181,7 @@ my_gen_pcs &lt;-<span class="st"> </span><span class="kw">ukb_gen_pcs</span>(my_
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_gen_rel &lt;-<span class="st"> </span><span class="kw">ukb_gen_rel</span>(my_ukb_data)
 
 <span class="co"># To get a count and plot of degree of relatedness</span>
-<span class="kw">ukb_gen_rel_count</span>(my_ukb_data, <span class="dt">plot =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<span class="kw">ukb_gen_rel_count</span>(my_gen_rel, <span class="dt">plot =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><br> <br></p>
 </div>
 <div id="read-and-write" class="section level2">

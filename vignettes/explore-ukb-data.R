@@ -75,7 +75,8 @@ knitr::opts_chunk$set(
 
 ## ------------------------------------------------------------------------
 #  
-#  ukb_icd_freq_by(my_ukb_data, reference.var = , freq.plot = TRUE)
+#  # To plot the frequency of the default ICD codes with respect to BMI
+#  ukb_icd_freq_by(my_ukb_data, reference.var = "body_mass_index_bmi_0_0", freq.plot = TRUE)
 #  
 
 ## ------------------------------------------------------------------------
@@ -100,7 +101,7 @@ knitr::opts_chunk$set(
 #  my_gen_rel <- ukb_gen_rel(my_ukb_data)
 #  
 #  # To get a count and plot of degree of relatedness
-#  ukb_gen_rel_count(my_ukb_data, plot = TRUE)
+#  ukb_gen_rel_count(my_gen_rel, plot = TRUE)
 #  
 
 ## ---- eval = FALSE-------------------------------------------------------

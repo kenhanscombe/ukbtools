@@ -1,5 +1,5 @@
 Package: ukbtools
-Version: 0.9.1.9000
+Version: 0.10.0
 Title: Manipulate and Explore UK Biobank Data
 Authors@R: person("Ken", "Hanscombe", email = "ken.hanscombe@gmail.com", role = c("aut", "cre"))
 Maintainer: Ken Hanscombe <ken.hanscombe@gmail.com>

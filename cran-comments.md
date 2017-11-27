@@ -1,4 +1,62 @@
 
+# Update to version 0.10.0
+
+
+## Test environments
+
+* local OS X High Sierra 10.13.1, R 3.4.2
+* ubuntu 14.04 on travis-ci (devel and release)
+* win-builder (devel and release)
+
+
+## R CMD check results
+
+#### local OS X High Sierra 10.13.1, R 3.4.2
+
+Status: OK
+R CMD check results
+0 errors | 0 warnings | 0 notes
+R CMD check succeeded
+
+
+#### ubuntu 14.04 on travis-ci (devel and release)
+
+R-release
+R 3.3.0
+
+R-devel
+
+
+#### win-builder (devel and release)
+
+R-release
+Status: 1 NOTE
+* R version 3.4.2 (2017-09-28)
+
+Possibly mis-spelled words in DESCRIPTION:
+  Biobank (3:34, 6:44)
+  ICD (7:67)
+  UKB (6:97)
+  dataset (6:82)
+  fileset (6:101)
+  html (6:121)
+  metadata (8:22)
+
+R-devel
+Status: OK
+* using R Under development (unstable) (2017-09-12 r73242)
+* using platform: x86_64-w64-mingw32 (64-bit)
+
+
+## Downstream dependencies
+
+There are currently no downstream dependencies for this package
+
+
+
+
+***
+
 ## Example data
 
 I've left a couple of examples to run, e.g., some of the ICD functions that query publicly available data that I've incorporated as queryable datasets. Most functions however rely on a "UKB dataset" created with ukb_df. ukb_df itself requires raw data (files) from a approved UK Biobank study so this is not feasible. The UK Biobank is very sensitive data (primary demographic data, genetic data, etc.). It would not be easy to generate example data for all the variables required, that is representative of the UK Biobank, without making the UK Biobank and it's participants very uncomfortable.

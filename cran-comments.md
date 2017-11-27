@@ -23,8 +23,10 @@ R CMD check succeeded
 
 R-release
 R 3.3.0
+Done. Your build exited with 0.
 
 R-devel
+Done. Your build exited with 0.
 
 
 #### win-builder (devel and release)

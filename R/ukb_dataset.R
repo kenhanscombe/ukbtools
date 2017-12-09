@@ -200,8 +200,8 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
   }
 
   f <- gsub(
-    "read.*$" ,
-    sprintf("read.delim('%s')", tab_location) ,
+    "^read.delim*$" ,
+    sprintf("read.delim('%s')", tab_location),
     readLines(r_location))
   cat(f, file = r_location, sep = "\n")
 }

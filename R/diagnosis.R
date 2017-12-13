@@ -219,7 +219,7 @@ ukb_icd_freq_by <- function(
   rm(l)
 
   if(is.numeric(df[[reference.var]])) {
-    o <- order(as.numeric(gsub("[[:punct:]]", "", gsub(",.*$", "", levels(x$group)))))
+    o <- order(as.numeric(gsub("[\\(\\[]", "", gsub(",.*$", "", levels(x$group)))))
     levels(x$group)[o]
     x$group <- factor(x$group, levels = levels(x$group)[o])
   }

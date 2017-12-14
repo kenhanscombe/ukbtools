@@ -1,11 +1,11 @@
 
-# ukbtools 0.10.1
+# ukbtools 0.10.1.9000
 
 Bug fix:
 
 * `ukb_icd_freq_by`: corrected order by levels of `reference.var` in the optional plot. (order in the default dataframe returned was correct.)
 
-* `ukb_df`: made r source file read.delim update more specific (1 case reported of regular expression matching word elsewhere in the source file.)  
+* `ukb_df`: corrected tab file path update in r source file. Specifically, made regular expression more specific (1 case reported of regular expression matching word elsewhere in the source file.). Also, replaced utils::read.delim with readr::read_tsv for faster read, with progress bar.
 
 
 

@@ -1,5 +1,5 @@
 
-globalVariables(c(".", "eid", "pair", "ibs0", "kinship", "category_related", "ped_related", "code", "heterozygosity_0_0"))
+globalVariables(c(".", "eid", "pair", "ibs0", "kinship", "category_related", "ped_related", "code", "heterozygosity_0_0", "field.tab", "col.type", "variable"))
 
 #' Reads a UK Biobank phenotype fileset and returns a single dataset.
 #'
@@ -15,7 +15,7 @@ globalVariables(c(".", "eid", "pair", "ibs0", "kinship", "category_related", "pe
 #'
 #' @seealso \code{\link{ukb_df_field}}
 #'
-#' @import XML
+#' @import XML stringr
 #' @export
 #'
 #' @examples
@@ -40,11 +40,22 @@ globalVariables(c(".", "eid", "pair", "ibs0", "kinship", "category_related", "pe
 #' }
 #'
 ukb_df <- function(fileset, path = ".", data.pos = 2) {
-  html_file <- sprintf("%s.html", fileset)
-  r_file <- sprintf("%s.r", fileset)
-  tab_file <- sprintf("%s.tab", fileset)
+  html_file <- stringr::str_interp("${fileset}.html")
+  r_file <- stringr::str_interp("${fileset}.r")
+  tab_file <- stringr::str_interp("${fileset}.tab")
 
-  .update_tab_path(fileset, path)
+  # Column types as described by UKB
+  # http://biobank.ctsu.ox.ac.uk/crystal/help.cgi?cd=value_type
+  col_type <- c("Sequence" = "integer", "Integer" = "integer", "Categorical (single)" = "character",
+                "Categorical (multiple)" = "character", "Continuous" = "double", "Text" = "character",
+                "Date" = "character", "Time" = "character", "Compound" = "character",
+                "Binary object" = "character", "Records" = "character")
+
+  df <- ukb_df_field(fileset, path = path) %>%
+    mutate(read = str_c(field.tab, " = col_", col_type[col.type], "()"))
+
+  .update_tab_path(fileset, column_type = str_c(df$read, collapse = ", "), path)
+
 
   source(
     if (path == ".") {
@@ -55,17 +66,7 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
     local = TRUE
   )
 
-  html_internal_doc <- XML::htmlParse(file.path(path, html_file))
-  html_table_nodes <- XML::getNodeSet(html_internal_doc, "//table")
-  html_table = XML::readHTMLTable(
-    html_table_nodes[[data.pos]],
-    as.data.frame = TRUE,
-    stringsAsFactors = FALSE,
-    colClasses = c("integer", "character", "integer", "character", "character")
-  )
-
-  variable_names <- .column_name_lookup(html_table)
-  names(bd) <- variable_names[names(bd)]
+  names(bd) <- df$col.name[match(names(bd), df$field.tab)]
   return(bd)
 }
 
@@ -84,7 +85,7 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
 #'
 #' @seealso \code{\link{ukb_df}}
 #'
-#' @import XML
+#' @import XML stringr
 #' @export
 #' @examples
 #' \dontrun{
@@ -94,9 +95,10 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
 #' }
 #'
 ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
-  html_file <- sprintf("%s.html", fileset)
+  html_file <- stringr::str_interp("${fileset}.html")
   html_internal_doc <- XML::htmlParse(file.path(path, html_file))
   html_table_nodes <- XML::getNodeSet(html_internal_doc, "//table")
+
   html_table = XML::readHTMLTable(
     html_table_nodes[[data.pos]],
     as.data.frame = TRUE,
@@ -112,11 +114,12 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
     names(lookup) <- old_var_names
     return(lookup)
   } else {
-    lookup.reference <- data.frame(
+    lookup.reference <- data_frame(
       field.showcase = gsub("-.*$", "", df[, "UDI"]),
         field.html = df[, "UDI"],
       field.tab = old_var_names,
-      names = lookup)
+      col.type = df[, "Type"],
+      col.name = lookup)
     return(lookup.reference)
   }
 }
@@ -186,9 +189,9 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
 # @param fileset prefix for UKB fileset
 # @param path The path to the directory containing your UKB fileset. The default value is the current directory.
 #
-.update_tab_path <- function(fileset, path = ".") {
-  r_file <- sprintf("%s.r", fileset)
-  tab_file <- sprintf("%s.tab", fileset)
+.update_tab_path <- function(fileset, column_type, path = ".") {
+  r_file <- stringr::str_interp("${fileset}.r")
+  tab_file <- stringr::str_interp("${fileset}.tab")
 
   # Update path to tab file in R source
   if(path == ".") {
@@ -200,9 +203,11 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
   }
 
   f <- gsub(
-    "^read\\.delim.*$" ,
-    sprintf("read.delim('%s')", tab_location),
-    readLines(r_location))
+    "read\\.delim.*$" ,
+    stringr::str_interp("read_tsv('${file.path(path, tab_file)}', col_types = cols(${column_type}))"),
+    readLines(r_location)
+    )
+
   cat(f, file = r_location, sep = "\n")
 }
 

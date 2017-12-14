@@ -21,7 +21,8 @@ Imports:
     plyr,
     tibble,
     tidyr,
-    scales
+    scales,
+    stringr
 RoxygenNote: 6.0.1
 Suggests: knitr,
     rmarkdown

@@ -1,4 +1,33 @@
 
+# Update to version 0.10.1
+
+
+## Test environments
+
+* local OS X High Sierra 10.13.1, R 3.4.3
+* ubuntu 14.04 on travis-ci (devel and release)
+* win-builder (devel and release)
+
+
+## R CMD check results
+
+#### local OS X High Sierra 10.13.1, R 3.4.3
+
+Status: OK
+R CMD check results
+0 errors | 0 warnings | 0 notes
+R CMD check succeeded
+
+
+#### ubuntu 14.04 on travis-ci (devel and release)
+
+
+#### win-builder (devel and release)
+
+
+***
+
+
 # Update to version 0.10.0
 
 

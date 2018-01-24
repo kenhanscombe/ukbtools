@@ -4,15 +4,14 @@
 
 ## Test environments
 
-* local OS X High Sierra 10.13.1, R 3.4.3
+* local OS X High Sierra 10.13.2, R 3.4.3
 * ubuntu 14.04 on travis-ci (devel and release)
 * win-builder (devel and release)
 
 
 ## R CMD check results
 
-#### local OS X High Sierra 10.13.1, R 3.4.3
-
+#### local OS X High Sierra 10.13.2, R 3.4.3 (2017-11-30)
 Status: OK
 R CMD check results
 0 errors | 0 warnings | 0 notes
@@ -20,9 +19,38 @@ R CMD check succeeded
 
 
 #### ubuntu 14.04 on travis-ci (devel and release)
+R-release
+R 3.4.2 (2017-01-27)
+Done. Your build exited with 0.
+
+R Under development (unstable) (2018-01-22 r74151)
+Done. Your build exited with 0.
 
 
 #### win-builder (devel and release)
+R-release
+Status: 1 NOTE
+* using R version 3.4.3 (2017-11-30)
+* using platform: x86_64-w64-mingw32 (64-bit)
+
+Possibly mis-spelled words in DESCRIPTION:
+  Biobank (3:34, 6:44)
+  ICD (7:67)
+  UKB (6:97)
+  fileset (6:101)
+
+R-devel
+Status: OK
+* R Under development (unstable) (2018-01-20 r74146)
+* using platform: x86_64-w64-mingw32 (64-bit)
+
+
+## Downstream dependencies
+
+There are currently no downstream dependencies for this package
+
+
+
 
 
 ***

@@ -21,9 +21,9 @@ ukb_gen_read_sample <- function(
 
 
 
-#' Reads a plink format fam file
+#' Reads a PLINK format fam file
 #'
-#' This is wrapper for read_table that reads a basic plink fam file. For plink hard-called data, it may be useful to use the fam file ids as a filter for your phenotype and covariate data.
+#' This is wrapper for read_table that reads a basic PLINK fam file. For plink hard-called data, it may be useful to use the fam file ids as a filter for your phenotype and covariate data.
 #'
 #' @param file A path to a fam file.
 #' @param col.names A character vector of column names. Default: c("FID", "IID", "paternalID", "maternalID", "sex", "phenotype")
@@ -43,17 +43,17 @@ ukb_gen_read_fam <- function(
 
 
 
-#' Writes a plink format phenotype or covariate file
+#' Writes a PLINK format phenotype or covariate file
 #'
 #' This function writes a space-delimited file with header, with the obligatory first two columns FID and IID. Use this function to write phenotype and covariate files for downstream genetic analysis in \href{https://www.cog-genomics.org/plink2}{plink} - the format is the same.
 #'
 #' @param x A UKB dataset.
 #' @param path A path to a file.
-#' @param ukb.variables A character vector of either the phenotypes for a plink phenotype file, or covariates for a plink covariate file.
+#' @param ukb.variables A character vector of either the phenotypes for a PLINK phenotype file, or covariates for a PLINK covariate file.
 #' @param ukb.id The id variable name (default = "eid").
 #' @param na.strings String used for missing values. Defaults to NA.
 #'
-  #' @details The function writes the id variable in your dataset to the first two columns of the output file with the names FID and IID - you do not need to have two id columns in the data.frame passed to the argument \code{x}. Use the \code{--pheno-name} and \code{--covar-name} plink flags to select columns by name. See the plink documentation for the \code{--pheno}, \code{--mpheno}, \code{--pheno-name}, and \code{--covar}, \code{--covar-name}, \code{--covar-number} flags.
+  #' @details The function writes the id variable in your dataset to the first two columns of the output file with the names FID and IID - you do not need to have two id columns in the data.frame passed to the argument \code{x}. Use the \code{--pheno-name} and \code{--covar-name} PLINK flags to select columns by name. See the PLINK documentation for the \code{--pheno}, \code{--mpheno}, \code{--pheno-name}, and \code{--covar}, \code{--covar-name}, \code{--covar-number} flags.
 #'
 #' @seealso  \code{\link{ukb_gen_read_sample}} to read a sample file, and \code{\link{ukb_gen_write_bgenie}} to write phenotype and covariate files to BGENIE format.
 #'

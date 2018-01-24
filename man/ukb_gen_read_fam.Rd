@@ -2,7 +2,7 @@
 % Please edit documentation in R/readwrite.R
 \name{ukb_gen_read_fam}
 \alias{ukb_gen_read_fam}
-\title{Reads a plink format fam file}
+\title{Reads a PLINK format fam file}
 \usage{
 ukb_gen_read_fam(file, col.names = c("FID", "IID", "paternalID", "maternalID",
   "sex", "phenotype"), na.strings = "-9")
@@ -15,7 +15,7 @@ ukb_gen_read_fam(file, col.names = c("FID", "IID", "paternalID", "maternalID",
 \item{na.strings}{Character vector of strings to use for missing values. Default "-9". Set this option to character() to indicate no missing values.}
 }
 \description{
-This is wrapper for read_table that reads a basic plink fam file. For plink hard-called data, it may be useful to use the fam file ids as a filter for your phenotype and covariate data.
+This is wrapper for read_table that reads a basic PLINK fam file. For plink hard-called data, it may be useful to use the fam file ids as a filter for your phenotype and covariate data.
 }
 \seealso{
 \code{\link{ukb_gen_read_sample}} to read a sample file

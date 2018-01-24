@@ -220,7 +220,7 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
 #' @param ... Supply comma separated unquoted names of to-be-merged UKB datasets (created with \code{\link{ukb_df}}). Arguments are passed to \code{list}.
 #' @param by Variable used to merge multiple dataframes (default = "eid").
 #'
-#' @details The function takes a comma separated list of unquoted datasets. By explicitly setting the join key to "eid" only (Default value of the \code{by} parameter), any additional variables common to any two tables will have ".x" and ".y" appended to their names. If you are satisfied the additional variables are identical to the original, the copies can be safely deleted. For example, if \code{setequal(my_ukb_data$var, my_ukb_data$var.x)} is \code{TRUE}, then my_ukb_data$var.x can be dropped. A \code{dlyr::full_join} is like the set operation union in that all abservation from all tables are included, i.e., all samples are included even if they are not included in all datasets.
+#' @details The function takes a comma separated list of unquoted datasets. By explicitly setting the join key to "eid" only (Default value of the \code{by} parameter), any additional variables common to any two tables will have ".x" and ".y" appended to their names. If you are satisfied the additional variables are identical to the original, the copies can be safely deleted. For example, if \code{setequal(my_ukb_data$var, my_ukb_data$var.x)} is \code{TRUE}, then my_ukb_data$var.x can be dropped. A \code{dlyr::full_join} is like the set operation union in that all observations from all tables are included, i.e., all samples are included even if they are not included in all datasets.
 #'
 #' NB. \code{ukb_df_full_join} will fail if any variable names are repeated **within** a single UKB dataset. This is unlikely to occur, however, \code{ukb_df} creates variable names by combining a snake_case descriptor with the variable's **index** and **array**. If an index_array combination is incorrectly repeated, this will result in a duplicated variable. If the join fails, you can use \code{\link{ukb_df_duplicated_name}} to find duplicated names. See \code{vignette(topic = "explore-ukb-data", package = "ukbtools")} for further details.
 #'
@@ -255,7 +255,7 @@ ukb_df_full_join <- function(..., by = "eid") {
 #'
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
 #'
-#' @return Returns a named list of numeric vectors, one for each duplicated variable name. The numeric vectors contain the column indeces of duplicates.
+#' @return Returns a named list of numeric vectors, one for each duplicated variable name. The numeric vectors contain the column indices of duplicates.
 #'
 #' @details Duplicates *within* a UKB dataset are unlikely to occur, however, \code{ukb_df} creates variable names by combining a snake_case descriptor with the variable's **index** and **array**. If an index_array combination is incorrectly repeated in the original UKB data, this will result in a duplicated variable name. . See \code{vignette(topic = "explore-ukb-data", package = "ukbtools")} for further details.
 #'

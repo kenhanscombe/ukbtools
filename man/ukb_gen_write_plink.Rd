@@ -2,7 +2,7 @@
 % Please edit documentation in R/readwrite.R
 \name{ukb_gen_write_plink}
 \alias{ukb_gen_write_plink}
-\title{Writes a plink format phenotype or covariate file}
+\title{Writes a PLINK format phenotype or covariate file}
 \usage{
 ukb_gen_write_plink(x, path, ukb.variables, ukb.id = "eid",
   na.strings = "NA")
@@ -12,7 +12,7 @@ ukb_gen_write_plink(x, path, ukb.variables, ukb.id = "eid",
 
 \item{path}{A path to a file.}
 
-\item{ukb.variables}{A character vector of either the phenotypes for a plink phenotype file, or covariates for a plink covariate file.}
+\item{ukb.variables}{A character vector of either the phenotypes for a PLINK phenotype file, or covariates for a PLINK covariate file.}
 
 \item{ukb.id}{The id variable name (default = "eid").}
 
@@ -22,7 +22,7 @@ ukb_gen_write_plink(x, path, ukb.variables, ukb.id = "eid",
 This function writes a space-delimited file with header, with the obligatory first two columns FID and IID. Use this function to write phenotype and covariate files for downstream genetic analysis in \href{https://www.cog-genomics.org/plink2}{plink} - the format is the same.
 }
 \details{
-The function writes the id variable in your dataset to the first two columns of the output file with the names FID and IID - you do not need to have two id columns in the data.frame passed to the argument \code{x}. Use the \code{--pheno-name} and \code{--covar-name} plink flags to select columns by name. See the plink documentation for the \code{--pheno}, \code{--mpheno}, \code{--pheno-name}, and \code{--covar}, \code{--covar-name}, \code{--covar-number} flags.
+The function writes the id variable in your dataset to the first two columns of the output file with the names FID and IID - you do not need to have two id columns in the data.frame passed to the argument \code{x}. Use the \code{--pheno-name} and \code{--covar-name} PLINK flags to select columns by name. See the PLINK documentation for the \code{--pheno}, \code{--mpheno}, \code{--pheno-name}, and \code{--covar}, \code{--covar-name}, \code{--covar-number} flags.
 }
 \examples{
 \dontrun{

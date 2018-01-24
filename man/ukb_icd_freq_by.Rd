@@ -17,7 +17,7 @@ ukb_icd_freq_by(data, reference.var, n.groups = 10,
 
 \item{reference.var}{UKB ICD frequencies will be calculated by levels of this variable. If continuous, by default it is cut into 10 intervals of approximately equal size (set with n.groups).}
 
-\item{n.groups}{Number of approximately equal-sized groups to split a continous variable into.}
+\item{n.groups}{Number of approximately equal-sized groups to split a continuous variable into.}
 
 \item{icd.code}{ICD disease code(s) e.g. "I74". Use a regular expression to specify a broader set of diagnoses, e.g. "I" captures all Diseases of the circulatory system, I00-I99, "C|D[0-4]." captures all Neoplasms, C00-D49. Default is the WHO top 3 causes of death globally in 2015, see \url{http://www.who.int/healthinfo/global_burden_disease/GlobalCOD_method_2000_2015.pdf?ua=1}.}
 
@@ -25,7 +25,7 @@ ukb_icd_freq_by(data, reference.var, n.groups = 10,
 
 \item{plot.title}{Title for the plot. Default describes the default icd.codes, WHO top 6 cause of death 2015.}
 
-\item{legend.col}{Number of columns for the legend. (Defeault = 1).}
+\item{legend.col}{Number of columns for the legend. (Default = 1).}
 
 \item{legend.pos}{Legend position, default = "right".}
 

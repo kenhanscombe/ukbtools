@@ -10,7 +10,7 @@ ukb_df_duplicated_name(data)
 \item{data}{A UKB dataset created with \code{\link{ukb_df}}.}
 }
 \value{
-Returns a named list of numeric vectors, one for each duplicated variable name. The numeric vectors contain the column indeces of duplicates.
+Returns a named list of numeric vectors, one for each duplicated variable name. The numeric vectors contain the column indices of duplicates.
 }
 \description{
 Checks for duplicated names within a UKB dataset

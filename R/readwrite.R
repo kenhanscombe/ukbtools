@@ -124,9 +124,9 @@ ukb_gen_write_plink_excl <- function(path) {
 #' Writes a space-delimited file with a header, missing character set to "-999", and observations (i.e. UKB subject ids) in sample file order. Use this function to write phenotype and covariate files for downstream genetic analysis in \href{https://jmarchini.org/bgenie/}{BGENIE} - the format is the same.
 #'
 #' @param x A UKB dataset.
-#' @param path A path to a file.
-#' @param ukb.sample Path to the UKB sample file.
+#' @param ukb.sample A UKB sample file.
 #' @param ukb.variables A character vector of either the phenotypes for a BGENIE phenotype file, or covariates for a BGENIE covariate file.
+#' @param path A path to a file.
 #' @param ukb.id The eid variable name (default = "eid").
 #' @param na.strings Character string to be used for missing value in output file. Default = "-999"
 #'
@@ -147,20 +147,21 @@ ukb_gen_write_plink_excl <- function(path) {
 #' ukb_gen_write_bgenie(
 #'    my_ukb_data,
 #'    ukb.sample = my_ukb_sample,
-#'    path = "my_ukb_bgenie.pheno",
 #'    ukb.variables = c("height", "weight", "iq")
+#'    path = "my_ukb_bgenie.pheno",
 #' )
 #'
 #' ukb_gen_write_bgenie(
 #'    my_ukb_data,
 #'    ukb.sample = my_ukb_sample,
-#'    path = "my_ukb_bgenie.cov",
 #'    ukb.variables = c("age", "socioeconomic_status", "genetic_pcs")
+#'    path = "my_ukb_bgenie.cov",
 #' )
 #' }
 #'
-ukb_gen_write_bgenie <- function(x, ukb.sample, path, ukb.variables,
-                                 ukb.id = "eid", na.strings = "-999") {
+ukb_gen_write_bgenie <- function(
+  x, ukb.sample, ukb.variables, path, ukb.id = "eid", na.strings = "-999") {
+
   names(ukb.sample)[1] <- ukb.id
 
   ukb.sample %>%

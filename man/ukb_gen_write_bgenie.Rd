@@ -4,17 +4,17 @@
 \alias{ukb_gen_write_bgenie}
 \title{Writes a BGENIE format phenotype or covariate file.}
 \usage{
-ukb_gen_write_bgenie(x, ukb.sample, path, ukb.variables, ukb.id = "eid",
+ukb_gen_write_bgenie(x, ukb.sample, ukb.variables, path, ukb.id = "eid",
   na.strings = "-999")
 }
 \arguments{
 \item{x}{A UKB dataset.}
 
-\item{ukb.sample}{Path to the UKB sample file.}
-
-\item{path}{A path to a file.}
+\item{ukb.sample}{A UKB sample file.}
 
 \item{ukb.variables}{A character vector of either the phenotypes for a BGENIE phenotype file, or covariates for a BGENIE covariate file.}
+
+\item{path}{A path to a file.}
 
 \item{ukb.id}{The eid variable name (default = "eid").}
 
@@ -36,15 +36,15 @@ my_ukb_sample <- ukb_gen_read_sample("ukb.sample")
 ukb_gen_write_bgenie(
    my_ukb_data,
    ukb.sample = my_ukb_sample,
-   path = "my_ukb_bgenie.pheno",
    ukb.variables = c("height", "weight", "iq")
+   path = "my_ukb_bgenie.pheno",
 )
 
 ukb_gen_write_bgenie(
    my_ukb_data,
    ukb.sample = my_ukb_sample,
-   path = "my_ukb_bgenie.cov",
    ukb.variables = c("age", "socioeconomic_status", "genetic_pcs")
+   path = "my_ukb_bgenie.cov",
 )
 }
 

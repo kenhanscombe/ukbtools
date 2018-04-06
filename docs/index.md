@@ -1,16 +1,15 @@
 
-After downloading and decrypting your UK Biobank (UKB) data with the supplied [UKB "helper programs"](http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf), you have multiple files that need to be brought together to give you a tidy dataset to explore. ukbtools removes all the upfront data wrangling required to get a single dataset for statistical analysis, and provides tools to assist in quality control, query of disease diagnoses, and retrieval of genetic metadata. 
+The __UK Biobank__ is a resource that includes detailed health-related and genetic data on about 500,000 individuals and is available to the research community. __ukbtools__ removes all the upfront data wrangling required to get a single dataset for statistical analysis, and provides tools to assist in quality control, query of disease diagnoses, and retrieval of genetic metadata.
 
 ## Getting started
 
-*Download and decrypt your data and create a UKB fileset (.tab, .r, .html):
+Download and decrypt your data with the supplied ["helper programs"](https://biobank.ctsu.ox.ac.uk/crystal/exinfo.cgi?src=accessing_data_guide#convert). To use ukbtools, you specifically need to create a UKB fileset (.tab, .r, and .html):
 
 ```
 ukb_unpack ukbxxxx.enc key
 ukb_conv ukbxxxx.enc_ukb r
 ukb_conv ukbxxxx.enc_ukb docs
 ```
-
 
 `ukb_unpack` decrypts your downloaded `ukbxxxx.enc` file, outputting a `ukbxxxx.enc_ukb` file. `ukb_conv` with the `r` flag converts the decrypted data to a tab-delimited file `ukbxxxx.tab` and an R script `ukbxxxx.r` that reads the tab file. The `docs` flag creates an html file containing a field-code-to-description table (among others).
 
@@ -20,11 +19,21 @@ ukb_conv ukbxxxx.enc_ukb docs
 
 <br>
 
+## Installing the package
 
-## 2. Making a dataset
+In R,
 
-The function `ukb_df()` takes two arguments, the stem of your fileset and the path, and returns a dataframe with usable column names. 
+```
+# Install from CRAN
+install.packages("ukbtools")
 
+# Install latest development version
+devtools::install_github("kenhanscombe/ukbtools", build_vignettes = TRUE, dependencies = TRUE)
+```
+
+## Making a dataset
+
+The function `ukb_df()` takes the stem of your fileset and returns a dataframe with usable column names. 
 
 ```
 library(ukbtools)
@@ -32,38 +41,34 @@ library(ukbtools)
 my_ukb_data <- ukb_df("ukbxxxx")
 ```
 
-
 You can also specify the path to your fileset if it is not in the current directory. For example, if your fileset is in a subdirectory of the working directory called `data`
 
+```
+my_ukb_data <- ukb_df("ukbxxxx", path = "/full/path/to/my/ukb/fileset/data")
+```
+
+## Making a key
+
+Use `ukb_df_field` to create a field code-to-descriptive name key, as dataframe or named lookup vector.
 
 ```
-my_ukb_data <- ukb_df("ukbxxxx", path = "/full/path/to/my/fileset")
-```
-
-
-Use `ukb_df_field` to create a field-to-descriptive name key, as dataframe or named lookup vector.
-
-```
-my_ukb_key <- ukb_df_field("ukbxxxx", path = "/full/path/to/my/fileset")
+my_ukb_key <- ukb_df_field("ukbxxxx", path = "/full/path/to/my/ukb/fileset/data")
 ```
 
 <br>
 
-__Note:__ You can move the three files in your fileset after creating them with `ukb_conv`, but they should be kept together. `ukb_df()` automatically updates the read call in the R source file to point to the correct directory (the current directly by default, or the directory specified by `path`).
+_Note: You can move the three files in your fileset after creating them with `ukb_conv`, but they should be kept together. `ukb_df()` automatically updates the read call in the R source file to point to the correct directory (the current directly by default, or the directory specified by `path`)._
 
 <br>
-
 
 > __Memory and efficiency__
 >
-> I highly recommend saving your new UKB dataset with `save(my_ukb_data, file = "my_ukb_data.rda")`. You can load the data with `load("my_ukb_data.rda")`. Creating a UKB dataset from my largest UKB fileset which included a 2.6 GB .tab file, took approximately 8 mins; loading the same dataset after the `save` procedure, took about 20 seconds. The saved file was about 200 MB.
+> I recommend saving your new UKB dataset with `save(my_ukb_data, file = "my_ukb_data.rda")`. You can load the data with `load("my_ukb_data.rda")`. Creating a UKB dataset from my largest UKB fileset which included a 2.6 GB .tab file, took approximately 8 mins; loading the same dataset after the `save` procedure, took about 20 seconds. The saved file was about 200 MB.
 
 <br>
 
 
-
-
-### 2.1 Multiple downloads
+## Multiple downloads
 
 If you have multiple UKB downloads, first read then merge them with your preferred method. `ukbtools` includes the function `ukb_df_full_join` which is a thin wrapper around `dplyr::full_join` applied recursively with `purrr::reduce`.
 

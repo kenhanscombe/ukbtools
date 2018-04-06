@@ -16,6 +16,7 @@ globalVariables(c(".", "eid", "pair", "ibs0", "kinship", "category_related", "pe
 #' @seealso \code{\link{ukb_df_field}}
 #'
 #' @import XML stringr
+#' @importFrom data.table fread
 #' @export
 #'
 #' @examples
@@ -52,9 +53,9 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
                 "Binary object" = "character", "Records" = "character")
 
   df <- ukb_df_field(fileset, path = path) %>%
-    mutate(read = str_c(field.tab, " = col_", col_type[col.type], "()"))
+    mutate(fread_column_type = col_type[col.type])
 
-  .update_tab_path(fileset, column_type = str_c(df$read, collapse = ", "), path)
+  .update_tab_path(fileset, column_type = df$fread_column_type, path)
 
 
   source(
@@ -69,6 +70,7 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
   names(bd) <- df$col.name[match(names(bd), df$field.tab)]
   return(bd)
 }
+
 
 
 
@@ -202,9 +204,13 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
     r_location <- file.path(path, r_file)
   }
 
+  edit_date <- Sys.time()
+
   f <- gsub(
-    "read\\.delim.*$" ,
-    stringr::str_interp("read_tsv('${file.path(path, tab_file)}', col_types = cols(${column_type}))"),
+    "bd.*read\\.delim.*$" ,
+    stringr::str_interp(
+"# Read function edited by ukbtools ${edit_date}
+bd <- data.table::fread('${file.path(path, tab_file)}', sep = '\t', header = TRUE, colClasses = ${column_type}, data.table = FALSE)\n"),
     readLines(r_location)
     )
 

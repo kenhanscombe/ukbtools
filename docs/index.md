@@ -3,7 +3,7 @@ The __UK Biobank__ is a resource that includes detailed health-related and genet
 
 ## Getting started
 
-Download and decrypt your data with the supplied ["helper programs"](https://biobank.ctsu.ox.ac.uk/crystal/exinfo.cgi?src=accessing_data_guide#convert). To use ukbtools, you specifically need to create a UKB fileset (.tab, .r, and .html):
+Download and decrypt your data with the supplied [helper programs](https://biobank.ctsu.ox.ac.uk/crystal/exinfo.cgi?src=accessing_data_guide#convert). To use ukbtools, you specifically need to create a UKB fileset (.tab, .r, and .html):
 
 ```
 ukb_unpack ukbxxxx.enc key
@@ -13,11 +13,7 @@ ukb_conv ukbxxxx.enc_ukb docs
 
 `ukb_unpack` decrypts your downloaded `ukbxxxx.enc` file, outputting a `ukbxxxx.enc_ukb` file. `ukb_conv` with the `r` flag converts the decrypted data to a tab-delimited file `ukbxxxx.tab` and an R script `ukbxxxx.r` that reads the tab file. The `docs` flag creates an html file containing a field-code-to-description table (among others).
 
-<br>
-
-*_Full details of the data download and decrypt process are given in the [Using UK Biobank Data](https://biobank.ctsu.ox.ac.uk/crystal/exinfo.cgi?src=accessing_data_guide#convert) documentation . Note: [Updated versions](https://biobank.ctsu.ox.ac.uk/crystal/download.cgi) of these helper programs exist. Other than small name changes (underscores removed) they appear to perform similarly_
-
-<br>
+__Note.__Full details of the data download and decrypt process are given in the [Using UK Biobank Data](https://biobank.ctsu.ox.ac.uk/crystal/exinfo.cgi?src=accessing_data_guide) documentation . [Updated versions](https://biobank.ctsu.ox.ac.uk/crystal/download.cgi) of these helper programs exist. Other than small name changes (underscores removed) they appear to function similarly.
 
 ## Installing the package
 
@@ -55,9 +51,7 @@ Use `ukb_df_field` to create a field code-to-descriptive name key, as dataframe 
 my_ukb_key <- ukb_df_field("ukbxxxx", path = "/full/path/to/my/ukb/fileset/data")
 ```
 
-<br>
-
-_Note: You can move the three files in your fileset after creating them with `ukb_conv`, but they should be kept together. `ukb_df()` automatically updates the read call in the R source file to point to the correct directory (the current directly by default, or the directory specified by `path`)._
+__Note.__ You can move the three files in your fileset after creating them with `ukb_conv`, but they should be kept together. `ukb_df()` automatically updates the read call in the R source file to point to the correct directory (the current directly by default, or the directory specified by `path`).
 
 <br>
 
@@ -82,26 +76,23 @@ ukb_df_full_join(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data)
 
 <br>
 
-__Note:__ The join key is set to "eid" only (default value of the `by` parameter). Any additional variables common to any two tables will have ".x" and ".y" appended to their names. If you are satisfied the additional variables are identical to the original, the copies can be safely deleted. For example, if `setequal(my_ukb_data$var, my_ukb_data$var.x)` is `TRUE`, then my_ukb_data$var.x can be dropped. A `dlyr::full_join` is like the set operation union in that all abservation from all tables are included, i.e., all samples are included even if they are not included in all datasets.
+>__Repeated variables.__
+>
+>The join key is set to "eid" only (default value of the `by` parameter). Any additional variables common to any two tables will have ".x" and ".y" appended to their names. If you are satisfied the additional variables are identical to the original, the copies can be safely deleted. For example, if `setequal(my_ukb_data$var, my_ukb_data$var.x)` is `TRUE`, then my_ukb_data$var.x can be dropped. A `dlyr::full_join` is like the set operation union in that all abservation from all tables are included, i.e., all samples are included even if they are not included in all datasets.
+>
+>
+>Repeated variable names **within** UKB datasets are unlikely to occur. `ukb_df` creates variable names by combining a snake_case descriptor with the variable's *index* and *array*. This should be sufficient to uniquely identify the variable. However, if an *index_array* combination is incorrectly repeated in the original UKB data, this will result in a duplicated variable name. We observed two instances. The variables were encoded *<field>–0.0*, *<field>–1.0*, *<field>––1.0*, and `ukb_df` created a variable named *var_0_0*, *var_1_0*, *var_1_0*. This is probably a typo that should have been *<field>–0.0*, *<field>–1.0*, *<field>–2.0*, consistent with UKB official documentation describing the field as having 3 values for index. We have provided `ukb_df_duplicated_names` to identify duplicated names within a dataset. This will allow the user to make changes as appropriate. We expect the occurrence of such duplicates will be rare.
 
 <br>
 
-Repeated variable names **within** UKB datasets are unlikely to occur. `ukb_df` creates variable names by combining a snake_case descriptor with the variable's *index* and *array*. This should be sufficient to uniquely identify the variable. However, if an *index_array* combination is incorrectly repeated in the original UKB data, this will result in a duplicated variable name. We observed two instances. The variables were encoded *<field>–0.0*, *<field>–1.0*, *<field>––1.0*, and `ukb_df` created a variable named *var_0_0*, *var_1_0*, *var_1_0*. This is probably a typo that should have been *<field>–0.0*, *<field>–1.0*, *<field>–2.0*, consistent with UKB official documentation describing the field as having 3 values for index. We have provided `ukb_df_duplicated_names` to identify duplicated names within a dataset. This will allow the user to make changes as appropriate. We expect the occurrence of such duplicates will be rare.
 
-<br>
-
-
-
-
-## 3. Exploring primary demographics of a UKB subset
+## Exploring primary demographics of a UKB subset
 
 As an exploratory step you might want to look at the demographics of a particular subset of the UKB sample relative to a reference sample. For example, using the `nonmiss.var` argument of `ukb_context` will produce a plot of the primary demographics (sex, age, ethnicity, and Townsend deprivation score) and employment status and assessment centre, for the subsample with data on your variable of interest compared to those without data (i.e. `NA`).
 
 ```
 ukb_context(my_ukb_data, nonmiss.var = "my_variable_of_interest")
 ```
-
-<br>
 
 It is also possible to supply a logical vector with `subset.var` to define the subset and reference sample. This is particularly useful for understanding a subgroup within the UKB study, e.g., obese individuals below age 50.
 
@@ -111,15 +102,9 @@ ukb_context(my_ukb_data, subset.var = subgroup_of_interest)
 ```
 
 
-<br>
-
-
-## 4. Retrieving ICD diagnoses
-
+## Retrieving ICD diagnoses
 
 All ICD related functions begin `ukb_icd_`. Type `ukb_icd_` tab to see the family of functions. The full ICD "code-meaning" tables are available as datasets (`icd9codes`, `icd10codes`). ICD chapter-level tables describing disease blocks are also available for query as datasets (`icd9chapters`, `icd10chapters`)
-
-<br>
 
 To retrieve the full diagnosis of an individual (combine multiple individuals with `c()`)
 
@@ -127,24 +112,17 @@ To retrieve the full diagnosis of an individual (combine multiple individuals wi
 ukb_icd_diagnosis(my_ukb_data, id = "0000000", icd.version = 10)
 ```
 
-<br>
-
-
 To retrieve the "meaning" of an ICD code use `icd_code`. Again, you can look up multiple codes by combining them with `c()`.
 
 ```
 ukb_icd_code_meaning(icd.code = "I74", icd.version = 10)
 ```
 
-<br>
-
 Search for a class of diseases with a keyword. Supplying multiple keywords with `c()`, will return all ICD entries containing *any* of the keywords.
 
 ```
 ukb_icd_keyword("cardio", icd.version = 10)
 ```
-
-<br>
 
 You can calculate the prevalence of a diagnosis in the UKB study (or a subset of the full sample) using `ukb_icd_prevalence`. The `icd.diagnosis` argument takes a regular expression, and so can also be used to retrieve prevalence of a disease "class", i.e., the proportion of individuals with _any_ diagnosis in the disease class.
 
@@ -159,9 +137,6 @@ ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "I")
 ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "C|D[0-4].")
 ```
 
-
-<br>
-
 To retrieve frequency for one or more ICD diagnoses by the levels of a reference variable, e.g., sex (male or female) use `ukb_icd_freq_by`. If the variable is continuous, it is divided into N approximately equal-sized groups (default = 10) within which ICD diagnosis frequency is calculated. ukb_icd_freq_by also includes an option to produce a figure of ICD diagnosis frequency by reference variable. Diagnoses of interest are passed to `icd.code`. The default ICD codes are the WHO top 3 cause of death worldwide (2015): coronary artery disease (CAD), cerebrovascular disease/ stroke, lower respiratory tract infection (LTRI).
 
 ```
@@ -169,17 +144,10 @@ To retrieve frequency for one or more ICD diagnoses by the levels of a reference
 ukb_icd_freq_by(my_ukb_data, reference.var = "body_mass_index_bmi_0_0", freq.plot = TRUE)
 ```
 
-<br>
-
-__Note.__ Setting `freq.plot = FALSE` (default) returns a dataframe of the frequencies. Values for the reference variable group ranges are in the column "group".
-
-<br>
+Setting `freq.plot = FALSE` (default) returns a dataframe of the frequencies. Values for the reference variable group ranges are in the column "group".
 
 
-
-
-
-## 5. Retrieving genetic metadata
+## Retrieving genetic metadata
 
 If you are doing any downstream genetic analyses, you will need the genetic metadata (which should be in you phenotype dataset). Detailed information is available on UKB [genotyping and quality control](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf) and [imputation and association](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/imputation_documentation_May2015.pdf).
 

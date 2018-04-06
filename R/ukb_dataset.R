@@ -157,6 +157,7 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
   name <- gsub("uses_data-coding.*simple_list.$", "", name)
   name <- gsub("uses_data-coding.*hierarchical_tree.", "", name)
   name <- gsub("[^[:alnum:][:space:]_]", "", name)
+  name <- gsub("__*", "_", name)
 
   ukb_index_array <- gsub("^.*-", "", data[, "UDI"])
   ukb_index_array <- gsub("\\.", "_", ukb_index_array)
@@ -207,7 +208,7 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
   edit_date <- Sys.time()
 
   f <- gsub(
-    "bd.*read\\.delim.*$" ,
+    "bd *<- *read.*$" ,
     stringr::str_interp(
 "# Read function edited by ukbtools ${edit_date}
 bd <- data.table::fread('${file.path(path, tab_file)}', sep = '\t', header = TRUE, colClasses = ${column_type}, data.table = FALSE)\n"),

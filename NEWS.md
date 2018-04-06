@@ -1,4 +1,15 @@
 
+# ukbtools 0.10.1.9000
+
+_Development version_
+
+Updated functionality:
+
+* `ukb_df`: Replaced readr::read_tsv with data.table::fread for faster read. 
+
+
+
+
 # ukbtools 0.10.1
 
 Bug fix:

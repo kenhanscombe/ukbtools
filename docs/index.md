@@ -1,9 +1,11 @@
 
+<section class="page-header">
 <a href="https://cran.r-project.org/web/packages/ukbtools/index.html" class="btn">CRAN v0.10.1</a>
+</section>
+
 
 After downloading and decrypting your UK Biobank (UKB) data with the supplied [UKB "helper programs"](http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf), you have multiple files that need to be brought together to give you a tidy dataset to explore. ukbtools removes all the upfront data wrangling required to get a single dataset for statistical analysis, and provides tools to assist in quality control, query of disease diagnoses, and retrieval of genetic metadata. 
 
-<br>
 
 ## Getting started
 

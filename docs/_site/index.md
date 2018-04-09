@@ -1,8 +1,6 @@
 
 The __UK Biobank__ is a resource that includes detailed health-related and genetic data on about 500,000 individuals and is available to the research community. __ukbtools__ removes all the upfront data wrangling required to get a single dataset for statistical analysis, and provides tools to assist in quality control, query of disease diagnoses, and retrieval of genetic metadata.
 
-<br>
-
 ## Getting started
 
 Download and decrypt your data with the supplied [helper programs](https://biobank.ctsu.ox.ac.uk/crystal/exinfo.cgi?src=accessing_data_guide#convert). To use ukbtools, you need to create a UKB fileset (.tab, .r, and .html):
@@ -17,8 +15,6 @@ ukb_unpack decrypts your downloaded ukbxxxx.enc file, outputting a ukbxxxx.enc_u
 
 __Note.__ Full details of the data download and decrypt process are given in the [Using UK Biobank Data](https://biobank.ctsu.ox.ac.uk/crystal/exinfo.cgi?src=accessing_data_guide) documentation . [Updated versions](https://biobank.ctsu.ox.ac.uk/crystal/download.cgi) of these helper programs exist. Other than small name changes (underscores removed) they appear to function similarly.
 
-<br>
-
 ## Installing the package
 
 In R,
@@ -30,8 +26,6 @@ install.packages("ukbtools")
 # Install latest development version
 devtools::install_github("kenhanscombe/ukbtools", build_vignettes = TRUE, dependencies = TRUE)
 ```
-
-<br>
 
 ## Making a dataset
 
@@ -49,8 +43,6 @@ You can also specify the path to your fileset if it is not in the current direct
 my_ukb_data <- ukb_df("ukbxxxx", path = "/full/path/to/my/ukb/fileset/data")
 ```
 
-<br>
-
 ## Making a key
 
 Use `ukb_df_field` to create a field code-to-descriptive name key, as dataframe or named lookup vector.
@@ -65,9 +57,10 @@ __Note.__ You can move the three files in your fileset after creating them with 
 
 > __Memory and efficiency__
 >
-> To reduce you memory usage, you could save your new UKB dataset with `save(my_ukb_data, file = "my_ukb_data.rda")`. Load the dataset with `load("my_ukb_data.rda")`. A UKB dataset from my largest UKB fileset which included a 2.6 GB .tab file took a little under 2 minutes to create with `ukb_df`. The associated .rda file was 138 MB and loaded in a little under 1.5 mins.
+> I recommend saving your new UKB dataset with `save(my_ukb_data, file = "my_ukb_data.rda")`. You can load the data with `load("my_ukb_data.rda")`. To create a UKB dataset from my largest UKB fileset which included a 2.6 GB .tab file took about 1 min 15 sec; loading the same dataset after the `save` procedure, took about 20 seconds. The saved file was about 138 MB.
 
 <br>
+
 
 ## Multiple downloads
 
@@ -105,9 +98,6 @@ ukb_context(my_ukb_data, nonmiss.var = "my_variable_of_interest")
 <img src="img/ukb_context_stack_111017.png" width="800px" >
 </p>
 
-__Figure 1__ Primary demographic data for a UKB subset of interest. 
-
-<br>
 
 It is also possible to supply a logical vector with `subset.var` to define the subset and reference sample. This is particularly useful for understanding a subgroup within the UKB study, e.g., obese individuals below age 50.
 
@@ -116,7 +106,6 @@ subgroup_of_interest <- (my_ukb_data$bmi > 40 & my_ukb_data$age < 50)
 ukb_context(my_ukb_data, subset.var = subgroup_of_interest)
 ```
 
-<br>
 
 ## Retrieving ICD diagnoses
 
@@ -162,7 +151,6 @@ ukb_icd_freq_by(my_ukb_data, reference.var = "body_mass_index_bmi_0_0", freq.plo
 
 Setting `freq.plot = FALSE` (default) returns a dataframe of the frequencies. Values for the reference variable group ranges are in the column "group".
 
-<br>
 
 ## Retrieving genetic metadata
 
@@ -194,6 +182,8 @@ For a `data.frame` of raw heterozygosity data
 ukb_gen_het(my_ukb_data, all.het = TRUE)
 ```
 
+
+<br>
 <br>
 
 `ukb_gen_rel` returns a `data.frame` with `id`, `pair` (a numeric identifier for related pairs), and `kinship` (kinship coefficient). For a count of related samples by degree of relatedness use `ukb_gen_rel_count`. Set the argument `plot = TRUE` to replicate the plot on page 15 of the [UKB genotyping and quality control documentation](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf), for your subgroup of interest.
@@ -205,7 +195,6 @@ my_gen_rel <- ukb_gen_rel(my_ukb_data)
 ukb_gen_rel_count(my_gen_rel, plot = TRUE)
 ```
 
-<br>
 
 ## Read and write 
 

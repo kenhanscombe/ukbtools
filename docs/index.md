@@ -95,7 +95,7 @@ ukb_context(my_ukb_data, nonmiss.var = "my_variable_of_interest")
 ```
 
 <p align="center">
-<img src="img/ukb_context_stack_111017.png" width="600px" >
+<img src="img/ukb_context_stack_111017.png" width="800px" >
 </p>
 
 
@@ -238,7 +238,7 @@ __PLINK__ does not require that individuals in phenotype and covariate files are
 <br>
 
 
-### 6.1 Exclusions
+### Exclusions
 
 __Note.__ The exclusions referred to in this section are the combined UKB recommended exclusions, Affymetrix quality control for samples, bileve genotype quality control, heterozygosity outliers (+/- 3*SD), genetic ethnicity outliers (based on Genetic Ethnic Grouping, field code 22006), and one random member of each related pair (including Duplicates/MZ twins, 1st-, 2nd-, and 3rd-degree relatives).
 

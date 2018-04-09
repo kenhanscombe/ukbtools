@@ -5,7 +5,7 @@ The __UK Biobank__ is a resource that includes detailed health-related and genet
 
 Download and decrypt your data with the supplied [helper programs](https://biobank.ctsu.ox.ac.uk/crystal/exinfo.cgi?src=accessing_data_guide#convert). To use ukbtools, you need to create a UKB fileset (.tab, .r, and .html):
 
-```
+```bash
 ukb_unpack ukbxxxx.enc key
 ukb_conv ukbxxxx.enc_ukb r
 ukb_conv ukbxxxx.enc_ukb docs
@@ -19,7 +19,7 @@ __Note.__ Full details of the data download and decrypt process are given in the
 
 In R,
 
-```
+```r
 # Install from CRAN
 install.packages("ukbtools")
 
@@ -27,11 +27,11 @@ install.packages("ukbtools")
 devtools::install_github("kenhanscombe/ukbtools", build_vignettes = TRUE, dependencies = TRUE)
 ```
 
-## __Making a dataset__
+## Making a dataset
 
 The function `ukb_df()` takes the stem of your fileset and returns a dataframe with usable column names. 
 
-```
+```r
 library(ukbtools)
 
 my_ukb_data <- ukb_df("ukbxxxx")
@@ -39,7 +39,7 @@ my_ukb_data <- ukb_df("ukbxxxx")
 
 You can also specify the path to your fileset if it is not in the current directory. For example, if your fileset is in a subdirectory of the working directory called `data`
 
-```
+```r
 my_ukb_data <- ukb_df("ukbxxxx", path = "/full/path/to/my/ukb/fileset/data")
 ```
 
@@ -47,7 +47,7 @@ my_ukb_data <- ukb_df("ukbxxxx", path = "/full/path/to/my/ukb/fileset/data")
 
 Use `ukb_df_field` to create a field code-to-descriptive name key, as dataframe or named lookup vector.
 
-```
+```r
 my_ukb_key <- ukb_df_field("ukbxxxx", path = "/full/path/to/my/ukb/fileset/data")
 ```
 
@@ -66,7 +66,7 @@ __Note.__ You can move the three files in your fileset after creating them with 
 
 If you have multiple UKB downloads, first read each one in, then merge them with your preferred method. You could use `ukb_df_full_join` which is a thin wrapper around `dplyr::full_join` applied recursively with `purrr::reduce`.
 
-```
+```r
 ukbxxxx_data <- ukb_df("ukbxxxx")
 ukbyyyy_data <- ukb_df("ukbyyyy")
 ukbzzzz_data <- ukb_df("ukbzzzz")
@@ -86,24 +86,22 @@ ukb_df_full_join(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data)
 <br>
 
 
-## __Exploring primary demographics of a UKB subset__
+## Exploring primary demographics of a UKB subset
 
 As an exploratory step you might want to look at the demographics of a particular subset of the UKB sample relative to a reference sample. For example, using the `nonmiss.var` argument of `ukb_context` will produce a plot of the primary demographics (sex, age, ethnicity, and Townsend deprivation score) and employment status and assessment centre, for the subsample with data on your variable of interest compared to those without data (i.e. `NA`).
 
-```
+```r
 ukb_context(my_ukb_data, nonmiss.var = "my_variable_of_interest")
 ```
 
 <p align="center">
-<img src="img/ukb_context_stack_111017.jpg" width="200px" class="inline" >
+<img src="img/ukb_context_stack_111017.png" width="600px" >
 </p>
-
-<img src="img/ukb_context_stack_111017.jpg" alt="Context" style="width: 200px;"/>
 
 
 It is also possible to supply a logical vector with `subset.var` to define the subset and reference sample. This is particularly useful for understanding a subgroup within the UKB study, e.g., obese individuals below age 50.
 
-```
+```r
 subgroup_of_interest <- (my_ukb_data$bmi > 40 & my_ukb_data$age < 50) 
 ukb_context(my_ukb_data, subset.var = subgroup_of_interest)
 ```
@@ -115,25 +113,25 @@ All ICD related functions begin `ukb_icd_`. Type `ukb_icd_` tab to see the famil
 
 To retrieve the full diagnosis of an individual (combine multiple individuals with `c()`)
 
-```
+```r
 ukb_icd_diagnosis(my_ukb_data, id = "0000000", icd.version = 10)
 ```
 
 To retrieve the "meaning" of an ICD code use `icd_code`. Again, you can look up multiple codes by combining them with `c()`.
 
-```
+```r
 ukb_icd_code_meaning(icd.code = "I74", icd.version = 10)
 ```
 
 Search for a class of diseases with a keyword. Supplying multiple keywords with `c()`, will return all ICD entries containing *any* of the keywords.
 
-```
+```r
 ukb_icd_keyword("cardio", icd.version = 10)
 ```
 
 You can calculate the prevalence of a diagnosis in the UKB study (or a subset of the full sample) using `ukb_icd_prevalence`. The `icd.diagnosis` argument takes a regular expression, and so can also be used to retrieve prevalence of a disease "class", i.e., the proportion of individuals with _any_ diagnosis in the disease class.
 
-```
+```r
 # ICD-10 code I74, Arterial embolism and thrombosis
 ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "I74")
 
@@ -146,7 +144,7 @@ ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "C|D[0-4].")
 
 To retrieve frequency for one or more ICD diagnoses by the levels of a reference variable, e.g., sex (male or female) use `ukb_icd_freq_by`. If the variable is continuous, it is divided into N approximately equal-sized groups (default = 10) within which ICD diagnosis frequency is calculated. ukb_icd_freq_by also includes an option to produce a figure of ICD diagnosis frequency by reference variable. Diagnoses of interest are passed to `icd.code`. The default ICD codes are the WHO top 3 cause of death worldwide (2015): coronary artery disease (CAD), cerebrovascular disease/ stroke, lower respiratory tract infection (LTRI).
 
-```
+```r
 # To plot the frequency of the default ICD codes with respect to BMI
 ukb_icd_freq_by(my_ukb_data, reference.var = "body_mass_index_bmi_0_0", freq.plot = TRUE)
 ```
@@ -164,7 +162,7 @@ All genetic metadata related functions begin `ukb_gen_`. Typing `ukb_gen_` tab o
 
 You can collect the genetic metadata (including recommended exclusions, genetic sex, genetic ethnicity, chip, etc.), and principal components with
 
-```
+```r
 my_gen_meta <- ukb_gen_meta(my_ukb_data)
 my_gen_pcs <- ukb_gen_pcs(my_ukb_data)
 ```
@@ -173,14 +171,14 @@ my_gen_pcs <- ukb_gen_pcs(my_ukb_data)
 
 A list of IDs for recommended exclusions and heterozygosity outliers (+/- 3*SD) can be retrieved
 
-```
+```r
 ukb_gen_excl(my_ukb_data)
 ukb_gen_het(my_ukb_data)
 ```
 
 For a `data.frame` of raw heterozygosity data
 
-```
+```r
 ukb_gen_het(my_ukb_data, all.het = TRUE)
 ```
 
@@ -190,7 +188,7 @@ ukb_gen_het(my_ukb_data, all.het = TRUE)
 
 `ukb_gen_rel` returns a `data.frame` with `id`, `pair` (a numeric identifier for related pairs), and `kinship` (kinship coefficient). For a count of related samples by degree of relatedness use `ukb_gen_rel_count`. Set the argument `plot = TRUE` to replicate the plot on page 15 of the [UKB genotyping and quality control documentation](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf), for your subgroup of interest.
 
-```{r}
+```r
 my_gen_rel <- ukb_gen_rel(my_ukb_data)
 
 # To get a count and plot of degree of relatedness
@@ -198,16 +196,12 @@ ukb_gen_rel_count(my_gen_rel, plot = TRUE)
 ```
 
 
-<br>
-<br>
-
-
 ## Read and write 
 
-__ukbtools__ includes functions to write phenotype and covariate files for [BGENIE](https://jmarchini.org/bgenie/) and [PLINK](https://www.cog-genomics.org/plink2). __BGENIE__ phenotype and covariate files are space-delimited, include column names, and have missing values coded as -999. They must also be in .sample file order. `ukb_gen_write_bgenie` sorts input data to match .sample file id order and writes the data to disk.
+ukbtools includes functions to write phenotype and covariate files for [BGENIE](https://jmarchini.org/bgenie/) and [PLINK](https://www.cog-genomics.org/plink2). __BGENIE__ phenotype and covariate files are space-delimited, include column names, and have missing values coded as -999. They must also be in .sample file order. `ukb_gen_write_bgenie` sorts input data to match .sample file id order and writes the data to disk.
 
 
-```
+```r
 # Read .sample file supplied with bulk genetic data
 my_sample_file <- ukb_gen_read_sample("path/to/sample_file")
 
@@ -229,7 +223,7 @@ __Note.__ The [BGENIE usage page](https://jmarchini.org/bgenie-usage/) uses the 
 __PLINK__ phenotype and covariate files are either space- or tab-delimited, column names are optional, first two columns must contain family ID and individual ID respectively, and missing values are "normally expected to be encoded as -9" but also "nonnumeric values such as 'NA' ... (are) treated as missing". `ukb_gen_write_plink` writes a space-delimited file with column names, UKB ID is automatically written to column 1 and 2 and labelled FID IID, and missing values are coded as `NA`. The missing value to be used can be changed with the `na.strings` argument. See [PLINK standard data input](https://www.cog-genomics.org/plink/1.9/input#pheno) for further details.
 
 
-```
+```r
 # Write a PLINK format phenotype or covariate file
 
 ukb_gen_write_plink(
@@ -252,13 +246,13 @@ __Note.__ The exclusions referred to in this section are the combined UKB recomm
 
 __BGENIE__ does not have an option to read exclusions. You can replace data values in a phenotype with `NA` where the individual is to-be-excluded based on genetic metadata considerations. Writing the updated variable to your phenotype file (with the supplied write functions), effectively excludes the individuals from any analysis.
 
-```
+```r
 my_ukb_data$height_excl_na <- ukb_gen_excl_to_na(my_ukb_data, x = "height")
 ```
 <br>
 
 __PLINK__ `--remove` takes a space- or tab-delimited file with family IDs in the first column and individual IDs in the second column, without column names. See [PLINK input filtering](https://www.cog-genomics.org/plink/1.9/filter#indiv) for further details. (The missing value approach described above also works for PLINK.)
 
-```
+```r
 ukb_gen_write_plink_excl("path/to/plink_input_file")
 ```

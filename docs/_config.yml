@@ -1,4 +1,1 @@
-github: [metadata]
-theme: jekyll-docs-theme
-plugins:
-- jekyll-seo-tag
+theme: jekyll-theme-cayman

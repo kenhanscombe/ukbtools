@@ -3,7 +3,7 @@ The __UK Biobank__ is a resource that includes detailed health-related and genet
 
 ## Getting started
 
-Download and decrypt your data with the supplied [helper programs](https://biobank.ctsu.ox.ac.uk/crystal/exinfo.cgi?src=accessing_data_guide#convert). To use ukbtools, you specifically need to create a UKB fileset (.tab, .r, and .html):
+Download and decrypt your data with the supplied [helper programs](https://biobank.ctsu.ox.ac.uk/crystal/exinfo.cgi?src=accessing_data_guide#convert). To use ukbtools, you need to create a UKB fileset (.tab, .r, and .html):
 
 ```
 ukb_unpack ukbxxxx.enc key
@@ -11,9 +11,9 @@ ukb_conv ukbxxxx.enc_ukb r
 ukb_conv ukbxxxx.enc_ukb docs
 ```
 
-`ukb_unpack` decrypts your downloaded `ukbxxxx.enc` file, outputting a `ukbxxxx.enc_ukb` file. `ukb_conv` with the `r` flag converts the decrypted data to a tab-delimited file `ukbxxxx.tab` and an R script `ukbxxxx.r` that reads the tab file. The `docs` flag creates an html file containing a field-code-to-description table (among others).
+ukb_unpack decrypts your downloaded ukbxxxx.enc file, outputting a ukbxxxx.enc_ukb file. ukb_conv with the r flag converts the decrypted data to a tab-delimited file ukbxxxx.tab and an R script ukbxxxx.r that reads the tab file. The docs flag creates an html file containing a field-code-to-description table (among others).
 
-__Note.__Full details of the data download and decrypt process are given in the [Using UK Biobank Data](https://biobank.ctsu.ox.ac.uk/crystal/exinfo.cgi?src=accessing_data_guide) documentation . [Updated versions](https://biobank.ctsu.ox.ac.uk/crystal/download.cgi) of these helper programs exist. Other than small name changes (underscores removed) they appear to function similarly.
+__Note.__ Full details of the data download and decrypt process are given in the [Using UK Biobank Data](https://biobank.ctsu.ox.ac.uk/crystal/exinfo.cgi?src=accessing_data_guide) documentation . [Updated versions](https://biobank.ctsu.ox.ac.uk/crystal/download.cgi) of these helper programs exist. Other than small name changes (underscores removed) they appear to function similarly.
 
 ## Installing the package
 
@@ -27,7 +27,7 @@ install.packages("ukbtools")
 devtools::install_github("kenhanscombe/ukbtools", build_vignettes = TRUE, dependencies = TRUE)
 ```
 
-## Making a dataset
+## __Making a dataset__
 
 The function `ukb_df()` takes the stem of your fileset and returns a dataframe with usable column names. 
 
@@ -64,7 +64,7 @@ __Note.__ You can move the three files in your fileset after creating them with 
 
 ## Multiple downloads
 
-If you have multiple UKB downloads, first read then merge them with your preferred method. `ukbtools` includes the function `ukb_df_full_join` which is a thin wrapper around `dplyr::full_join` applied recursively with `purrr::reduce`.
+If you have multiple UKB downloads, first read each one in, then merge them with your preferred method. You could use `ukb_df_full_join` which is a thin wrapper around `dplyr::full_join` applied recursively with `purrr::reduce`.
 
 ```
 ukbxxxx_data <- ukb_df("ukbxxxx")
@@ -86,13 +86,16 @@ ukb_df_full_join(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data)
 <br>
 
 
-## Exploring primary demographics of a UKB subset
+## __Exploring primary demographics of a UKB subset__
 
 As an exploratory step you might want to look at the demographics of a particular subset of the UKB sample relative to a reference sample. For example, using the `nonmiss.var` argument of `ukb_context` will produce a plot of the primary demographics (sex, age, ethnicity, and Townsend deprivation score) and employment status and assessment centre, for the subsample with data on your variable of interest compared to those without data (i.e. `NA`).
 
 ```
 ukb_context(my_ukb_data, nonmiss.var = "my_variable_of_interest")
 ```
+
+<img src="img/ukb_context_stack_111017.jpg" alt="Context" style="width: 200px;"/>
+
 
 It is also possible to supply a logical vector with `subset.var` to define the subset and reference sample. This is particularly useful for understanding a subgroup within the UKB study, e.g., obese individuals below age 50.
 
@@ -195,9 +198,9 @@ ukb_gen_rel_count(my_gen_rel, plot = TRUE)
 <br>
 
 
-## 6. Read and write 
+## Read and write 
 
-`ukbtools` includes functions to write phenotype and covariate files for [BGENIE](https://jmarchini.org/bgenie/) and [PLINK](https://www.cog-genomics.org/plink2). __BGENIE__ phenotype and covariate files are space-delimited, include column names, and have missing values coded as -999. They must also be in .sample file order. `ukb_gen_write_bgenie` sorts input data to match .sample file id order and writes the data to disk.
+__ukbtools__ includes functions to write phenotype and covariate files for [BGENIE](https://jmarchini.org/bgenie/) and [PLINK](https://www.cog-genomics.org/plink2). __BGENIE__ phenotype and covariate files are space-delimited, include column names, and have missing values coded as -999. They must also be in .sample file order. `ukb_gen_write_bgenie` sorts input data to match .sample file id order and writes the data to disk.
 
 
 ```

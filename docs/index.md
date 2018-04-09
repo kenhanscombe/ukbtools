@@ -94,7 +94,11 @@ As an exploratory step you might want to look at the demographics of a particula
 ukb_context(my_ukb_data, nonmiss.var = "my_variable_of_interest")
 ```
 
-<img src="img/ukb_context_stack_111017.jpg" class="inline" alt="Context" style="width: 200px;"/>
+<p align="center">
+<img src="img/ukb_context_stack_111017.jpg" width="200px" class="inline" >
+</p>
+
+<img src="img/ukb_context_stack_111017.jpg" alt="Context" style="width: 200px;"/>
 
 
 It is also possible to supply a logical vector with `subset.var` to define the subset and reference sample. This is particularly useful for understanding a subgroup within the UKB study, e.g., obese individuals below age 50.

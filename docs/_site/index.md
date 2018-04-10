@@ -101,40 +101,45 @@ As an exploratory step you might want to look at the demographics of a particula
 ukb_context(my_ukb_data, nonmiss.var = "my_variable_of_interest")
 ```
 
-<p align="center">
-<img src="img/ukb_context_stack_111017.png" width="800px" >
-</p>
-
-__Figure 1__ Primary demographic data for a UKB subset of interest. 
-
-<br>
-
-It is also possible to supply a logical vector with `subset.var` to define the subset and reference sample. This is particularly useful for understanding a subgroup within the UKB study, e.g., obese individuals below age 50.
+It is also possible to supply a logical vector with `subset.var` to define the subset and reference sample. This is particularly useful for understanding a subgroup within the UKB study, e.g., overweight individuals.
 
 ```
-subgroup_of_interest <- (my_ukb_data$bmi > 40 & my_ukb_data$age < 50) 
+subgroup_of_interest <- (my_ukb_data$body_mass_index_bmi_0_0 >= 25) 
 ukb_context(my_ukb_data, subset.var = subgroup_of_interest)
 ```
+
+<p align="center">
+<img src="img/ukb_context_fill_111017.png" width="900px" >
+</p>
+
+__Primary demographic data for a UKB subset of interest.__ The subset is individuals with BMI >= 25; the reference is BMI < 25. Barplots are displayed as proportions, e.g., about 1/3 of all participants who identified as "Chinese" were overweight compared to about 2/3 of all participants who identified as "British". ukb_context also allows the user to draw barplots as "stacked" or "side-by-side" bars representing counts, which would reveal there were many more "British" participants (442,698) than there were "Chinese" (1,574).
 
 <br>
 
 ## Retrieving ICD diagnoses
 
-All ICD related functions begin `ukb_icd_`. Type `ukb_icd_` tab to see the family of functions. The full ICD "code-meaning" tables are available as datasets (`icd9codes`, `icd10codes`). ICD chapter-level tables describing disease blocks are also available for query as datasets (`icd9chapters`, `icd10chapters`)
+The International Classification of Diseases (ICD) query functions begin `ukb_icd_`. Type `ukb_icd_` tab to see the family of functions. The full ICD code definition tables are available as datasets (`icd9codes`, `icd10codes`). ICD chapter-level tables describing disease blocks are also available for query as datasets (`icd9chapters`, `icd10chapters`)
 
-To retrieve the full diagnosis of an individual (combine multiple individuals with `c()`)
+_Sample query_
+
+`ukb_icd_diagnosis` takes one or more individual ids and returns a dataframe with a potential message noting ids with no diagnoses
 
 ```
 ukb_icd_diagnosis(my_ukb_data, id = "0000000", icd.version = 10)
 ```
 
-To retrieve the "meaning" of an ICD code use `icd_code`. Again, you can look up multiple codes by combining them with `c()`.
+
+<br>
+
+_Diagnosis query_
+
+To retrieve the "meaning" of an ICD code use `ukb_icd_code_meaning` accepts one or more ICD codes and returns a dataframe of codes and their associated meanings
 
 ```
 ukb_icd_code_meaning(icd.code = "I74", icd.version = 10)
 ```
 
-Search for a class of diseases with a keyword. Supplying multiple keywords with `c()`, will return all ICD entries containing *any* of the keywords.
+Search for a class of diseases with a keyword. Supplying multiple keywords as a character vector will return all ICD entries containing *any* of the keywords.
 
 ```
 ukb_icd_keyword("cardio", icd.version = 10)
@@ -153,18 +158,92 @@ ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "I")
 ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "C|D[0-4].")
 ```
 
-To retrieve frequency for one or more ICD diagnoses by the levels of a reference variable, e.g., sex (male or female) use `ukb_icd_freq_by`. If the variable is continuous, it is divided into N approximately equal-sized groups (default = 10) within which ICD diagnosis frequency is calculated. ukb_icd_freq_by also includes an option to produce a figure of ICD diagnosis frequency by reference variable. Diagnoses of interest are passed to `icd.code`. The default ICD codes are the WHO top 3 cause of death worldwide (2015): coronary artery disease (CAD), cerebrovascular disease/ stroke, lower respiratory tract infection (LTRI).
+To retrieve frequency for one or more ICD diagnoses by the levels of a reference variable, e.g., sex (male or female) use `ukb_icd_freq_by`. If the variable is continuous, it is divided into N approximately equal-sized groups (default = 10) within which ICD diagnosis frequency is calculated. `ukb_icd_freq_by` also includes an option `freq.plot` to produce a figure of ICD diagnosis frequency by reference variable. Diagnoses of interest are passed to `icd.code`. The default ICD codes are the WHO top 3 causes of death worldwide (2015): coronary artery disease (CAD), cerebrovascular disease/ stroke, lower respiratory tract infection (LTRI).
 
 ```
-# To plot the frequency of the default ICD codes with respect to BMI
 ukb_icd_freq_by(my_ukb_data, reference.var = "body_mass_index_bmi_0_0", freq.plot = TRUE)
+ukb_icd_freq_by(my_ukb_data, reference.var = "sex_0_0", freq.plot = TRUE)
 ```
+
+<p align="center">
+<img src="img/fig2_ukb_freq_by_two_panel_271117.png" width="900px" >
+</p>
+
+__ICD diagnosis frequency by reference variable.__ Panel __A__ shows frequency of the query diagnoses with respect to BMI; panel __B__ with respect to sex. Any diagnoses can be queried with the `icd.code` parameter (default is CAD, Stroke, LRTI)
 
 Setting `freq.plot = FALSE` (default) returns a dataframe of the frequencies. Values for the reference variable group ranges are in the column "group".
 
 <br>
 
-## Retrieving genetic metadata
+***
+
+## __Genetic metadata__
+
+__Note.__ Genetic metadata for the interim genotyped sample (first 50K individuals genotyped) was included with the phenotype data. Functionality to retrieve the genetic metadata has been preserved (so any existing pipelines do not break) and is described below under __Interim metadata (50K individuals)__. With the release of the full sample genotypes (500K individuals), sample QC (__ukb_sqc_v2.txt__) and marker QC (__ukb_snp_qc.txt__) data are now supplied as separate files. The contents of these files, along with all other genetic files are described fully in [UKB Resource 531](https://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=531).
+
+
+### Write phenotype and covariate files for genetic analysis 
+
+ukbtools includes convenience functions to write phenotype and covariate files for [BGENIE](https://jmarchini.org/bgenie/) and [PLINK](https://www.cog-genomics.org/plink2). 
+
+__BGENIE__ phenotype and covariate files are space-delimited, include column names, and have missing values coded as -999. They must also be in .sample file order. The sample file is downloaded with your bulk genotype data and described in [UKB Resource 531](https://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=531). The sample file is a rectangular file with two header lines. Using `ukb_gen_read_sample` will read it in correctly and label the columns. `ukb_gen_write_bgenie` sorts input data to match .sample file id order and writes the data to disk.
+
+```
+# Read .sample file supplied with bulk genetic data
+my_sample_file <- ukb_gen_read_sample("path/to/sample_file")
+
+# Write a BGENIE format phenotype or covariate file
+ukb_gen_write_bgenie(
+    my_ukb_data, 
+    path = "path/to/bgenie_input_file", 
+    ukb.sample = my_sample_file, 
+    ukb.variables = c("variable1", "variable2", "variable3")
+)
+```
+
+The [BGENIE usage page](https://jmarchini.org/bgenie-usage/) uses the example files example.pheno and example.cov - it is not clear whether the suffixes are obligatory. Use them to be safe.
+
+__PLINK__ phenotype and covariate files are either space- or tab-delimited, column names are optional, first two columns must contain family ID and individual ID respectively, and missing values are "normally expected to be encoded as -9" but also "nonnumeric values such as 'NA' ... (are) treated as missing". `ukb_gen_write_plink` writes a space-delimited file with column names, UKB ID is automatically written to column 1 and 2 and labelled FID IID, and missing values are coded as `NA`. The missing value to be used can be changed with the `na.strings` argument. See [PLINK standard data input](https://www.cog-genomics.org/plink/1.9/input#pheno) for further details.
+
+
+```
+# Write a PLINK format phenotype or covariate file
+
+ukb_gen_write_plink(
+    my_ukb_data, 
+    path = "path/to/plink_input_file", 
+    ukb.variables = c("variable1", "variable2", "variable3")
+)
+```
+
+__PLINK__ does not require that individuals in phenotype and covariate files are in any particular order, but you may want to reconcile the individuals you include in your analysis with those in the fam file (from your hard-called data). Read the fam file into R with `ukb_gen_read_fam`
+
+<br>
+
+### Note on sample exclusions
+
+The exclusions referred to in this section are the combined UKB recommended exclusions, Affymetrix quality control for samples, bileve genotype quality control, heterozygosity outliers (+/- 3*SD), genetic ethnicity outliers (based on Genetic Ethnic Grouping, field code 22006), and one random member of each related pair (including Duplicates/MZ twins, 1st-, 2nd-, and 3rd-degree relatives).
+
+__BGENIE__ does not have an option to read exclusions. You can replace data values in a phenotype with `NA` where the individual is to-be-excluded based on genetic metadata considerations. Writing the updated variable to your phenotype file (with the supplied write functions), effectively excludes the individuals from any analysis.
+
+```
+my_ukb_data$height_excl_na <- ukb_gen_excl_to_na(my_ukb_data, x = "height")
+```
+
+__PLINK__ `--remove` takes a space- or tab-delimited file with family IDs in the first column and individual IDs in the second column, without column names. See [PLINK input filtering](https://www.cog-genomics.org/plink/1.9/filter#indiv) for further details. (The missing value approach described above also works for PLINK.)
+
+```
+ukb_gen_write_plink_excl("path/to/plink_samples_to_remove_file")
+```
+
+<br>
+
+
+***
+
+#### Interim metadata (50K individuals)
+
+__Note.__ If you have genotype data for the full 500K individuals, this section is not relevant to you. 
 
 If you are doing any downstream genetic analyses, you will need the genetic metadata (which should be in you phenotype dataset). Detailed information is available on UKB [genotyping and quality control](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf) and [imputation and association](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/imputation_documentation_May2015.pdf).
 
@@ -207,63 +286,10 @@ ukb_gen_rel_count(my_gen_rel, plot = TRUE)
 
 <br>
 
-## Read and write 
 
-ukbtools includes functions to write phenotype and covariate files for [BGENIE](https://jmarchini.org/bgenie/) and [PLINK](https://www.cog-genomics.org/plink2). __BGENIE__ phenotype and covariate files are space-delimited, include column names, and have missing values coded as -999. They must also be in .sample file order. `ukb_gen_write_bgenie` sorts input data to match .sample file id order and writes the data to disk.
-
-
-```
-# Read .sample file supplied with bulk genetic data
-my_sample_file <- ukb_gen_read_sample("path/to/sample_file")
-
-# Write a BGENIE format phenotype or covariate file
-ukb_gen_write_bgenie(
-my_ukb_data, 
-path = "path/to/bgenie_input_file", 
-ukb.sample = my_sample_file, 
-ukb.variables = c("variable1", "variable2", "variable3")
-)
-```
 
 <br>
 
-__Note.__ The [BGENIE usage page](https://jmarchini.org/bgenie-usage/) uses the example files example.pheno and example.cov - it is not clear whether the suffixes are obligatory. Use them to be safe.
+## Acknowledments
 
-<br>
-
-__PLINK__ phenotype and covariate files are either space- or tab-delimited, column names are optional, first two columns must contain family ID and individual ID respectively, and missing values are "normally expected to be encoded as -9" but also "nonnumeric values such as 'NA' ... (are) treated as missing". `ukb_gen_write_plink` writes a space-delimited file with column names, UKB ID is automatically written to column 1 and 2 and labelled FID IID, and missing values are coded as `NA`. The missing value to be used can be changed with the `na.strings` argument. See [PLINK standard data input](https://www.cog-genomics.org/plink/1.9/input#pheno) for further details.
-
-
-```
-# Write a PLINK format phenotype or covariate file
-
-ukb_gen_write_plink(
-my_ukb_data, 
-path = "path/to/plink_input_file", 
-ukb.variables = c("variable1", "variable2", "variable3")
-)
-```
-
-__PLINK__ does not require that individuals in phenotype and covariate files are in any particular order, but you may want to reconcile the individuals you include in your analysis with those in the fam file (from your hard-called data). Read the fam file into R with `ukb_gen_read_fam`
-
-<br>
-
-
-### Exclusions
-
-__Note.__ The exclusions referred to in this section are the combined UKB recommended exclusions, Affymetrix quality control for samples, bileve genotype quality control, heterozygosity outliers (+/- 3*SD), genetic ethnicity outliers (based on Genetic Ethnic Grouping, field code 22006), and one random member of each related pair (including Duplicates/MZ twins, 1st-, 2nd-, and 3rd-degree relatives).
-
-<br>
-
-__BGENIE__ does not have an option to read exclusions. You can replace data values in a phenotype with `NA` where the individual is to-be-excluded based on genetic metadata considerations. Writing the updated variable to your phenotype file (with the supplied write functions), effectively excludes the individuals from any analysis.
-
-```
-my_ukb_data$height_excl_na <- ukb_gen_excl_to_na(my_ukb_data, x = "height")
-```
-<br>
-
-__PLINK__ `--remove` takes a space- or tab-delimited file with family IDs in the first column and individual IDs in the second column, without column names. See [PLINK input filtering](https://www.cog-genomics.org/plink/1.9/filter#indiv) for further details. (The missing value approach described above also works for PLINK.)
-
-```
-ukb_gen_write_plink_excl("path/to/plink_input_file")
-```
+This research has been conducted using the UK Biobank Resource, Application 13427.

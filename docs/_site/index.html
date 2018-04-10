@@ -14,13 +14,13 @@
 <meta property="og:url" content="http://localhost:4000/" />
 <meta property="og:site_name" content="ukbtools" />
 <script type="application/ld+json">
-{"url":"http://localhost:4000/","headline":"ukbtools","description":"An R package to manipulate and explore UK Biobank data","name":"ukbtools","@type":"WebSite","@context":"http://schema.org"}</script>
+{"url":"http://localhost:4000/","description":"An R package to manipulate and explore UK Biobank data","name":"ukbtools","@type":"WebSite","headline":"ukbtools","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/css/style.css?v=0f70c681878c1fc5467ac36623e0eb843a0cbb36">
+    <link rel="stylesheet" href="/assets/css/style.css?v=97261f7bd9616226812e1c83060c9f5ad1808f46">
   </head>
   <body>
     <section class="page-header">
@@ -132,37 +132,41 @@ ukb_df_full_join(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data)
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ukb_context(my_ukb_data, nonmiss.var = "my_variable_of_interest")
 </code></pre></div></div>
 
-<p align="center">
-<img src="img/ukb_context_stack_111017.png" width="800px" />
-</p>
+<p>It is also possible to supply a logical vector with <code class="highlighter-rouge">subset.var</code> to define the subset and reference sample. This is particularly useful for understanding a subgroup within the UKB study, e.g., overweight individuals.</p>
 
-<p><strong>Figure 1</strong> Primary demographic data for a UKB subset of interest.</p>
-
-<p><br /></p>
-
-<p>It is also possible to supply a logical vector with <code class="highlighter-rouge">subset.var</code> to define the subset and reference sample. This is particularly useful for understanding a subgroup within the UKB study, e.g., obese individuals below age 50.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>subgroup_of_interest &lt;- (my_ukb_data$bmi &gt; 40 &amp; my_ukb_data$age &lt; 50) 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>subgroup_of_interest &lt;- (my_ukb_data$body_mass_index_bmi_0_0 &gt;= 25) 
 ukb_context(my_ukb_data, subset.var = subgroup_of_interest)
 </code></pre></div></div>
+
+<p align="center">
+<img src="img/ukb_context_fill_111017.png" width="900px" />
+</p>
+
+<p><strong>Primary demographic data for a UKB subset of interest.</strong> The subset is individuals with BMI &gt;= 25; the reference is BMI &lt; 25. Barplots are displayed as proportions, e.g., about 1/3 of all participants who identified as “Chinese” were overweight compared to about 2/3 of all participants who identified as “British”. ukb_context also allows the user to draw barplots as “stacked” or “side-by-side” bars representing counts, which would reveal there were many more “British” participants (442,698) than there were “Chinese” (1,574).</p>
 
 <p><br /></p>
 
 <h2 id="retrieving-icd-diagnoses">Retrieving ICD diagnoses</h2>
 
-<p>All ICD related functions begin <code class="highlighter-rouge">ukb_icd_</code>. Type <code class="highlighter-rouge">ukb_icd_</code> tab to see the family of functions. The full ICD “code-meaning” tables are available as datasets (<code class="highlighter-rouge">icd9codes</code>, <code class="highlighter-rouge">icd10codes</code>). ICD chapter-level tables describing disease blocks are also available for query as datasets (<code class="highlighter-rouge">icd9chapters</code>, <code class="highlighter-rouge">icd10chapters</code>)</p>
+<p>The International Classification of Diseases (ICD) query functions begin <code class="highlighter-rouge">ukb_icd_</code>. Type <code class="highlighter-rouge">ukb_icd_</code> tab to see the family of functions. The full ICD code definition tables are available as datasets (<code class="highlighter-rouge">icd9codes</code>, <code class="highlighter-rouge">icd10codes</code>). ICD chapter-level tables describing disease blocks are also available for query as datasets (<code class="highlighter-rouge">icd9chapters</code>, <code class="highlighter-rouge">icd10chapters</code>)</p>
 
-<p>To retrieve the full diagnosis of an individual (combine multiple individuals with <code class="highlighter-rouge">c()</code>)</p>
+<p><em>Sample query</em></p>
+
+<p><code class="highlighter-rouge">ukb_icd_diagnosis</code> takes one or more individual ids and returns a dataframe with a potential message noting ids with no diagnoses</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ukb_icd_diagnosis(my_ukb_data, id = "0000000", icd.version = 10)
 </code></pre></div></div>
 
-<p>To retrieve the “meaning” of an ICD code use <code class="highlighter-rouge">icd_code</code>. Again, you can look up multiple codes by combining them with <code class="highlighter-rouge">c()</code>.</p>
+<p><br /></p>
+
+<p><em>Diagnosis query</em></p>
+
+<p>To retrieve the “meaning” of an ICD code use <code class="highlighter-rouge">ukb_icd_code_meaning</code> accepts one or more ICD codes and returns a dataframe of codes and their associated meanings</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ukb_icd_code_meaning(icd.code = "I74", icd.version = 10)
 </code></pre></div></div>
 
-<p>Search for a class of diseases with a keyword. Supplying multiple keywords with <code class="highlighter-rouge">c()</code>, will return all ICD entries containing <em>any</em> of the keywords.</p>
+<p>Search for a class of diseases with a keyword. Supplying multiple keywords as a character vector will return all ICD entries containing <em>any</em> of the keywords.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ukb_icd_keyword("cardio", icd.version = 10)
 </code></pre></div></div>
@@ -179,17 +183,84 @@ ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "I")
 ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "C|D[0-4].")
 </code></pre></div></div>
 
-<p>To retrieve frequency for one or more ICD diagnoses by the levels of a reference variable, e.g., sex (male or female) use <code class="highlighter-rouge">ukb_icd_freq_by</code>. If the variable is continuous, it is divided into N approximately equal-sized groups (default = 10) within which ICD diagnosis frequency is calculated. ukb_icd_freq_by also includes an option to produce a figure of ICD diagnosis frequency by reference variable. Diagnoses of interest are passed to <code class="highlighter-rouge">icd.code</code>. The default ICD codes are the WHO top 3 cause of death worldwide (2015): coronary artery disease (CAD), cerebrovascular disease/ stroke, lower respiratory tract infection (LTRI).</p>
+<p>To retrieve frequency for one or more ICD diagnoses by the levels of a reference variable, e.g., sex (male or female) use <code class="highlighter-rouge">ukb_icd_freq_by</code>. If the variable is continuous, it is divided into N approximately equal-sized groups (default = 10) within which ICD diagnosis frequency is calculated. <code class="highlighter-rouge">ukb_icd_freq_by</code> also includes an option <code class="highlighter-rouge">freq.plot</code> to produce a figure of ICD diagnosis frequency by reference variable. Diagnoses of interest are passed to <code class="highlighter-rouge">icd.code</code>. The default ICD codes are the WHO top 3 causes of death worldwide (2015): coronary artery disease (CAD), cerebrovascular disease/ stroke, lower respiratory tract infection (LTRI).</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># To plot the frequency of the default ICD codes with respect to BMI
-ukb_icd_freq_by(my_ukb_data, reference.var = "body_mass_index_bmi_0_0", freq.plot = TRUE)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ukb_icd_freq_by(my_ukb_data, reference.var = "body_mass_index_bmi_0_0", freq.plot = TRUE)
+ukb_icd_freq_by(my_ukb_data, reference.var = "sex_0_0", freq.plot = TRUE)
 </code></pre></div></div>
+
+<p align="center">
+<img src="img/fig2_ukb_freq_by_two_panel_271117.png" width="900px" />
+</p>
+
+<p><strong>ICD diagnosis frequency by reference variable.</strong> Panel <strong>A</strong> shows frequency of the query diagnoses with respect to BMI; panel <strong>B</strong> with respect to sex. Any diagnoses can be queried with the <code class="highlighter-rouge">icd.code</code> parameter (default is CAD, Stroke, LRTI)</p>
 
 <p>Setting <code class="highlighter-rouge">freq.plot = FALSE</code> (default) returns a dataframe of the frequencies. Values for the reference variable group ranges are in the column “group”.</p>
 
 <p><br /></p>
 
-<h2 id="retrieving-genetic-metadata">Retrieving genetic metadata</h2>
+<hr />
+
+<h2 id="genetic-metadata"><strong>Genetic metadata</strong></h2>
+
+<p><strong>Note.</strong> Genetic metadata for the interim genotyped sample (first 50K individuals genotyped) was included with the phenotype data. Functionality to retrieve the genetic metadata has been preserved (so any existing pipelines do not break) and is described below under <strong>Interim metadata (50K individuals)</strong>. With the release of the full sample genotypes (500K individuals), sample QC (<strong>ukb_sqc_v2.txt</strong>) and marker QC (<strong>ukb_snp_qc.txt</strong>) data are now supplied as separate files. The contents of these files, along with all other genetic files are described fully in <a href="https://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=531">UKB Resource 531</a>.</p>
+
+<h3 id="write-phenotype-and-covariate-files-for-genetic-analysis">Write phenotype and covariate files for genetic analysis</h3>
+
+<p>ukbtools includes convenience functions to write phenotype and covariate files for <a href="https://jmarchini.org/bgenie/">BGENIE</a> and <a href="https://www.cog-genomics.org/plink2">PLINK</a>.</p>
+
+<p><strong>BGENIE</strong> phenotype and covariate files are space-delimited, include column names, and have missing values coded as -999. They must also be in .sample file order. The sample file is downloaded with your bulk genotype data and described in <a href="https://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=531">UKB Resource 531</a>. The sample file is a rectangular file with two header lines. Using <code class="highlighter-rouge">ukb_gen_read_sample</code> will read it in correctly and label the columns. <code class="highlighter-rouge">ukb_gen_write_bgenie</code> sorts input data to match .sample file id order and writes the data to disk.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Read .sample file supplied with bulk genetic data
+my_sample_file &lt;- ukb_gen_read_sample("path/to/sample_file")
+
+# Write a BGENIE format phenotype or covariate file
+ukb_gen_write_bgenie(
+    my_ukb_data, 
+    path = "path/to/bgenie_input_file", 
+    ukb.sample = my_sample_file, 
+    ukb.variables = c("variable1", "variable2", "variable3")
+)
+</code></pre></div></div>
+
+<p>The <a href="https://jmarchini.org/bgenie-usage/">BGENIE usage page</a> uses the example files example.pheno and example.cov - it is not clear whether the suffixes are obligatory. Use them to be safe.</p>
+
+<p><strong>PLINK</strong> phenotype and covariate files are either space- or tab-delimited, column names are optional, first two columns must contain family ID and individual ID respectively, and missing values are “normally expected to be encoded as -9” but also “nonnumeric values such as ‘NA’ … (are) treated as missing”. <code class="highlighter-rouge">ukb_gen_write_plink</code> writes a space-delimited file with column names, UKB ID is automatically written to column 1 and 2 and labelled FID IID, and missing values are coded as <code class="highlighter-rouge">NA</code>. The missing value to be used can be changed with the <code class="highlighter-rouge">na.strings</code> argument. See <a href="https://www.cog-genomics.org/plink/1.9/input#pheno">PLINK standard data input</a> for further details.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Write a PLINK format phenotype or covariate file
+
+ukb_gen_write_plink(
+    my_ukb_data, 
+    path = "path/to/plink_input_file", 
+    ukb.variables = c("variable1", "variable2", "variable3")
+)
+</code></pre></div></div>
+
+<p><strong>PLINK</strong> does not require that individuals in phenotype and covariate files are in any particular order, but you may want to reconcile the individuals you include in your analysis with those in the fam file (from your hard-called data). Read the fam file into R with <code class="highlighter-rouge">ukb_gen_read_fam</code></p>
+
+<p><br /></p>
+
+<h3 id="note-on-sample-exclusions">Note on sample exclusions</h3>
+
+<p>The exclusions referred to in this section are the combined UKB recommended exclusions, Affymetrix quality control for samples, bileve genotype quality control, heterozygosity outliers (+/- 3*SD), genetic ethnicity outliers (based on Genetic Ethnic Grouping, field code 22006), and one random member of each related pair (including Duplicates/MZ twins, 1st-, 2nd-, and 3rd-degree relatives).</p>
+
+<p><strong>BGENIE</strong> does not have an option to read exclusions. You can replace data values in a phenotype with <code class="highlighter-rouge">NA</code> where the individual is to-be-excluded based on genetic metadata considerations. Writing the updated variable to your phenotype file (with the supplied write functions), effectively excludes the individuals from any analysis.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>my_ukb_data$height_excl_na &lt;- ukb_gen_excl_to_na(my_ukb_data, x = "height")
+</code></pre></div></div>
+
+<p><strong>PLINK</strong> <code class="highlighter-rouge">--remove</code> takes a space- or tab-delimited file with family IDs in the first column and individual IDs in the second column, without column names. See <a href="https://www.cog-genomics.org/plink/1.9/filter#indiv">PLINK input filtering</a> for further details. (The missing value approach described above also works for PLINK.)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ukb_gen_write_plink_excl("path/to/plink_samples_to_remove_file")
+</code></pre></div></div>
+
+<p><br /></p>
+
+<hr />
+
+<h4 id="interim-metadata-50k-individuals">Interim metadata (50K individuals)</h4>
+
+<p><strong>Note.</strong> If you have genotype data for the full 500K individuals, this section is not relevant to you.</p>
 
 <p>If you are doing any downstream genetic analyses, you will need the genetic metadata (which should be in you phenotype dataset). Detailed information is available on UKB <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf">genotyping and quality control</a> and <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/imputation_documentation_May2015.pdf">imputation and association</a>.</p>
 
@@ -228,59 +299,11 @@ ukb_gen_rel_count(my_gen_rel, plot = TRUE)
 
 <p><br /></p>
 
-<h2 id="read-and-write">Read and write</h2>
-
-<p>ukbtools includes functions to write phenotype and covariate files for <a href="https://jmarchini.org/bgenie/">BGENIE</a> and <a href="https://www.cog-genomics.org/plink2">PLINK</a>. <strong>BGENIE</strong> phenotype and covariate files are space-delimited, include column names, and have missing values coded as -999. They must also be in .sample file order. <code class="highlighter-rouge">ukb_gen_write_bgenie</code> sorts input data to match .sample file id order and writes the data to disk.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Read .sample file supplied with bulk genetic data
-my_sample_file &lt;- ukb_gen_read_sample("path/to/sample_file")
-
-# Write a BGENIE format phenotype or covariate file
-ukb_gen_write_bgenie(
-my_ukb_data, 
-path = "path/to/bgenie_input_file", 
-ukb.sample = my_sample_file, 
-ukb.variables = c("variable1", "variable2", "variable3")
-)
-</code></pre></div></div>
-
 <p><br /></p>
 
-<p><strong>Note.</strong> The <a href="https://jmarchini.org/bgenie-usage/">BGENIE usage page</a> uses the example files example.pheno and example.cov - it is not clear whether the suffixes are obligatory. Use them to be safe.</p>
+<h2 id="acknowledments">Acknowledments</h2>
 
-<p><br /></p>
-
-<p><strong>PLINK</strong> phenotype and covariate files are either space- or tab-delimited, column names are optional, first two columns must contain family ID and individual ID respectively, and missing values are “normally expected to be encoded as -9” but also “nonnumeric values such as ‘NA’ … (are) treated as missing”. <code class="highlighter-rouge">ukb_gen_write_plink</code> writes a space-delimited file with column names, UKB ID is automatically written to column 1 and 2 and labelled FID IID, and missing values are coded as <code class="highlighter-rouge">NA</code>. The missing value to be used can be changed with the <code class="highlighter-rouge">na.strings</code> argument. See <a href="https://www.cog-genomics.org/plink/1.9/input#pheno">PLINK standard data input</a> for further details.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Write a PLINK format phenotype or covariate file
-
-ukb_gen_write_plink(
-my_ukb_data, 
-path = "path/to/plink_input_file", 
-ukb.variables = c("variable1", "variable2", "variable3")
-)
-</code></pre></div></div>
-
-<p><strong>PLINK</strong> does not require that individuals in phenotype and covariate files are in any particular order, but you may want to reconcile the individuals you include in your analysis with those in the fam file (from your hard-called data). Read the fam file into R with <code class="highlighter-rouge">ukb_gen_read_fam</code></p>
-
-<p><br /></p>
-
-<h3 id="exclusions">Exclusions</h3>
-
-<p><strong>Note.</strong> The exclusions referred to in this section are the combined UKB recommended exclusions, Affymetrix quality control for samples, bileve genotype quality control, heterozygosity outliers (+/- 3*SD), genetic ethnicity outliers (based on Genetic Ethnic Grouping, field code 22006), and one random member of each related pair (including Duplicates/MZ twins, 1st-, 2nd-, and 3rd-degree relatives).</p>
-
-<p><br /></p>
-
-<p><strong>BGENIE</strong> does not have an option to read exclusions. You can replace data values in a phenotype with <code class="highlighter-rouge">NA</code> where the individual is to-be-excluded based on genetic metadata considerations. Writing the updated variable to your phenotype file (with the supplied write functions), effectively excludes the individuals from any analysis.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>my_ukb_data$height_excl_na &lt;- ukb_gen_excl_to_na(my_ukb_data, x = "height")
-</code></pre></div></div>
-<p><br /></p>
-
-<p><strong>PLINK</strong> <code class="highlighter-rouge">--remove</code> takes a space- or tab-delimited file with family IDs in the first column and individual IDs in the second column, without column names. See <a href="https://www.cog-genomics.org/plink/1.9/filter#indiv">PLINK input filtering</a> for further details. (The missing value approach described above also works for PLINK.)</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ukb_gen_write_plink_excl("path/to/plink_input_file")
-</code></pre></div></div>
+<p>This research has been conducted using the UK Biobank Resource, Application 13427.</p>
 
 
       <footer class="site-footer">

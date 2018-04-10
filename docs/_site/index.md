@@ -179,8 +179,29 @@ Setting `freq.plot = FALSE` (default) returns a dataframe of the frequencies. Va
 
 ## __Genetic metadata__
 
-__Note.__ Genetic metadata for the interim genotyped sample (first 50K individuals genotyped) was included with the phenotype data. Functionality to retrieve the genetic metadata has been preserved (so any existing pipelines do not break) and is described below under __Interim metadata (50K individuals)__. With the release of the full sample genotypes (500K individuals), sample QC (__ukb_sqc_v2.txt__) and marker QC (__ukb_snp_qc.txt__) data are now supplied as separate files. The contents of these files, along with all other genetic files are described fully in [UKB Resource 531](https://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=531).
+>__Interim release metadata (150K individuals)__
+>
+>The genetic metadata functions were written to retrieve genetic metadata from the phenotype file for the [interim genotype release](http://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=199001). The associated QC was described in [genotyping and quality control](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf) and [imputation and association](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/imputation_documentation_May2015.pdf). __The fields retrieved became obselete when the main genotyping results (500K individuals) were released at the end of 2017.__
+>
+>```
+# Obsolete functions
+- ukb_gen_meta
+- ukb_gen_pcs
+- ukb_gen_excl
+- ukb_gen_rel
+- ukb_gen_rel_count
+- ukb_gen_het
+- ukb_gen_excl_to_na
+- ukb_gen_write_plink_excl
+```
+>
+>The above functions remain in the ukbtools package so that pipelines for older studies do not break.
+>
+>__Full release metadata (500K individuals)__
+>
+>With the release of the full sample genotypes (500K individuals), sample QC (__ukb_sqc_v2.txt__) and marker QC (__ukb_snp_qc.txt__) data are now supplied as separate files. The contents of these files, along with all other genetic files are described fully in [UKB Resource 531](https://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=531).
 
+<br>
 
 ### Write phenotype and covariate files for genetic analysis 
 
@@ -218,75 +239,13 @@ ukb_gen_write_plink(
 
 __PLINK__ does not require that individuals in phenotype and covariate files are in any particular order, but you may want to reconcile the individuals you include in your analysis with those in the fam file (from your hard-called data). Read the fam file into R with `ukb_gen_read_fam`
 
-<br>
+### Sample exclusions
 
-### Note on sample exclusions
-
-The exclusions referred to in this section are the combined UKB recommended exclusions, Affymetrix quality control for samples, bileve genotype quality control, heterozygosity outliers (+/- 3*SD), genetic ethnicity outliers (based on Genetic Ethnic Grouping, field code 22006), and one random member of each related pair (including Duplicates/MZ twins, 1st-, 2nd-, and 3rd-degree relatives).
-
-__BGENIE__ does not have an option to read exclusions. You can replace data values in a phenotype with `NA` where the individual is to-be-excluded based on genetic metadata considerations. Writing the updated variable to your phenotype file (with the supplied write functions), effectively excludes the individuals from any analysis.
-
-```
-my_ukb_data$height_excl_na <- ukb_gen_excl_to_na(my_ukb_data, x = "height")
-```
+__BGENIE__ does not have an option to read/remove exclusions. You can replace data values in the phenotype with `NA` where the individual is to-be-excluded based on genetic metadata considerations. Writing the updated variable to your phenotype file (with the supplied write functions), effectively excludes the individuals from any analysis.
 
 __PLINK__ `--remove` takes a space- or tab-delimited file with family IDs in the first column and individual IDs in the second column, without column names. See [PLINK input filtering](https://www.cog-genomics.org/plink/1.9/filter#indiv) for further details. (The missing value approach described above also works for PLINK.)
 
-```
-ukb_gen_write_plink_excl("path/to/plink_samples_to_remove_file")
-```
-
-<br>
-
-
-***
-
-#### Interim metadata (50K individuals)
-
-__Note.__ If you have genotype data for the full 500K individuals, this section is not relevant to you. 
-
-If you are doing any downstream genetic analyses, you will need the genetic metadata (which should be in you phenotype dataset). Detailed information is available on UKB [genotyping and quality control](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf) and [imputation and association](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/imputation_documentation_May2015.pdf).
-
-All genetic metadata related functions begin `ukb_gen_`. Typing `ukb_gen_` tab opens a dropdown menu for this group of functions. 
-
-<br>
-
-You can collect the genetic metadata (including recommended exclusions, genetic sex, genetic ethnicity, chip, etc.), and principal components with
-
-```
-my_gen_meta <- ukb_gen_meta(my_ukb_data)
-my_gen_pcs <- ukb_gen_pcs(my_ukb_data)
-```
-
-<br>
-
-A list of IDs for recommended exclusions and heterozygosity outliers (+/- 3*SD) can be retrieved
-
-```
-ukb_gen_excl(my_ukb_data)
-ukb_gen_het(my_ukb_data)
-```
-
-For a `data.frame` of raw heterozygosity data
-
-```
-ukb_gen_het(my_ukb_data, all.het = TRUE)
-```
-
-<br>
-
-`ukb_gen_rel` returns a `data.frame` with `id`, `pair` (a numeric identifier for related pairs), and `kinship` (kinship coefficient). For a count of related samples by degree of relatedness use `ukb_gen_rel_count`. Set the argument `plot = TRUE` to replicate the plot on page 15 of the [UKB genotyping and quality control documentation](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf), for your subgroup of interest.
-
-```
-my_gen_rel <- ukb_gen_rel(my_ukb_data)
-
-# To get a count and plot of degree of relatedness
-ukb_gen_rel_count(my_gen_rel, plot = TRUE)
-```
-
-<br>
-
-
+Use the sample QC file (__ukb_sqc_v2.txt__)  to determine to-be-excluded samples.
 
 <br>
 

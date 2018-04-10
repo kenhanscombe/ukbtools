@@ -20,7 +20,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/css/style.css?v=97261f7bd9616226812e1c83060c9f5ad1808f46">
+    <link rel="stylesheet" href="/assets/css/style.css?v=53dbe6cc865df2881c845ce92326f86eb80ccf01">
   </head>
   <body>
     <section class="page-header">
@@ -203,7 +203,30 @@ ukb_icd_freq_by(my_ukb_data, reference.var = "sex_0_0", freq.plot = TRUE)
 
 <h2 id="genetic-metadata"><strong>Genetic metadata</strong></h2>
 
-<p><strong>Note.</strong> Genetic metadata for the interim genotyped sample (first 50K individuals genotyped) was included with the phenotype data. Functionality to retrieve the genetic metadata has been preserved (so any existing pipelines do not break) and is described below under <strong>Interim metadata (50K individuals)</strong>. With the release of the full sample genotypes (500K individuals), sample QC (<strong>ukb_sqc_v2.txt</strong>) and marker QC (<strong>ukb_snp_qc.txt</strong>) data are now supplied as separate files. The contents of these files, along with all other genetic files are described fully in <a href="https://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=531">UKB Resource 531</a>.</p>
+<blockquote>
+  <p><strong>Interim release metadata (150K individuals)</strong></p>
+
+  <p>The genetic metadata functions were written to retrieve genetic metadata from the phenotype file for the <a href="http://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=199001">interim genotype release</a>. The associated QC was described in <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf">genotyping and quality control</a> and <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/imputation_documentation_May2015.pdf">imputation and association</a>. <strong>The fields retrieved became obselete when the main genotyping results (500K individuals) were released at the end of 2017.</strong></p>
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Obsolete functions
+- ukb_gen_meta
+- ukb_gen_pcs
+- ukb_gen_excl
+- ukb_gen_rel
+- ukb_gen_rel_count
+- ukb_gen_het
+- ukb_gen_excl_to_na
+- ukb_gen_write_plink_excl
+</code></pre></div>  </div>
+
+  <p>The above functions remain in the ukbtools package so that pipelines for older studies do not break.</p>
+
+  <p><strong>Full release metadata (500K individuals)</strong></p>
+
+  <p>With the release of the full sample genotypes (500K individuals), sample QC (<strong>ukb_sqc_v2.txt</strong>) and marker QC (<strong>ukb_snp_qc.txt</strong>) data are now supplied as separate files. The contents of these files, along with all other genetic files are described fully in <a href="https://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=531">UKB Resource 531</a>.</p>
+</blockquote>
+
+<p><br /></p>
 
 <h3 id="write-phenotype-and-covariate-files-for-genetic-analysis">Write phenotype and covariate files for genetic analysis</h3>
 
@@ -238,66 +261,13 @@ ukb_gen_write_plink(
 
 <p><strong>PLINK</strong> does not require that individuals in phenotype and covariate files are in any particular order, but you may want to reconcile the individuals you include in your analysis with those in the fam file (from your hard-called data). Read the fam file into R with <code class="highlighter-rouge">ukb_gen_read_fam</code></p>
 
-<p><br /></p>
+<h3 id="sample-exclusions">Sample exclusions</h3>
 
-<h3 id="note-on-sample-exclusions">Note on sample exclusions</h3>
-
-<p>The exclusions referred to in this section are the combined UKB recommended exclusions, Affymetrix quality control for samples, bileve genotype quality control, heterozygosity outliers (+/- 3*SD), genetic ethnicity outliers (based on Genetic Ethnic Grouping, field code 22006), and one random member of each related pair (including Duplicates/MZ twins, 1st-, 2nd-, and 3rd-degree relatives).</p>
-
-<p><strong>BGENIE</strong> does not have an option to read exclusions. You can replace data values in a phenotype with <code class="highlighter-rouge">NA</code> where the individual is to-be-excluded based on genetic metadata considerations. Writing the updated variable to your phenotype file (with the supplied write functions), effectively excludes the individuals from any analysis.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>my_ukb_data$height_excl_na &lt;- ukb_gen_excl_to_na(my_ukb_data, x = "height")
-</code></pre></div></div>
+<p><strong>BGENIE</strong> does not have an option to read/remove exclusions. You can replace data values in the phenotype with <code class="highlighter-rouge">NA</code> where the individual is to-be-excluded based on genetic metadata considerations. Writing the updated variable to your phenotype file (with the supplied write functions), effectively excludes the individuals from any analysis.</p>
 
 <p><strong>PLINK</strong> <code class="highlighter-rouge">--remove</code> takes a space- or tab-delimited file with family IDs in the first column and individual IDs in the second column, without column names. See <a href="https://www.cog-genomics.org/plink/1.9/filter#indiv">PLINK input filtering</a> for further details. (The missing value approach described above also works for PLINK.)</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ukb_gen_write_plink_excl("path/to/plink_samples_to_remove_file")
-</code></pre></div></div>
-
-<p><br /></p>
-
-<hr />
-
-<h4 id="interim-metadata-50k-individuals">Interim metadata (50K individuals)</h4>
-
-<p><strong>Note.</strong> If you have genotype data for the full 500K individuals, this section is not relevant to you.</p>
-
-<p>If you are doing any downstream genetic analyses, you will need the genetic metadata (which should be in you phenotype dataset). Detailed information is available on UKB <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf">genotyping and quality control</a> and <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/imputation_documentation_May2015.pdf">imputation and association</a>.</p>
-
-<p>All genetic metadata related functions begin <code class="highlighter-rouge">ukb_gen_</code>. Typing <code class="highlighter-rouge">ukb_gen_</code> tab opens a dropdown menu for this group of functions.</p>
-
-<p><br /></p>
-
-<p>You can collect the genetic metadata (including recommended exclusions, genetic sex, genetic ethnicity, chip, etc.), and principal components with</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>my_gen_meta &lt;- ukb_gen_meta(my_ukb_data)
-my_gen_pcs &lt;- ukb_gen_pcs(my_ukb_data)
-</code></pre></div></div>
-
-<p><br /></p>
-
-<p>A list of IDs for recommended exclusions and heterozygosity outliers (+/- 3*SD) can be retrieved</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ukb_gen_excl(my_ukb_data)
-ukb_gen_het(my_ukb_data)
-</code></pre></div></div>
-
-<p>For a <code class="highlighter-rouge">data.frame</code> of raw heterozygosity data</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ukb_gen_het(my_ukb_data, all.het = TRUE)
-</code></pre></div></div>
-
-<p><br /></p>
-
-<p><code class="highlighter-rouge">ukb_gen_rel</code> returns a <code class="highlighter-rouge">data.frame</code> with <code class="highlighter-rouge">id</code>, <code class="highlighter-rouge">pair</code> (a numeric identifier for related pairs), and <code class="highlighter-rouge">kinship</code> (kinship coefficient). For a count of related samples by degree of relatedness use <code class="highlighter-rouge">ukb_gen_rel_count</code>. Set the argument <code class="highlighter-rouge">plot = TRUE</code> to replicate the plot on page 15 of the <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf">UKB genotyping and quality control documentation</a>, for your subgroup of interest.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>my_gen_rel &lt;- ukb_gen_rel(my_ukb_data)
-
-# To get a count and plot of degree of relatedness
-ukb_gen_rel_count(my_gen_rel, plot = TRUE)
-</code></pre></div></div>
-
-<p><br /></p>
+<p>Use the sample QC file (<strong>ukb_sqc_v2.txt</strong>)  to determine to-be-excluded samples.</p>
 
 <p><br /></p>
 

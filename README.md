@@ -93,7 +93,7 @@ __Note:__ You can move the three files in your fileset after creating them with 
 
 ## Other tools
 
-Other tools in the package are described in the vignette "Explore UK Biobank Data"
+All tools are described on the [ukbtools webpage](https://kenhanscombe.github.io/ukbtools/) and in the package vignette "Explore UK Biobank Data"
 
 ```{r, eval = FALSE}
 

@@ -50,7 +50,8 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
   col_type <- c("Sequence" = "integer", "Integer" = "integer", "Categorical (single)" = "character",
                 "Categorical (multiple)" = "character", "Continuous" = "double", "Text" = "character",
                 "Date" = "character", "Time" = "character", "Compound" = "character",
-                "Binary object" = "character", "Records" = "character")
+                "Binary object" = "character", "Records" = "character",
+                "Curve" = "character")
 
   df <- ukb_df_field(fileset, path = path) %>%
     mutate(fread_column_type = col_type[col.type])

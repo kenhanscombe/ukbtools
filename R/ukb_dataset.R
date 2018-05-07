@@ -55,7 +55,14 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
 
   df <- ukb_df_field(fileset, path = path) %>%
     mutate(fread_column_type = col_type[col.type])
-
+  bad_col_type = is.na(df$fread_column_type)
+  if (any(bad_col_type)) {
+    bad_types = sort(unique(df$col.type[bad_col_type]))
+    bad_types = paste0(bad_types, collapse = ", ")
+    warning(paste0("Bad Column types of ", bad_types, " encountered, ",
+                   "setting them to be character"))
+    df$fread_column_type[bad_col_type] = "character"
+  }
   .update_tab_path(fileset, column_type = df$fread_column_type, path)
 
 

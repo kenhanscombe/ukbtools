@@ -6,17 +6,17 @@
 
 <br>
 
-> __ukbtools: An R package to manage and query UK Biobank data__
->
-> Ken B Hanscombe, Jonathan R I Coleman, Matthew Traylor, Cathryn M Lewis
->
-> bioRxiv 158113; doi: https://doi.org/10.1101/158113
+## Citing ukbtools
+
+If you use ukbtools in any published work, please cite:
+
+Hanscombe K.B., Coleman J.R.I., Traylor M., and Lewis C.M. _ukbtools: An R package to manage and query UK Biobank data._ bioRxiv 158113; doi: [https://doi.org/10.1101/158113](https://doi.org/10.1101/158113)
 
 <br>
 
 ## Overview
 
-After downloading and decrypting your UK Biobank (UKB) data with the supplied [UKB programs] (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf), you have multiple files that need to be brought together to give you a dataset to explore. The data file has column names that are edited field-codes from the [UKB data showcase](http://www.ukbiobank.ac.uk/data-showcase/). `ukbtools` makes it easy to collapse the multiple UKB files into a single dataset for analysis, in the process giving meaningful names to the variables. The package also includes functionality to retrieve ICD diagnoses, explore a sample subset in the context of the UKB sample, and collect genetic metadata.
+After downloading and decrypting your UK Biobank (UKB) data with the supplied [UKB programs] (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf), you have multiple files that need to be brought together to give you a dataset to explore. The data file has column names that are edited field-codes from the [UKB data showcase](http://www.ukbiobank.ac.uk/data-showcase/). ukbtools makes it easy to collapse the multiple UKB files into a single dataset for analysis, in the process giving meaningful names to the variables. The package also includes functionality to retrieve ICD diagnoses, explore a sample subset in the context of the UKB sample, and collect genetic metadata.
 
 <br>
 

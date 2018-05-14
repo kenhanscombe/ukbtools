@@ -206,8 +206,8 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
 
   # Update path to tab file in R source
   if(path == ".") {
-    tab_location <- file.path(getwd(), tab_file)
-    r_location <- file.path(getwd(), r_file)
+    tab_location <- tab_file
+    r_location <- r_file
   } else {
     tab_location <- file.path(path, tab_file)
     r_location <- file.path(path, r_file)

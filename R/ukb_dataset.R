@@ -1,5 +1,5 @@
 
-globalVariables(c(".", "eid", "pair", "ibs0", "kinship", "category_related", "ped_related", "code", "heterozygosity_0_0", "field.tab", "col.type", "variable"))
+globalVariables(c(".", "eid", "pair", "ibs0", "kinship", "category_related", "ped_related", "code", "heterozygosity_0_0", "field.tab", "field.showcase", "field.html", "col.type", "variable"))
 
 #' Reads a UK Biobank phenotype fileset and returns a single dataset.
 #'
@@ -7,6 +7,7 @@ globalVariables(c(".", "eid", "pair", "ibs0", "kinship", "category_related", "pe
 #'
 #' @param fileset The prefix for a UKB fileset, e.g., ukbxxxx (for ukbxxxx.tab, ukbxxxx.r, ukbxxxx.html)
 #' @param path The path to the directory containing your UKB fileset. The default value is the current directory.
+#' @param n_threads Either "max" (uses the number of cores, `parallel::detectCores()`), "dt" (default - uses the data.table default, `data.table::getDTthreads()`), or a numerical value (in which case n_threads is set to the supplied value, or `parallel::detectCores()` if it is smaller).
 #' @param data.pos Locates the data in your .html file. The .html file is read into a list; the default value data.pos = 2 indicates the second item in the list. (The first item in the list is the title of the table). You will probably not need to change this value, but if the need arises you can open the .html file in a browser and identify where in the file the data is.
 #'
 #' @details The \strong{index} and \strong{array} from the UKB field code are preserved in the variable name, as two numbers separated by underscores at the end of the name e.g. \emph{variable_index_array}. \strong{index} refers the assessment instance (or visit). \strong{array} captures multiple answers to the same "question". See UKB documentation for detailed descriptions of \href{http://biobank.ctsu.ox.ac.uk/crystal/instance.cgi?id=2}{index} and \href{http://biobank.ctsu.ox.ac.uk/crystal/help.cgi?cd=array}{array}.
@@ -40,7 +41,9 @@ globalVariables(c(".", "eid", "pair", "ibs0", "kinship", "category_related", "pe
 #' )
 #' }
 #'
-ukb_df <- function(fileset, path = ".", data.pos = 2) {
+ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2) {
+
+  # Check files exist
   html_file <- stringr::str_interp("${fileset}.html")
   r_file <- stringr::str_interp("${fileset}.r")
   tab_file <- stringr::str_interp("${fileset}.tab")
@@ -53,29 +56,26 @@ ukb_df <- function(fileset, path = ".", data.pos = 2) {
                 "Binary object" = "character", "Records" = "character",
                 "Curve" = "character")
 
-  df <- ukb_df_field(fileset, path = path) %>%
+  ukb_key <- ukb_df_field(fileset, path = path) %>%
     mutate(fread_column_type = col_type[col.type])
-  bad_col_type = is.na(df$fread_column_type)
+
+  bad_col_type <- is.na(ukb_key$fread_column_type)
+
   if (any(bad_col_type)) {
-    bad_types = sort(unique(df$col.type[bad_col_type]))
-    bad_types = paste0(bad_types, collapse = ", ")
-    warning(paste0("Bad Column types of ", bad_types, " encountered, ",
+    bad_types <- sort(unique(ukb_key$col.type[bad_col_type])) %>%
+      stringr::str_c(bad_types, collapse = ", ")
+    warning(stringr::str_c("Unknown column types ", bad_types, " encountered, ",
                    "setting them to be character"))
-    df$fread_column_type[bad_col_type] = "character"
+    ukb_key$fread_column_type[bad_col_type] <- "character"
   }
-  .update_tab_path(fileset, column_type = df$fread_column_type, path)
 
+  # Comment out .r read of .tab
+  # Read .tab file from user named path with data.table::fread
+  # Include UKB-generated categorical variable labels
+  bd <- .update_tab_path(fileset, column_type = ukb_key$fread_column_type, path, n_threads = n_threads)
+  source(file.path(path, r_file), local = TRUE)
 
-  source(
-    if (path == ".") {
-      file.path(getwd(), r_file)
-    } else {
-      file.path(path, r_file)
-    },
-    local = TRUE
-  )
-
-  names(bd) <- df$col.name[match(names(bd), df$field.tab)]
+  names(bd) <- ukb_key$col.name[match(names(bd), ukb_key$field.tab)]
   return(bd)
 }
 
@@ -126,13 +126,17 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
   } else {
     lookup.reference <- data_frame(
       field.showcase = gsub("-.*$", "", df[, "UDI"]),
-        field.html = df[, "UDI"],
+      field.html = df[, "UDI"],
       field.tab = old_var_names,
       col.type = df[, "Type"],
-      col.name = lookup)
+      col.name = ifelse(field.showcase == "eid", "eid",
+        str_c(lookup, "_f", str_replace_all(field.html, c("-" = "_", "\\." = "_"))))
+    )
+
     return(lookup.reference)
   }
 }
+
 
 
 
@@ -159,22 +163,15 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
 #
 .description_to_name <-  function(data) {
 
-  name <- tolower(data[, "Description"])
-  name <- gsub(" - ", "_", name)
-  name <- gsub(" ", "_", name)
-  name <- gsub("uses_data-coding.*simple_list.$", "", name)
-  name <- gsub("uses_data-coding.*hierarchical_tree.", "", name)
-  name <- gsub("[^[:alnum:][:space:]_]", "", name)
-  name <- gsub("__*", "_", name)
+  name <- tolower(data[, "Description"]) %>%
+    gsub(" - ", "_", x = .) %>%
+    gsub(" ", "_", x = .) %>%
+    gsub("uses_data-coding.*simple_list.$", "", x = .) %>%
+    gsub("uses_data-coding.*hierarchical_tree.", "", x = .) %>%
+    gsub("[^[:alnum:][:space:]_]", "", x = .) %>%
+    gsub("__*", "_", x = .)
 
-  ukb_index_array <- gsub("^.*-", "", data[, "UDI"])
-  ukb_index_array <- gsub("\\.", "_", ukb_index_array)
-  name_index_array <- ifelse(
-    ukb_index_array == "eid",
-    "eid",
-    paste(name, ukb_index_array, sep = "_")
-  )
-  return(name_index_array)
+  return(name)
 }
 
 
@@ -200,30 +197,42 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
 # @param fileset prefix for UKB fileset
 # @param path The path to the directory containing your UKB fileset. The default value is the current directory.
 #
-.update_tab_path <- function(fileset, column_type, path = ".") {
+.update_tab_path <- function(fileset, column_type, path = ".", n_threads = "min") {
   r_file <- stringr::str_interp("${fileset}.r")
   tab_file <- stringr::str_interp("${fileset}.tab")
 
   # Update path to tab file in R source
-  if(path == ".") {
-    tab_location <- file.path(getwd(), tab_file)
-    r_location <- file.path(getwd(), r_file)
-  } else {
-    tab_location <- file.path(path, tab_file)
-    r_location <- file.path(path, r_file)
-  }
+  tab_location <- file.path(path, tab_file)
+  r_location <- file.path(path, r_file)
 
   edit_date <- Sys.time()
 
-  f <- gsub(
-    "bd *<- *read.*$" ,
-    stringr::str_interp(
-"# Read function edited by ukbtools ${edit_date}
-bd <- data.table::fread('${file.path(path, tab_file)}', sep = '\t', header = TRUE, colClasses = ${column_type}, data.table = FALSE)\n"),
-    readLines(r_location)
-    )
+  f <- stringr::str_replace(
+    readLines(r_location),
+    pattern = "bd *<-" ,
+    replacement = stringr::str_interp(
+      "# Read function edited by ukbtools ${edit_date}\n# bd <-")
+  )
 
   cat(f, file = r_location, sep = "\n")
+
+  bd <- data.table::fread(
+    input = tab_location,
+    sep = "\t",
+    header = TRUE,
+    colClasses = stringr::str_c("${column_type}"),
+    data.table = FALSE,
+    showProgress = TRUE,
+    nThread =   if(n_threads == "max") {
+      parallel::detectCores()
+    } else if (n_threads == "dt") {
+      data.table::getDTthreads()
+    } else if (is.numeric(n_threads)) {
+      min(n_threads, parallel::detectCores())
+    }
+  )
+
+  return(bd)
 }
 
 

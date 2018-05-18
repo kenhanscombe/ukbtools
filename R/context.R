@@ -7,12 +7,12 @@
 #' @param nonmiss.var The variable of interest which defines the "subset" (samples with data) and "reference" (samples without data, i.e., NA) samples.
 #' @param subset.var A logical vector defining a "subset" (\code{TRUE}) and "reference" subset (\code{FALSE}). Length must equal the number of rows in your \code{data}.
 #' @param bar.position This argument is passed to the \code{position} in \code{geom_bar}. The default value is \code{"fill"} which shows reference and subset of interest as proportions of the full dataset. Useful alternatives are \code{"stack"} for counts and \code{"dodge"} for side-by-side bars.
-#' @param sex.var The variable to be used for sex. Default value is "sex_0_0".
-#' @param age.var The variable to be use for age. Default value is "age_when_attended_assessment_centre_0_0".
-#' @param socioeconomic.var The variable to be used for socioeconomic status. Default value is deprivation at baseline, "townsend_deprivation_index_at_recruitment_0_0".
-#' @param ethnicity.var The variable to be used for ethnicity. Default value is "ethnic_background_0_0".
-#' @param employment.var The variable to be used for employment status. Default value is employment status at baseline "current_employment_status_0_0".
-#' @param centre.var The variable to be used for assessment centre. Default value is "uk_biobank_assessment_centre_0_0".
+#' @param sex.var The variable to be used for sex. Default value is the regular expression "^sex.*0_0".
+#' @param age.var The variable to be use for age. Default value is the regular expression "^age_when_attended_assessment_centre.*0_0".
+#' @param socioeconomic.var The variable to be used for socioeconomic status. Default value is deprivation at baseline, the regular expression "^townsend_deprivation_index_at_recruitment.*0_0".
+#' @param ethnicity.var The variable to be used for ethnicity. Default value is the regular expression "^ethnic_background.*0_0".
+#' @param employment.var The variable to be used for employment status. Default value is employment status at baseline "^current_employment_status.*0_0".
+#' @param centre.var The variable to be used for assessment centre. Default value is the regular expression "^uk_biobank_assessment_centre.*0_0".
 #'
 #' @seealso \code{\link{ukb_df}}
 #'
@@ -31,12 +31,12 @@
 #'
 ukb_context <- function(
   data, nonmiss.var = NULL, subset.var = NULL, bar.position = "fill",
-  sex.var = "sex_0_0",
-  age.var = "age_when_attended_assessment_centre_0_0",
-  socioeconomic.var = "townsend_deprivation_index_at_recruitment_0_0",
-  ethnicity.var = "ethnic_background_0_0",
-  employment.var = "current_employment_status_0_0",
-  centre.var = "uk_biobank_assessment_centre_0_0") {
+  sex.var = "^sex.*0_0",
+  age.var = "^age_when_attended_assessment_centre.*0_0",
+  socioeconomic.var = "^townsend_deprivation_index_at_recruitment.*0_0",
+  ethnicity.var = "^ethnic_background.*0_0",
+  employment.var = "^current_employment_status_corrected.*0_0",
+  centre.var = "^uk_biobank_assessment_centre.*0_0") {
 
   if (is.null(nonmiss.var) & is.null(subset.var)) {
     stop("Either supply a variable of interest (nonmiss.var),
@@ -49,8 +49,17 @@ ukb_context <- function(
     subset.var
   }
 
+  sex.var <- data %>% select(matches(sex.var)) %>% names()
+  age.var <- data %>% select(matches(age.var)) %>% names()
+  socioeconomic.var <- data %>% select(matches(socioeconomic.var)) %>% names()
+  ethnicity.var <- data %>% select(matches(ethnicity.var)) %>% names()
+  employment.var <- data %>% select(matches(employment.var)) %>% names()
+  centre.var <- data %>% select(matches(centre.var)) %>% names()
+
   centre_lookup <- lookup(ukbtools::ukbcentre, "code", "centre")
-  data$centre <-  centre_lookup[as.character(data[[centre.var]])]
+  data$centre <-  centre_lookup[as.character(
+    data %>% select(matches("uk_biobank_assessment_centre.*0_0")) %>% .[[1]]
+    )]
 
   multiplot(
 

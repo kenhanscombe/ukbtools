@@ -2,6 +2,7 @@
 
 export(ukb_centre)
 export(ukb_context)
+export(ukb_defunct)
 export(ukb_df)
 export(ukb_df_duplicated_name)
 export(ukb_df_field)

@@ -15,6 +15,8 @@ ukb_gen_het(data, all.het = FALSE)
 A vector of IDs if \code{all.het = FALSE} (default), or a dataframe with ID, heterozygosity and PCA-corrected heterozygosity if \code{all.het = TRUE}.
 }
 \description{
+\strong{Defunct. See help("ukb_defunct")}.
+
 Heterozygosity outliers are typically removed from genetic association analyses. This function returns either a vector of heterozygosity outliers to remove (+/- 3sd from mean heterozygosity), or a data frame with heterozygosity scores for all samples.
 }
 \details{
@@ -28,5 +30,4 @@ outlier_het_ids <- ukb_gen_het(my_ukb_data)
 # Retrieve all raw and pca-corrected heterozygosity scores
 ukb_het <- ukb_gen_het(my_ukb_data, all.het = TRUE)
 }
-
 }

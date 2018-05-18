@@ -112,3 +112,25 @@ ukb_context <- function(
     cols = 2
   )
 }
+
+
+
+
+#' Inserts UKB centre names into data
+#'
+#' Inserts a column with centre name, \code{ukb_centre}, into the supplied data.frame. Useful if your UKB centre variable \code{uk_biobank_assessment_centre_0_0} has not been populated with named levels.
+#'
+#' @param data A UKB dataset created with \code{\link{ukb_df}}.
+#' @param centre.var The UKB column containing numerically coded assessment centre. The default is a regular expression \code{"^uk_biobank_assessment_centre.*0_0"}.
+#' @return A dataframe with an additional column \code{ukb_centre} - UKB assessment centre names
+#' @export
+ukb_centre <- function(data, centre.var = "^uk_biobank_assessment_centre.*0_0") {
+  centre.var <- dplyr::select(data, matches(centre.var)) %>% names()
+  centre.var <- as.factor(data[[centre.var]])
+  centre_lookup <- lookup(ukbtools::ukbcentre, "code", "centre")
+  data$ukb_centre <- centre_lookup[centre.var]
+
+  data %>%
+    dplyr::select(eid, ukb_centre, everything()) %>%
+    return()
+}

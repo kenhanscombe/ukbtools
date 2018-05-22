@@ -13,7 +13,6 @@ The genetic metadata functions were written to retrieve genetic metadata from th
 \item ukb_gen_pcs(data)
 \item ukb_gen_excl(data)
 \item ukb_gen_rel(data)
-\item ukb_gen_rel_count(data, plot = FALSE)
 \item ukb_gen_het(data, all.het = FALSE)
 \item ukb_gen_excl_to_na(data, x, ukb.id = "eid", data.frame = FALSE)
 \item ukb_gen_write_plink_excl(path)

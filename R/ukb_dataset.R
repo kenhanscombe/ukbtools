@@ -1,5 +1,5 @@
 
-globalVariables(c(".", "eid", "pair", "ibs0", "kinship", "category_related", "ped_related", "code", "heterozygosity_0_0", "field.tab", "field.showcase", "field.html", "col.type", "variable"))
+globalVariables(c(".", "eid", "pair", "ibs0", "kinship", "category_related", "ped_related", "code", "heterozygosity_0_0", "field.tab", "field.showcase", "field.html", "col.type", "variable", "HetHet", "IBS0", "ID", "ID1", "ID2", "Kinship"))
 
 #' Reads a UK Biobank phenotype fileset and returns a single dataset.
 #'

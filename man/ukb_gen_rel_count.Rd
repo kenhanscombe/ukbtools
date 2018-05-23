@@ -22,9 +22,15 @@ Use UKB supplied program `ukbgene` to retrieve genetic relatedness data file ukb
 }
 \examples{
 \dontrun{
-# Use UKB supplied program `ukbgene` to retrieve genetic relatedness file ukbA_rel_sP.txt. See \\href{http://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=664}{UKB Resource 664}. With the whitespace delimited file read into R as e.g. ukb_relatedness, generate a dataframe of counts or a plot as follows:
+# Use UKB supplied program `ukbgene` to retrieve genetic relatedness file ukbA_rel_sP.txt.
+See \\href{http://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=664}{UKB Resource 664}.
+With the whitespace delimited file read into R as e.g. ukb_relatedness,
+generate a dataframe of counts or a plot as follows:
 
 ukb_gen_rel_count(ukb_relatedness)
 ukb_gen_rel_count(ukb_relatedness, plot = TRUE)
 }
+}
+\seealso{
+\code{\link{ukb_gen_related_with_data}}, \code{\link{ukb_gen_samples_to_remove}}
 }

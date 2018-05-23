@@ -14,8 +14,28 @@ ukb_gen_samples_to_remove(data, ukb_with_data, cutoff = 0.0884)
 \item{cutoff}{KING kingship coefficient cutoff (default 0.0884 includes pairs with greater than 3rd-degree relatedness)}
 }
 \value{
-A dataframe (header: ID1, ID2, HetHet, IBS0, Kinship) for the subset of individuals with data.
+An integer vector of UKB IDs to remove.
 }
 \description{
-Related samples (with data on the variable of interest) to remove
+There are many ways to remove related individuals from phenotypic data for genetic analyses. You could simply exclude all individuals indicated as having "excess relatedness" and include those "used in pca calculation" (these variables are included in the sample QC data, ukb_sqc_v2.txt) - see details. This list is based on the complete dataset, and possibly removes more samples than you need to for your phenotype of interest. Ideally, you want a maximum independent set, i.e., to remove the minimum number of individuals with data on the phenotype of interest, so that no pair exceeds some cutoff for relatedness. \code{ukb_gen_samples_to_remove} returns a list of samples to remove in to achieve a maximal set of unrelateds for a given phenotype.
+}
+\details{
+Trims down the UKB relatedness data before selecting individuals to exclude, using the algorithm: step 1. remove pairs below KING kinship coefficient 0.0884 (3rd-degree or less related, by default. Can be set with \code{cutoff} argument), and any pairs if either member does not have data on the phenotype of interest. The user supplies a vector of samples with data. step 2. count the number of "connections" (or relatives) each participant has and add to "samples to exclude" the individual with the most connections. This is the greedy part of the algorithm. step 3. repeat step 2 till all remaining participants only have 1 connection, then add one random member of each remaining pair to "samples to exclude" (adds all those listed under ID2)
+
+\emph{Another approach from the UKB email distribution list:}
+
+To: UKB-GENETICS@JISCMAIL.AC.UK
+Date:    Wed, 26 Jul 2017 17:06:01 +0100
+\strong{Subject: A list of unrelated samples}
+
+(...) you could use the list of samples which we used to calculate the PCs,
+which is a (maximal) subset of unrelated participants after applying some QC
+filtering. Please read supplementary Section S 3.3.2 for details. You can
+find the list of samples using the “used.in.pca.calculation" column in the
+sample-QC file (ukb_sqc_v2.txt) (...). Note that this set contains diverse
+ancestries. If you take the intersection with the white British ancestry
+subset you get ~337,500 unrelated samples.
+}
+\seealso{
+\code{\link{ukb_gen_rel_count}}, \code{\link{ukb_gen_related_with_data}}
 }

@@ -18,3 +18,9 @@ The genetic metadata functions were written to retrieve genetic metadata from th
 \item ukb_gen_write_plink_excl(path)
 }
 }
+\details{
+See also lists new functionality that works with the files described in \href{https://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=531}{UKB Resource 531}.
+}
+\seealso{
+\code{\link{ukb_gen_sqc_names}}, \code{\link{ukb_gen_rel_count}}, \code{\link{ukb_gen_related_with_data}}, \code{\link{ukb_gen_samples_to_remove}}
+}

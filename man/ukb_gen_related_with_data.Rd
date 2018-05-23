@@ -19,3 +19,6 @@ A dataframe (header: ID1, ID2, HetHet, IBS0, Kinship) for the subset of individu
 \description{
 Subset of the UKB relatedness dataframe with data
 }
+\seealso{
+\code{\link{ukb_gen_rel_count}}, \code{\link{ukb_gen_samples_to_remove}}
+}

@@ -9,43 +9,70 @@
 # Sample QC ---------------------------------------------------------------
 # File: ukb_sqc_v2.txt
 
-# Column names
-# UKB NOTE: There are currently 2 versions of this file in circulation. The newer version is described below and contains column headers on the first row. The older (deprecated) version lacks the column headers and has two additional Affymetrix internal values prefixing the columns listed below.
+#
 
-# sqc_col_names <- stringr::str_replace_all(
-#   tolower(c(
-#     "x1",
-#     "x2",
-#     "genotyping.array",
-#     "Batch",
-#     "Plate.Name",
-#     "Well",
-#     "Cluster.CR",
-#     "dQC",
-#     "Internal.Pico..ng.uL.",
-#     "Submitted.Gender", # 10
-#     "Inferred.Gender", # 11
-#     "X.intensity",
-#     "Y.intensity",
-#     "Submitted.Plate.Name",
-#     "Submitted.Well",
-#     "sample.qc.missing.rate",
-#     "heterozygosity",
-#     "heterozygosity.pc.corrected",
-#     "het.missing.outliers", # 19
-#     "putative.sex.chromosome.aneuploidy",
-#     "in.kinship.table",
-#     "excluded.from.kinship.inference",
-#     "excess.relatives",
-#     "in.white.British.ancestry.subset",
-#     "used.in.pca.calculation",
-#     paste("pc", 1:40, sep = ""), # 26:65
-#     "in.Phasing.Input.chr1_22",
-#     "in.Phasing.Input.chrX",
-#     "in.Phasing.Input.chrXY"
-#   )),
-#   "[[:punct:]]", "_"
-# )
+
+#' Sample QC column names
+#'
+#' @description The UKB sample QC file has no header on it.
+#'
+#' @param data The UKB ukb_sqc_v2.txt data as dataframe. (Not necessary if column names only are required)
+#' @param col_names_only If \code{TRUE} returns a character vector of column names (\code{data} argument not required). Useful if you would like to supply as header when reading in your sample QC data. If \code{FALSE} (Default), returns the supplied dataframe with column names (Checks number of columns in supplied data. See Details.).
+#'
+#' @return A sample QC dataframe with column names, or a character vector of column names if \code{col_names_only = TRUE}.
+#' @details From \href{https://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=531}{UKB Resource 531}: There are currently 2 versions of this file (UKB ukb_sqc_v2.txt) in circulation. The newer version is described below and contains column headers on the first row. The older (deprecated) version lacks the column headers and has two additional Affymetrix internal values prefixing the columns listed below.
+#' @import stringr
+#' @export
+ukb_gen_sqc_names <- function(data, col_names_only = FALSE) {
+
+  sqc_col_names <- stringr::str_replace_all(
+    tolower(c(
+      "x1",
+      "x2",
+      "genotyping.array",
+      "Batch",
+      "Plate.Name",
+      "Well",
+      "Cluster.CR",
+      "dQC",
+      "Internal.Pico..ng.uL.",
+      "Submitted.Gender",
+      "Inferred.Gender",
+      "X.intensity",
+      "Y.intensity",
+      "Submitted.Plate.Name",
+      "Submitted.Well",
+      "sample.qc.missing.rate",
+      "heterozygosity",
+      "heterozygosity.pc.corrected",
+      "het.missing.outliers",
+      "putative.sex.chromosome.aneuploidy",
+      "in.kinship.table",
+      "excluded.from.kinship.inference",
+      "excess.relatives",
+      "in.white.British.ancestry.subset",
+      "used.in.pca.calculation",
+      paste("pc", 1:40, sep = ""),
+      "in.Phasing.Input.chr1_22",
+      "in.Phasing.Input.chrX",
+      "in.Phasing.Input.chrXY"
+    )),
+    "[[:punct:]]", "_"
+  )
+
+  if (col_names_only) {
+    message("If the number of columns in your sample QC file is not 68, drop the first two values `x1` and `x2`. See Details for excerpt from UKB Resource 531.")
+    sqc_col_names
+  }
+
+  if (ncol(data) == 68)  {
+    names(data) <- sqc_col_names
+    return(data)
+  } else if (ncol(data) == 66) {
+    names(data) <- sqc_col_names[-c(1,2)]
+    return(data)
+  }
+}
 
 
 
@@ -64,10 +91,14 @@
 #'
 #' @import dplyr ggplot2
 #' @importFrom magrittr "%>%"
+#' @seealso \code{\link{ukb_gen_related_with_data}}, \code{\link{ukb_gen_samples_to_remove}}
 #' @export
 #' @examples
 #' \dontrun{
-#' # Use UKB supplied program `ukbgene` to retrieve genetic relatedness file ukbA_rel_sP.txt. See \href{http://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=664}{UKB Resource 664}. With the whitespace delimited file read into R as e.g. ukb_relatedness, generate a dataframe of counts or a plot as follows:
+#' # Use UKB supplied program `ukbgene` to retrieve genetic relatedness file ukbA_rel_sP.txt.
+#' See \href{http://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=664}{UKB Resource 664}.
+#' With the whitespace delimited file read into R as e.g. ukb_relatedness,
+#' generate a dataframe of counts or a plot as follows:
 #'
 #' ukb_gen_rel_count(ukb_relatedness)
 #' ukb_gen_rel_count(ukb_relatedness, plot = TRUE)
@@ -119,45 +150,6 @@ ukb_gen_rel_count <- function(data, plot = FALSE) {
 
 
 
-# Maximal set of unrelateds for a given phenotype
-
-# PLINK tries to maximize the final sample size, but this maximum independent set problem is NP-hard, so we use a greedy algorithm which does not guarantee an optimal result. In practice, PLINK --rel-cutoff does yield maximal sets whenever there aren't too many intertwined close relations, and it outperforms GCTA --grm-cutoff when there are (we chose our greedy algorithm carefully); but if you want to try to beat both programs, use the --make-rel and --keep/--remove flags and patch your preferred approximation algorithm in between. (We may add one or two levels of backtracking to our --rel-cutoff if its level of imperfection becomes problematic.)
-
-
-# Re. relatedness filtering,
-# To: UKB-GENETICS@JISCMAIL.AC.UK
-# Date:    Wed, 26 Jul 2017 17:06:01 +0100
-# From:    Clare Bycroft <clare@WELL.OX.AC.UK>
-#
-# Subject: A list of unrelated samples
-#
-# (...) you could use the list of samples which we used to calculate the PCs,
-# which is a (maximal) subset of unrelated participants after applying some QC
-# filtering. Please read supplementary Section S 3.3.2 for details. You can
-# find the list of samples using the “used.in.pca.calculation" column in the
-# sample-QC file (ukb_sqc_v2.txt) (...). **Note that this set contains diverse
-# ancestries. If you take the intersection with the white British ancestry
-# subset you get ~337,500 unrelated samples.**
-
-# IBD = 0.25 (second degree relatives e.g. grandparent-grandchild)
-# IBD = 0.125 (third degree relatives e.g. full cousins)
-
-# Weale (2010)
-# (...) empirical threshold for QC set at half-way between second degree and third degree relatives (i.e., at IBD = 0.1875). For related pairs or family groups above this threshold, the usual QC step is to leave one individual in the dataset and drop the other or others, based for example on the one with the least missingness.
-# duplicated/ related excl >0.1875
-
-
-# KING kinship coefficient:
-# >0.354 duplicate/MZ twin
-# [0.177, 0.354] 1st-degree
-# [0.0884, 0.177] 2nd-degree
-# [0.0442, 0.0884] 3rd-degree
-
-# What does KING kinship coefficient = -1 mean?
-
-
-
-
 #' Subset of the UKB relatedness dataframe with data
 #'
 #' @param data The UKB relatedness data as a dataframe (header: ID1, ID2, HetHet, IBS0, Kinship)
@@ -166,6 +158,7 @@ ukb_gen_rel_count <- function(data, plot = FALSE) {
 #'
 #' @return A dataframe (header: ID1, ID2, HetHet, IBS0, Kinship) for the subset of individuals with data.
 #' @import tidyr dplyr
+#' @seealso \code{\link{ukb_gen_rel_count}}, \code{\link{ukb_gen_samples_to_remove}}
 #' @export
 ukb_gen_related_with_data <- function(data, ukb_with_data, cutoff = 0.0884) {
   data %>%
@@ -180,11 +173,32 @@ ukb_gen_related_with_data <- function(data, ukb_with_data, cutoff = 0.0884) {
 
 #' Related samples (with data on the variable of interest) to remove
 #'
+#' @description There are many ways to remove related individuals from phenotypic data for genetic analyses. You could simply exclude all individuals indicated as having "excess relatedness" and include those "used in pca calculation" (these variables are included in the sample QC data, ukb_sqc_v2.txt) - see details. This list is based on the complete dataset, and possibly removes more samples than you need to for your phenotype of interest. Ideally, you want a maximum independent set, i.e., to remove the minimum number of individuals with data on the phenotype of interest, so that no pair exceeds some cutoff for relatedness. \code{ukb_gen_samples_to_remove} returns a list of samples to remove in to achieve a maximal set of unrelateds for a given phenotype.
+#'
+#' @details Trims down the UKB relatedness data before selecting individuals to exclude, using the algorithm: step 1. remove pairs below KING kinship coefficient 0.0884 (3rd-degree or less related, by default. Can be set with \code{cutoff} argument), and any pairs if either member does not have data on the phenotype of interest. The user supplies a vector of samples with data. step 2. count the number of "connections" (or relatives) each participant has and add to "samples to exclude" the individual with the most connections. This is the greedy part of the algorithm. step 3. repeat step 2 till all remaining participants only have 1 connection, then add one random member of each remaining pair to "samples to exclude" (adds all those listed under ID2)
+#'
+#' \emph{Another approach from the UKB email distribution list:}
+#'
+#' To: UKB-GENETICS@JISCMAIL.AC.UK
+#' Date:    Wed, 26 Jul 2017 17:06:01 +0100
+#' \strong{Subject: A list of unrelated samples}
+#'
+#' (...) you could use the list of samples which we used to calculate the PCs,
+#' which is a (maximal) subset of unrelated participants after applying some QC
+#' filtering. Please read supplementary Section S 3.3.2 for details. You can
+#' find the list of samples using the “used.in.pca.calculation" column in the
+#' sample-QC file (ukb_sqc_v2.txt) (...). Note that this set contains diverse
+#' ancestries. If you take the intersection with the white British ancestry
+#' subset you get ~337,500 unrelated samples.
+#'
+# What does KING kinship coefficient = -1 mean?
+#'
 #' @param data The UKB relatedness data as a dataframe (header: ID1, ID2, HetHet, IBS0, Kinship)
 #' @param ukb_with_data A character vector of ukb eids with data on the phenotype of interest
 #' @param cutoff KING kingship coefficient cutoff (default 0.0884 includes pairs with greater than 3rd-degree relatedness)
 #'
-#' @return A dataframe (header: ID1, ID2, HetHet, IBS0, Kinship) for the subset of individuals with data.
+#' @return An integer vector of UKB IDs to remove.
+#' @seealso \code{\link{ukb_gen_rel_count}}, \code{\link{ukb_gen_related_with_data}}
 #' @import tidyr dplyr
 #' @export
 ukb_gen_samples_to_remove <- function(data, ukb_with_data, cutoff = 0.0884) {
@@ -203,7 +217,7 @@ ukb_gen_samples_to_remove <- function(data, ukb_with_data, cutoff = 0.0884) {
     remove_samples <- df_id_long %>%
       dplyr::left_join(count(df_id_long, ID), by = "ID") %>%
       dplyr::arrange(desc(n)) %>%
-      head(n = 1) %>%
+      utils::head(n = 1) %>%
       .[["ID"]] %>%
       append(remove_samples, values = .)
 

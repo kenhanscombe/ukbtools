@@ -28,13 +28,13 @@ After downloading and decrypting your UK Biobank (UKB) data with the supplied [U
 install.packages("ukbtools")
 
 # Install latest development version
-devtools::install_github("kenhanscombe/ukbtools", build_vignettes = TRUE, dependencies = TRUE)
+devtools::install_github("kenhanscombe/ukbtools", dependencies = TRUE)
 
 ```
 
 <br>
 
-__Note:__ This package is in beta - it is feature complete but may contain unknown bugs. If anything does not work, first re-install the package `devtools::install_github("kenhanscombe/ukbtools", build_vignettes = TRUE, dependencies = TRUE, force = TRUE)` to get the latest development version. If it is still not working, [let me know](https://github.com/kenhanscombe/ukbtools/issues) and I'll fix it.
+__Note:__ This package is in beta - it is feature complete but may contain unknown bugs. If anything does not work, first re-install the package `devtools::install_github("kenhanscombe/ukbtools", dependencies = TRUE, force = TRUE)` to get the latest development version. If it is still not working, [let me know](https://github.com/kenhanscombe/ukbtools/issues) and I'll fix it.
 
 <br>
 
@@ -79,7 +79,7 @@ You can also specify the path to your fileset if it is not in the current direct
 
 ```{r, eval = FALSE}
 
-my_ukb_data <- ukb_df("ukbxxxx", path = "/full/path/to/my/data/")
+my_ukb_data <- ukb_df("ukbxxxx", path = "/full/path/to/my/data")
 
 ```
 

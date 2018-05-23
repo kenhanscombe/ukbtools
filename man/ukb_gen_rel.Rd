@@ -10,6 +10,8 @@ ukb_gen_rel(data)
 \item{data}{A UKB dataset created with \code{\link{ukb_df}}.}
 }
 \description{
+\strong{Defunct. See help("ukb_defunct")}.
+
 Makes a data.frame containing all related individuals with columns UKB ID, pair ID, \href{http://people.virginia.edu/~wc9c/KING/manual.html}{KING kinship coefficient}, and proportion of alleles IBS = 0. UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} including details on relatedness calculations for the interim genotype data.
 }
 \seealso{

@@ -1,11 +1,15 @@
 
-# ukbtools 0.10.1.9000
+# ukbtools 0.10.1.9001
 
 _Development version_
 
 Updated functionality:
 
-* `ukb_df`: Replaced readr::read_tsv with data.table::fread for faster read. 
+* `ukb_df`: Replaced readr::read_tsv with data.table::fread for faster read. Also includes an `n_threads` argument passed to `data.table::fread`, which may make read faster. Column names now include field code to ensure names are unique (UK Biobank sometimes use the same description for more than one variable)
+
+Defunct functionality:
+
+* Added defunct message to `ukb_gen_meta`, `ukb_gen_pcs`, `ukb_gen_excl`, `ukb_gen_rel`, `ukb_gen_rel_count`, `ukb_gen_het`, `ukb_gen_excl_to_na`, and `ukb_gen_write_plink_excl`. `ukb_defunct` explains why these have become defunct and where to get UK Biobank genetic (meta)data.
 
 
 

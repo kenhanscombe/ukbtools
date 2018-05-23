@@ -10,6 +10,7 @@ ukb_gen_write_plink_excl(path)
 \item{path}{A path to a file.}
 }
 \description{
+\strong{Defunct. See help("ukb_defunct")}.
 Writes a combined exclusions file including UKB recommended exclusions, heterozygosity exclusions (+/- 3*sd from mean), genetic ethnicity exclusions (based on the UKB genetic ethnic grouping variable, field 1002), and relatedness exclusions (a randomly-selected member of each related pair). For exclusion of individuals from a genetic analysis, the PLINK flag \code{--remove} accepts a space/tab-delimited text file with family IDs in the first column and within-family IDs in the second column (i.e., FID IID), without a header.
 }
 \examples{

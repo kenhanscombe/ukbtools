@@ -10,5 +10,7 @@ ukb_gen_pcs(data)
 \item{data}{A UKB dataset created with \code{\link{ukb_df}}.}
 }
 \description{
-These are the principal components derived on the UK Biobank subsample with interim genotype data. UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data.
+\strong{Defunct. See help("ukb_defunct")}.
+
+ These are the principal components derived on the UK Biobank subsample with interim genotype data. UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data.
 }

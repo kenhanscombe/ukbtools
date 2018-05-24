@@ -1,8 +1,6 @@
 
 # ukbtools 0.11.0
 
-_Development version_
-
 Updated functionality:
 
 * `ukb_df`: Replaced readr::read_tsv with data.table::fread for faster read. Also includes an `n_threads` argument passed to `data.table::fread`, which may make read faster. Column names now include field code to ensure names are unique (UK Biobank sometimes use the same description for more than one variable)

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/css/style.css?v=de15e946341e1591c88a7c393a7cb768d6b5a033">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
     <!-- Begin Jekyll SEO tag v2.4.0 -->
 <title>ukbtools | An R package to manipulate and explore UK Biobank data</title>
 <meta name="generator" content="Jekyll v3.7.3" />
@@ -17,7 +17,7 @@
 <meta property="og:url" content="http://localhost:4000/" />
 <meta property="og:site_name" content="ukbtools" />
 <script type="application/ld+json">
-{"url":"http://localhost:4000/","headline":"ukbtools","description":"An R package to manipulate and explore UK Biobank data","name":"ukbtools","@type":"WebSite","@context":"http://schema.org"}</script>
+{"url":"http://localhost:4000/","description":"An R package to manipulate and explore UK Biobank data","name":"ukbtools","headline":"ukbtools","@type":"WebSite","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
   </head>
@@ -25,8 +25,6 @@
     <section class="page-header">
       <h1 class="project-name">ukbtools</h1>
       <h2 class="project-tagline">An R package to manipulate and explore UK Biobank data</h2>
-      
-        <a href="http://github.com/kenhanscombe/ukbtools" class="btn">View on GitHub</a>
       
       <a href="https://cran.r-project.org/web/packages/ukbtools/index.html" class="btn">View on CRAN</a>
       
@@ -119,7 +117,7 @@ ukb_df_full_join(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data)
 
   <p>The join key is set to “eid” only (default value of the <code class="highlighter-rouge">by</code> parameter). Any additional variables common to any two tables will have “.x” and “.y” appended to their names. If you are satisfied the additional variables are identical to the original, the copies can be safely deleted. For example, if <code class="highlighter-rouge">setequal(my_ukb_data$var, my_ukb_data$var.x)</code> is <code class="highlighter-rouge">TRUE</code>, then my_ukb_data$var.x can be dropped. A <code class="highlighter-rouge">dlyr::full_join</code> is like the set operation union in that all abservation from all tables are included, i.e., all samples are included even if they are not included in all datasets.</p>
 
-  <p>Repeated variable names <strong>within</strong> UKB datasets are unlikely to occur. <code class="highlighter-rouge">ukb_df</code> creates variable names by combining a snake_case descriptor with the variable’s <em>index</em> and <em>array</em>. This should be sufficient to uniquely identify the variable. However, if an <em>index_array</em> combination is incorrectly repeated in the original UKB data, this will result in a duplicated variable name. We observed two instances. The variables were encoded *<field>–0.0*, *<field>–1.0*, *<field>––1.0*, and `ukb_df` created a variable named *var_0_0*, *var_1_0*, *var_1_0*. This is probably a typo that should have been *<field>–0.0*, *<field>–1.0*, *<field>–2.0*, consistent with UKB official documentation describing the field as having 3 values for index. We have provided `ukb_df_duplicated_names` to identify duplicated names within a dataset. This will allow the user to make changes as appropriate. We expect the occurrence of such duplicates will be rare.</field></field></field></field></field></field></p>
+  <p>Repeated variable names <strong>within</strong> UKB datasets are unlikely to occur. <code class="highlighter-rouge">ukb_df</code> creates variable names by combining a snake_case descriptor with the variable’s <em>field code</em>, <em>index</em> and <em>array</em>. This should be sufficient to uniquely identify the variable. However, if an <em>index_array</em> combination is incorrectly repeated in the original UKB data, this will result in a duplicated variable name. We observed two instances. The variables were encoded *<field>–0.0*, *<field>–1.0*, *<field>––1.0*, and `ukb_df` created a variable named *var_0_0*, *var_1_0*, *var_1_0*. This is probably a typo that should have been *<field>–0.0*, *<field>–1.0*, *<field>–2.0*, consistent with UKB official documentation describing the field as having 3 values for index. We have provided `ukb_df_duplicated_names` to identify duplicated names within a dataset. This will allow the user to make changes as appropriate. We expect the occurrence of such duplicates will be rare.</field></field></field></field></field></field></p>
 </blockquote>
 
 <p><br /></p>
@@ -202,28 +200,91 @@ ukb_icd_freq_by(my_ukb_data, reference.var = "sex_0_0", freq.plot = TRUE)
 
 <h2 id="genetic-metadata"><strong>Genetic metadata</strong></h2>
 
+<p><strong>UKB genetic data resources</strong></p>
+
+<ul>
+  <li><a href="http://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=664">UKB Resource 664: Accessing Genetic Data within UK Biobank</a></li>
+  <li><a href="https://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=531">UKB Resource 531: Description of genetic data types</a></li>
+</ul>
+
+<p><br /></p>
+
 <blockquote>
-  <p><strong>Interim release metadata (150K individuals)</strong></p>
+  <p><strong>Interim release metadata</strong></p>
 
-  <p>The genetic metadata functions were written to retrieve genetic metadata from the phenotype file for the <a href="http://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=199001">interim genotype release</a>. The associated QC was described in <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf">genotyping and quality control</a> and <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/imputation_documentation_May2015.pdf">imputation and association</a>. <strong>The fields retrieved became obselete when the main genotyping results (500K individuals) were released at the end of 2017.</strong></p>
+  <p>The genetic metadata functions were written to retrieve genetic metadata from the phenotype file for the <a href="http://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=199001">interim genotype release</a>. The associated QC was described in <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf">genotyping and quality control</a> and <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/imputation_documentation_May2015.pdf">imputation and association</a>. <strong>The fields retrieved became obselete when the full genotyping results were released at the end of 2017.</strong></p>
 
-  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Obsolete functions
-- ukb_gen_meta
-- ukb_gen_pcs
-- ukb_gen_excl
-- ukb_gen_rel
-- ukb_gen_rel_count
-- ukb_gen_het
-- ukb_gen_excl_to_na
-- ukb_gen_write_plink_excl
+  <p><strong>Full release metadata</strong></p>
+
+  <p>With the release of the full sample (500K individuals) genotypes, sample QC (<strong>ukb_sqc_v2.txt</strong>) and relatedness (<strong>ukbA_rel_sP.txt</strong>) data are now supplied as separate files. The contents of these files, along with all other genetic files are described in <a href="https://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=531">UKB Resource 531</a>.</p>
+
+  <p><strong>Defunct functions</strong></p>
+  <ul>
+    <li>ukb_gen_meta</li>
+    <li>ukb_gen_pcs</li>
+    <li>ukb_gen_excl</li>
+    <li>ukb_gen_rel</li>
+    <li>ukb_gen_het</li>
+    <li>ukb_gen_excl_to_na</li>
+    <li>ukb_gen_write_plink_excl</li>
+  </ul>
+
+  <p>The above functions remain in the ukbtools package but return the message:</p>
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: ukb_gen_&lt;name&gt; is defunct.
+See help("ukb_defunct")
 </code></pre></div>  </div>
-
-  <p>The above functions remain in the ukbtools package so that pipelines for older studies do not break.</p>
-
-  <p><strong>Full release metadata (500K individuals)</strong></p>
-
-  <p>With the release of the full sample genotypes (500K individuals), sample QC (<strong>ukb_sqc_v2.txt</strong>) and marker QC (<strong>ukb_snp_qc.txt</strong>) data are now supplied as separate files. The contents of these files, along with all other genetic files are described fully in <a href="https://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=531">UKB Resource 531</a>.</p>
+  <p>The documentation for <code class="highlighter-rouge">ukb_defunct</code> includes the information about the change in the way UKB serve the genetic (meta)data.</p>
 </blockquote>
+
+<p><br /></p>
+
+<h3 id="new-genetic-metadata-functionality-v0110">New genetic metadata functionality (v0.11.0)</h3>
+
+<p>The sample QC file <strong>ukb_sqc_v2.txt</strong> has no header. To include a header use <code class="highlighter-rouge">ukb_gen_sqc_names</code>. From <a href="https://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=531">UKB Resource 531</a>: “There are currently 2 versions of this file (UKB ukb_sqc_v2.txt) in circulation. The newer version is described below and contains column headers on the first row. The older (deprecated) version lacks the column headers and has two additional Affymetrix internal values prefixing the columns listed below”.</p>
+
+<p><code class="highlighter-rouge">ukb_gen_sqc_names</code> handles this if used to include column names in a dataframe of sample QC data. If a character vector of names is needed (e.g. to supply on reading in sample QC data) use the argument <code class="highlighter-rouge">col_names_only = TRUE</code> and trim if required.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># With ukb_sqc_v2.txt read into the dataframe my_sqc_data
+my_sqc_data &lt;- ukb_gen_sqc_names(my_sqc_data)
+
+# For a character vector of column names
+ukb_gen_sqc_names(col_names_only = TRUE)
+</code></pre></div></div>
+<p><br /></p>
+
+<p><em>Relatedness count</em></p>
+
+<p><code class="highlighter-rouge">ukb_gen_rel_count</code> now works supplied relatedness file <strong>ukbA_rel_sP.txt</strong> with header: ID1, ID2, HetHet, IBS0, Kinship. Supply a dataframe of the relatedness data for a dataframe of counts of degree of relatedness (Duplicates/MZ twins, 1st-degree, 2nd-degree, 3rd-degree).</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># With ukbA_rel_sP.txt read into the dataframe my_relatedness_data
+ukb_gen_rel_count(my_relatedness_data)
+</code></pre></div></div>
+
+<p>You can also create a plot of degree of relatedness, e.g., for samples with data on a variable of interest.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ukb_gen_rel_count(ukb_relatedness, plot = TRUE)
+</code></pre></div></div>
+
+<p align="center">
+<img src="img/fig2_ukb_freq_by_two_panel_271117.png" width="900px" />
+</p>
+
+<p><strong>Degree of relatedness.</strong> <a href="http://people.virginia.edu/~wc9c/KING/manual.html">KING kinship</a> coefficient ranges &gt; 0.354, (0.177, 0.354], (0.0884, 0.177] and (0.0442, 0.0884] corresponds to duplicate/MZ twin, 1st-degree, 2nd-degree, and 3rd-degree relationships respectively.</p>
+
+<p><br /></p>
+
+<p><em>Maximal subset of unrelateds</em></p>
+
+<p>There are many ways to remove related individuals from phenotypic data for genetic analyses. You could simply exclude all individuals indicated as having “excess relatedness” and include those “used in pca calculation” (these variables are included in the sample QC data, <strong>ukb_sqc_v2.txt</strong>). This list is based on the complete dataset and possibly removes more samples than you need to for your phenotype of interest. Ideally, you want a maximum independent set, i.e., to remove the minimum number of individuals with data on the phenotype of interest, so that no pair exceeds some cutoff for relatedness. <code class="highlighter-rouge">ukb_gen_samples_to_remove</code> returns a list of samples to remove in order to achieve a maximal set of unrelateds for a given phenotype (default <code class="highlighter-rouge">cutoff &gt; 0.0884</code> - KING coefficient corresponding to 3rd degree relatedness). For the subset of related pairs (<strong>ukbA_rel_sP.txt</strong>) in which both have data on the phenotype of interest use <code class="highlighter-rouge">ukb_gen_related_with_data</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># With ukbA_rel_sP.txt read into the dataframe my_relatedness_data
+# and an integer vector samples_with_phenotype of samples who have
+# data on the phenotype of interest
+
+ukb_gen_related_with_data(my_relatedness_data, ukb_with_data = samples_with_phenotype)
+ukb_gen_samples_to_remove(my_relatedness_data, ukb_with_data = samples_with_phenotype)
+</code></pre></div></div>
 
 <p><br /></p>
 
@@ -260,7 +321,9 @@ ukb_gen_write_plink(
 
 <p><strong>PLINK</strong> does not require that individuals in phenotype and covariate files are in any particular order, but you may want to reconcile the individuals you include in your analysis with those in the fam file (from your hard-called data). Read the fam file into R with <code class="highlighter-rouge">ukb_gen_read_fam</code></p>
 
-<h3 id="sample-exclusions">Sample exclusions</h3>
+<p><br /></p>
+
+<p><em>Sample exclusions</em></p>
 
 <p><strong>BGENIE</strong> does not have an option to read/remove exclusions. You can replace data values in the phenotype with <code class="highlighter-rouge">NA</code> where the individual is to-be-excluded based on genetic metadata considerations. Writing the updated variable to your phenotype file (with the supplied write functions), effectively excludes the individuals from any analysis.</p>
 
@@ -276,8 +339,6 @@ ukb_gen_write_plink(
 
 
       <footer class="site-footer">
-        
-          <span class="site-footer-owner"><a href="http://github.com/kenhanscombe/ukbtools">ukbtools</a> is maintained by <a href="http://github.com/kenhanscombe">kenhanscombe</a>.</span>
         
         <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
       </footer>

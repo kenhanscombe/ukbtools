@@ -246,7 +246,7 @@ ukb_gen_rel_count(ukb_relatedness, plot = TRUE)
 ```
 
 <p align="center">
-<img src="img/fig2_ukb_freq_by_two_panel_271117.png" width="900px" >
+<img src="img/ukb_relatedness_111017.png" width="600px" >
 </p>
 
 __Degree of relatedness.__ [KING kinship](http://people.virginia.edu/~wc9c/KING/manual.html) coefficient ranges > 0.354, (0.177, 0.354], (0.0884, 0.177] and (0.0442, 0.0884] corresponds to duplicate/MZ twin, 1st-degree, 2nd-degree, and 3rd-degree relationships respectively.

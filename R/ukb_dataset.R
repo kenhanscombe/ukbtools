@@ -202,18 +202,8 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
   tab_file <- stringr::str_interp("${fileset}.tab")
 
   # Update path to tab file in R source
-<<<<<<< HEAD
-  if(path == ".") {
-    tab_location <- tab_file
-    r_location <- r_file
-  } else {
-    tab_location <- file.path(path, tab_file)
-    r_location <- file.path(path, r_file)
-  }
-=======
   tab_location <- file.path(path, tab_file)
   r_location <- file.path(path, r_file)
->>>>>>> upstream/master
 
   edit_date <- Sys.time()
 

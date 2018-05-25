@@ -1,15 +1,17 @@
 
-# ukbtools 0.10.1.9001
-
-_Development version_
+# ukbtools 0.11.0
 
 Updated functionality:
 
-* `ukb_df`: Replaced readr::read_tsv with data.table::fread for faster read. Also includes an `n_threads` argument passed to `data.table::fread`, which may make read faster. Column names now include field code to ensure names are unique (UK Biobank sometimes use the same description for more than one variable)
+* `ukb_df`: Replaced `readr::read_tsv` with `data.table::fread` for faster read. Also includes an `n_threads` argument passed to `data.table::fread`, which may make read faster. Column names now include field code to ensure names are unique (UK Biobank sometimes use the same description for more than one variable)
 
 Defunct functionality:
 
-* Added defunct message to `ukb_gen_meta`, `ukb_gen_pcs`, `ukb_gen_excl`, `ukb_gen_rel`, `ukb_gen_rel_count`, `ukb_gen_het`, `ukb_gen_excl_to_na`, and `ukb_gen_write_plink_excl`. `ukb_defunct` explains why these have become defunct and where to get UK Biobank genetic (meta)data.
+* Added defunct message to `ukb_gen_meta`, `ukb_gen_pcs`, `ukb_gen_excl`, `ukb_gen_rel`, `ukb_gen_het`, `ukb_gen_excl_to_na`, and `ukb_gen_write_plink_excl`. `ukb_defunct` explains why these have become defunct and where to get UK Biobank genetic (meta)data.
+
+New functionality:
+
+* Since the UKB changed the way they serve up genetic metadata, the following work with files described in UKB Resource 531: `ukb_gen_sqc_names` supplies column names for the separately downloaded sample QC file; `ukb_gen_rel_count` does the same as before (a count of levels of relatedness or a plot) but with separately downloaded relatedness data; `ukb_gen_related_with_data` returns subset of relatedness data in which both IDs have data on a phenotype of interest; `ukb_gen_samples_to_remove` returns a list of individuals to exclude in order to remove relatedness (one possible solution to a maximal subset problem).
 
 
 

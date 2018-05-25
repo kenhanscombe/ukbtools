@@ -185,8 +185,8 @@ ukb_gen_related_with_data <- function(data, ukb_with_data, cutoff = 0.0884) {
 #'
 #' (...) you could use the list of samples which we used to calculate the PCs,
 #' which is a (maximal) subset of unrelated participants after applying some QC
-#' filtering. Please read supplementary Section S 3.3.2 for details. You can
-#' find the list of samples using the “used.in.pca.calculation" column in the
+#' filtering. Please read supplementary Section S3.3.2 for details. You can
+#' find the list of samples using the "used.in.pca.calculation" column in the
 #' sample-QC file (ukb_sqc_v2.txt) (...). Note that this set contains diverse
 #' ancestries. If you take the intersection with the white British ancestry
 #' subset you get ~337,500 unrelated samples.

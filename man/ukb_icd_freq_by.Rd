@@ -5,7 +5,8 @@
 \title{Frequency of an ICD diagnosis by a target variable}
 \usage{
 ukb_icd_freq_by(data, reference.var, n.groups = 10,
-  icd.code = c("^(I2[0-5])", "^(I6[0-9])", "^(J09|J1[0-9]|J2[0-2]|P23|U04)"),
+  icd.code = c("^(I2[0-5])", "^(I6[0-9])",
+  "^(J09|J1[0-9]|J2[0-2]|P23|U04)"),
   icd.labels = c("coronary artery disease (CAD)",
   "cerebrovascular disease/ stroke",
   "lower respiratory tract infection (LRTI)"), plot.title = "",

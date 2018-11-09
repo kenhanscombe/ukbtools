@@ -7,5 +7,3 @@ plugins:
   - github-pages
   - jekyll-seo-tag
   - jekyll-github-metadata
-#github:
-#  is_project_page: true

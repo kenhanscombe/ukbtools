@@ -4,8 +4,8 @@
 \alias{ukb_gen_read_fam}
 \title{Reads a PLINK format fam file}
 \usage{
-ukb_gen_read_fam(file, col.names = c("FID", "IID", "paternalID", "maternalID",
-  "sex", "phenotype"), na.strings = "-9")
+ukb_gen_read_fam(file, col.names = c("FID", "IID", "paternalID",
+  "maternalID", "sex", "phenotype"), na.strings = "-9")
 }
 \arguments{
 \item{file}{A path to a fam file.}

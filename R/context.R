@@ -35,7 +35,7 @@ ukb_context <- function(
   age.var = "^age_when_attended_assessment_centre.*0_0",
   socioeconomic.var = "^townsend_deprivation_index_at_recruitment.*0_0",
   ethnicity.var = "^ethnic_background.*0_0",
-  employment.var = "^current_employment_status_corrected.*0_0",
+  employment.var = "^current_employment_status.*0_0",
   centre.var = "^uk_biobank_assessment_centre.*0_0") {
 
   if (is.null(nonmiss.var) & is.null(subset.var)) {
@@ -53,7 +53,9 @@ ukb_context <- function(
   age.var <- data %>% select(matches(age.var)) %>% names()
   socioeconomic.var <- data %>% select(matches(socioeconomic.var)) %>% names()
   ethnicity.var <- data %>% select(matches(ethnicity.var)) %>% names()
-  employment.var <- data %>% select(matches(employment.var)) %>% names()
+  employment.var <- data %>%
+    select(matches(employment.var), -contains("correct")) %>%
+    names()
   centre.var <- data %>% select(matches(centre.var)) %>% names()
 
   centre_lookup <- lookup(ukbtools::ukbcentre, "code", "centre")
@@ -61,53 +63,64 @@ ukb_context <- function(
     data %>% select(matches("uk_biobank_assessment_centre.*0_0")) %>% .[[1]]
     )]
 
+  format_cnt <- function(x) format(round(x / 1000))
+
   multiplot(
 
     ggplot2::ggplot(data, aes_string(sex.var, fill = fill.var)) +
       geom_bar(position = bar.position, na.rm = TRUE, width = .5) +
-      scale_fill_manual(values = c("grey35", "hotpink"), labels = c("Reference", "Subset"), na.value = "grey65") +
-      coord_flip() +
-      theme(
-        legend.position = "top",
-        axis.title.y = element_text(face = "bold"),
-        panel.grid = element_blank()
-      ) +
-      labs(x = "Sex", fill = ""),
+      scale_fill_manual(values = c("grey35", "hotpink"),
+                        labels = c("Reference", "Subset"), na.value = "grey65") +
+      scale_y_continuous(labels = format_cnt) +
+      theme(legend.position = "top",
+            axis.title.y = element_text(face = "bold"),
+            panel.grid = element_blank()) +
+      labs(x = "Sex", y = "count (1000s)", fill = "") +
+      coord_flip(),
 
     ggplot2::ggplot(data, aes_string(age.var, fill = fill.var, color = fill.var)) +
       geom_density(na.rm = TRUE) +
       scale_fill_manual(values = c("grey35", NA)) +
       scale_color_manual(values = c("grey35", "hotpink")) +
-      theme(legend.position = "none", axis.title.x = element_text(face = "bold"), panel.grid = element_blank()) +
+      theme(legend.position = "none", axis.title.x = element_text(face = "bold"),
+            panel.grid = element_blank()) +
       labs(x = "Age"),
 
-    ggplot2::ggplot(data, aes_string(socioeconomic.var, fill = fill.var, color = fill.var)) +
+    ggplot2::ggplot(data, aes_string(socioeconomic.var, fill = fill.var,
+                                     color = fill.var)) +
       geom_density(na.rm = TRUE) +
       scale_fill_manual(values = c("grey35", NA)) +
       scale_color_manual(values = c("grey35", "hotpink")) +
-      theme(legend.position = "none", axis.title.x = element_text(face = "bold"), panel.grid = element_blank()) +
+      theme(legend.position = "none", axis.title.x = element_text(face = "bold"),
+            panel.grid = element_blank()) +
       labs(x = "Townsend deprivation index"),
 
     ggplot2::ggplot(data, aes_string(ethnicity.var, fill = fill.var)) +
       geom_bar(position = bar.position, na.rm = TRUE, width = .7) +
       scale_fill_manual(values = c("grey35", "hotpink"), na.value = "grey65") +
-      coord_flip() +
-      theme(legend.position = "none", axis.title.y = element_text(face = "bold"), panel.grid = element_blank()) +
-      labs(x = "Ethnic Background"),
+      scale_y_continuous(labels = format_cnt) +
+      theme(legend.position = "none", axis.title.y = element_text(face = "bold"),
+            panel.grid = element_blank()) +
+      labs(x = "Ethnic Background", y = "count (1000s)") +
+      coord_flip(),
 
     ggplot2::ggplot(data, aes_string("centre", fill = fill.var)) +
       geom_bar(position = bar.position, na.rm = TRUE, width = .6) +
       scale_fill_manual(values = c("grey35", "hotpink"), na.value = "grey65") +
-      coord_flip() +
-      theme(legend.position = "none", axis.title.y = element_text(face = "bold"), panel.grid = element_blank()) +
-      labs(x = "Assessment Centre"),
+      scale_y_continuous(labels = format_cnt) +
+      theme(legend.position = "none", axis.title.y = element_text(face = "bold"),
+            panel.grid = element_blank()) +
+      labs(x = "Assessment Centre", y = "count (1000s)") +
+      coord_flip(),
 
     ggplot2::ggplot(data, aes_string(employment.var, fill = fill.var)) +
       geom_bar(position = bar.position, na.rm = TRUE, width = .3) +
       scale_fill_manual(values = c("grey35", "hotpink"), na.value = "grey65") +
-      coord_flip() +
-      theme(legend.position = "none", axis.title.y = element_text(face = "bold"), panel.grid = element_blank()) +
-      labs(x = "Employment Status"),
+      scale_y_continuous(labels = format_cnt) +
+      theme(legend.position = "none", axis.title.y = element_text(face = "bold"),
+            panel.grid = element_blank()) +
+      labs(x = "Employment Status", y = "count (1000s)") +
+      coord_flip(),
 
     cols = 2
   )

@@ -9,7 +9,7 @@ ukb_context(data, nonmiss.var = NULL, subset.var = NULL,
   age.var = "^age_when_attended_assessment_centre.*0_0",
   socioeconomic.var = "^townsend_deprivation_index_at_recruitment.*0_0",
   ethnicity.var = "^ethnic_background.*0_0",
-  employment.var = "^current_employment_status_corrected.*0_0",
+  employment.var = "^current_employment_status.*0_0",
   centre.var = "^uk_biobank_assessment_centre.*0_0")
 }
 \arguments{

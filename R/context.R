@@ -63,7 +63,14 @@ ukb_context <- function(
     data %>% select(matches("uk_biobank_assessment_centre.*0_0")) %>% .[[1]]
     )]
 
-  format_cnt <- function(x) format(round(x / 1000))
+
+  if (bar.position == "fill") {
+    format_cnt <- function(x) format(round(x / 1000))
+    count_lab <- "count (1000s)"
+  } else {
+    format_cnt <- function(x) x
+    count_lab <- "count"
+  }
 
   multiplot(
 
@@ -75,7 +82,7 @@ ukb_context <- function(
       theme(legend.position = "top",
             axis.title.y = element_text(face = "bold"),
             panel.grid = element_blank()) +
-      labs(x = "Sex", y = "count (1000s)", fill = "") +
+      labs(x = "Sex", y = count_lab, fill = "") +
       coord_flip(),
 
     ggplot2::ggplot(data, aes_string(age.var, fill = fill.var, color = fill.var)) +
@@ -101,7 +108,7 @@ ukb_context <- function(
       scale_y_continuous(labels = format_cnt) +
       theme(legend.position = "none", axis.title.y = element_text(face = "bold"),
             panel.grid = element_blank()) +
-      labs(x = "Ethnic Background", y = "count (1000s)") +
+      labs(x = "Ethnic Background", y = count_lab) +
       coord_flip(),
 
     ggplot2::ggplot(data, aes_string("centre", fill = fill.var)) +
@@ -110,7 +117,7 @@ ukb_context <- function(
       scale_y_continuous(labels = format_cnt) +
       theme(legend.position = "none", axis.title.y = element_text(face = "bold"),
             panel.grid = element_blank()) +
-      labs(x = "Assessment Centre", y = "count (1000s)") +
+      labs(x = "Assessment Centre", y = count_lab) +
       coord_flip(),
 
     ggplot2::ggplot(data, aes_string(employment.var, fill = fill.var)) +
@@ -119,7 +126,7 @@ ukb_context <- function(
       scale_y_continuous(labels = format_cnt) +
       theme(legend.position = "none", axis.title.y = element_text(face = "bold"),
             panel.grid = element_blank()) +
-      labs(x = "Employment Status", y = "count (1000s)") +
+      labs(x = "Employment Status", y = count_lab) +
       coord_flip(),
 
     cols = 2

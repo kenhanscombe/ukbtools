@@ -65,11 +65,11 @@ ukb_context <- function(
 
 
   if (bar.position == "fill") {
-    format_cnt <- function(x) format(round(x / 1000))
-    count_lab <- "count (1000s)"
-  } else {
     format_cnt <- function(x) x
     count_lab <- "count"
+  } else {
+    format_cnt <- function(x) format(round(x / 1000))
+    count_lab <- "count (1000s)"
   }
 
   multiplot(

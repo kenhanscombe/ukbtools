@@ -176,85 +176,88 @@ ukb_icd_prevalence <- function(data, icd.code, icd.version = 10) {
 #' @param icd.labels Character vector of ICD labels for the plot legend. Default = V1 to VN.
 #' @param plot.title Title for the plot. Default describes the default icd.codes, WHO top 6 cause of death 2015.
 #'
-#' @import dplyr ggplot2
+#' @import dplyr ggplot2 parallel
 #' @importFrom magrittr "%>%"
+#' @importFrom stats complete.cases
 #' @importFrom tidyr gather
 #' @importFrom scales percent
+#' @importFrom foreach foreach "%:%" "%dopar%"
+#' @importFrom doParallel registerDoParallel
 #' @export
-#'
 ukb_icd_freq_by <- function(
-  data, reference.var,
-  n.groups = 10,
+  data, reference.var, n.groups = 10,
   icd.code = c("^(I2[0-5])", "^(I6[0-9])", "^(J09|J1[0-9]|J2[0-2]|P23|U04)"),
-  icd.labels = c("coronary artery disease (CAD)", "cerebrovascular disease/ stroke", "lower respiratory tract infection (LRTI)"),
-  plot.title = "",
-  legend.col = 1,
-  legend.pos = "right",
-  icd.version = 10,
-  freq.plot = FALSE
-) {
-  df <- data %>% filter(!is.na(data[[reference.var]]))
+  icd.labels = c("coronary artery disease (CAD)", "cerebrovascular disease/ stroke",
+                 "lower respiratory tract infection (LRTI)"),
+  plot.title = "", legend.col = 1, legend.pos = "right", icd.version = 10,
+  freq.plot = FALSE) {
+
+  data <- data %>%
+    dplyr::filter(stats::complete.cases(.[[reference.var]])) %>%
+    dplyr::select(reference.var, matches(paste("^diagnoses.*icd",
+                                               icd.version, sep = "")))
 
   # Include categorical variable
-  if (is.factor(df[[reference.var]]) | is.ordered(df[[reference.var]])) {
-    categorized_var <- df[[reference.var]]
+  if (is.factor(data[[reference.var]]) | is.ordered(data[[reference.var]])) {
+    categorized_var <- data[[reference.var]]
   } else {
     categorized_var <- factor(
-      ggplot2::cut_number(df[[reference.var]], n = n.groups),
+      ggplot2::cut_number(data[[reference.var]], n = n.groups),
       ordered = TRUE
     )
   }
 
   l <- split(
-    dplyr::select(df, matches(paste("^diagnoses.*icd", icd.version, sep = ""))),
+    dplyr::select(data, matches(paste("^diagnoses.*icd", icd.version, sep = ""))),
     categorized_var
   )
-  x <- data.frame(group = names(l))
-  for (i in seq_along(l)) {
-    for (j in seq_along(icd.code)) {
-      x[i, j + 1] <- ukb_icd_prevalence(l[[i]], icd.version = 10, icd.code = icd.code[j])
+
+  cl <- parallel::makeCluster(parallel::detectCores())
+  doParallel::registerDoParallel(cl)
+  x <- foreach::foreach(i = seq_along(l), .combine = "cbind") %:%
+    foreach::foreach(j = seq_along(icd.code), .combine = "c") %dopar% {
+      ukb_icd_prevalence(l[[i]], icd.version = 10, icd.code = icd.code[j])
     }
-  }
+  stopCluster(cl)
+
+  x <- as.data.frame(t(x)) %>%
+    mutate(group = names(l))
 
   rm(l)
 
-  if(is.numeric(df[[reference.var]])) {
+  if(is.numeric(data[[reference.var]])) {
     o <- order(as.numeric(gsub("[\\(\\[]", "", gsub(",.*$", "", levels(x$group)))))
     levels(x$group)[o]
     x$group <- factor(x$group, levels = levels(x$group)[o])
   }
 
+  # plot
   if(freq.plot) {
     p <- with(x, tidyr::gather(x, icd_code, frequency, -group, factor_key = TRUE)) %>%
-      ggplot2::ggplot(aes_string(x = "group", y = "frequency", color = "icd_code", group = "icd_code")) +
-      geom_line(size = 0.5) +
-      geom_point(size = 2, alpha = 0.5) +
-      labs(
-        x = "Reference variable",
-        y = "UKB frequency",
-        title = plot.title,
-        color = ""
-      ) +
-      theme(
-        title = element_text(face = "bold"),
-        panel.grid = element_blank(),
-        legend.key = element_blank(),
-        legend.position = legend.pos,
-        axis.ticks.x = element_blank()
-      ) +
-      guides(
-        color = guide_legend(ncol = legend.col),
-        size = FALSE
-        ) +
-      scale_color_discrete(
-        labels = icd.labels
-      ) +
+      ggplot2::ggplot(aes_string(x = "group", y = "frequency",
+                                 color = "icd_code", fill = "icd_code", group = "icd_code")) +
+      labs(x = "Reference variable", y = "UKB frequency", title = plot.title,
+           color = "", fill = "") +
+      theme(title = element_text(face = "bold"), panel.grid = element_blank(),
+            panel.background = element_rect(color = "grey97"),
+            legend.key = element_blank(), legend.position = legend.pos,
+            axis.ticks.x = element_blank()) +
       scale_y_continuous(labels = scales::percent)
 
-    if(is.numeric(df[[reference.var]])){
-      p + scale_x_discrete(labels = c("Low", rep("", n.groups - 2), "High"))
+    if(is.numeric(data[[reference.var]])){
+      p +
+        geom_point(size = 2) +
+        geom_line(size = 0.5) +
+        scale_x_discrete(labels = c("Low", rep("", n.groups - 2), "High")) +
+        guides(color = guide_legend(ncol = legend.col), size = FALSE,
+               fill = FALSE) +
+        scale_color_discrete(labels = icd.labels)
     } else {
-      p
+      p +
+        geom_bar(stat = "identity", position = "dodge") +
+        guides(fill = guide_legend(ncol = legend.col), size = FALSE,
+               color = FALSE) +
+        scale_fill_discrete(labels = icd.labels)
     }
   } else {
     return(x)

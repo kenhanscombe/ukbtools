@@ -24,7 +24,10 @@ Imports:
     tidyr,
     scales,
     stringr,
-    data.table
+    data.table,
+    foreach,
+    parallel,
+    doParallel
 RoxygenNote: 6.1.0
 Suggests: knitr,
     rmarkdown

@@ -187,8 +187,8 @@ ukb_icd_prevalence <- function(data, icd.code, icd.version = 10) {
 ukb_icd_freq_by <- function(
   data, reference.var, n.groups = 10,
   icd.code = c("^(I2[0-5])", "^(I6[0-9])", "^(J09|J1[0-9]|J2[0-2]|P23|U04)"),
-  icd.labels = c("coronary artery disease (CAD)", "cerebrovascular disease/ stroke",
-                 "lower respiratory tract infection (LRTI)"),
+  icd.labels = c("coronary artery disease", "cerebrovascular disease",
+                 "lower respiratory tract infection"),
   plot.title = "", legend.col = 1, legend.pos = "right", icd.version = 10,
   freq.plot = FALSE) {
 

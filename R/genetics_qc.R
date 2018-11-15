@@ -107,42 +107,31 @@ ukb_gen_rel_count <- function(data, plot = FALSE) {
   relatedness <- data %>%
     dplyr::rename_all(tolower) %>%
     dplyr::filter(ibs0 >= 0) %>%
-    dplyr::mutate(
-      category_related = cut(
-        kinship,
-        breaks = rev(c(0.044, 0.088, 0.177, 0.354, Inf)),
-        labels = rev(c("Duplicates/MZ twins","1st-degree","2nd-degree","3rd-degree"))
-      ),
-      ped_related = ifelse(
-        !(category_related %in% "1st"),
-        as.character(category_related),
-        ifelse(ibs0 < 0.0020,
-               "Parent-offspring",
-               "Full siblings")
-      )
-    )
+    dplyr::mutate(category_related = cut(
+      kinship, breaks = rev(c(0.044, 0.088, 0.177, 0.354, Inf)),
+      labels = rev(c("Duplicates/MZ twins", "1st-degree", "2nd-degree",
+                     "3rd-degree"))),
+      ped_related = ifelse(!(category_related %in% "1st"),
+                           as.character(category_related),
+                           ifelse(ibs0 < 0.0020, "Parent-offspring",
+                                  "Full siblings")))
 
   if (plot) {
     relatedness %>%
       ggplot(aes(ibs0, kinship, color = ped_related)) +
       geom_jitter() +
-      labs(
-        x = "Proportion of SNPs IBS = 0",
-        y = "KING kinship coefficient",
-        color = "Relatedness"
-      ) +
-      theme(
-        legend.position = "bottom",
-        panel.grid = element_blank()
-      )
+      labs(x = "Proportion of SNPs IBS = 0", y = "KING kinship coefficient",
+           color = "RELATEDNESS") +
+      guides(colour = guide_legend(title.position = "top", title.hjust = 0.5,
+                                   title.theme = element_text(face = "bold",
+                                                              size = 10),
+                                   ncol = 2)) +
+      theme(legend.position = "bottom", panel.grid = element_blank())
   } else {
     relatedness %>%
       count(ped_related) %>%
       mutate(pairs = round(n/2)) %>%
-      rename(
-        relationship = ped_related,
-        individuals = n
-      ) %>%
+      rename(relationship = ped_related, individuals = n) %>%
       as.data.frame()
   }
 }

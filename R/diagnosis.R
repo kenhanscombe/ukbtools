@@ -180,6 +180,7 @@ ukb_icd_prevalence <- function(data, icd.code, icd.version = 10) {
 #' @importFrom magrittr "%>%"
 #' @importFrom stats complete.cases
 #' @importFrom tidyr gather
+#' @importFrom readr parse_factor
 #' @importFrom scales percent
 #' @importFrom foreach foreach "%:%" "%dopar%"
 #' @importFrom doParallel registerDoParallel
@@ -221,15 +222,18 @@ ukb_icd_freq_by <- function(
   stopCluster(cl)
 
   x <- as.data.frame(t(x)) %>%
-    mutate(group = names(l))
+    mutate(x, group = names(l))
 
   rm(l)
 
+
   if(is.numeric(data[[reference.var]])) {
-    o <- order(as.numeric(gsub("[\\(\\[]", "", gsub(",.*$", "", levels(x$group)))))
-    levels(x$group)[o]
-    x$group <- factor(x$group, levels = levels(x$group)[o])
+    group_order <- order(as.numeric(gsub("[\\(\\[]", "", gsub(",.*$", "", x$group))))
+    group_levels = x$group[group_order]
+    x$group <- readr::parse_factor(x$group, levels = group_levels, ordered = TRUE,
+                            include_na = FALSE)
   }
+
 
   # plot
   if(freq.plot) {

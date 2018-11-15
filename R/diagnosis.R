@@ -219,6 +219,7 @@ ukb_icd_freq_by <- function(
     foreach::foreach(j = seq_along(icd.code), .combine = "c") %dopar% {
       ukb_icd_prevalence(l[[i]], icd.version = 10, icd.code = icd.code[j])
     }
+  stopImplicitCluster()
   stopCluster(cl)
 
   x <- as.data.frame(t(x)) %>%

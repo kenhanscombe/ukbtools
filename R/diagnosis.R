@@ -223,7 +223,7 @@ ukb_icd_freq_by <- function(
   stopCluster(cl)
 
   x <- as.data.frame(t(x)) %>%
-    mutate(x, group = names(l))
+    mutate(group = names(l))
 
   rm(l)
 

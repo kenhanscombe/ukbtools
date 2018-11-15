@@ -183,7 +183,7 @@ ukb_icd_prevalence <- function(data, icd.code, icd.version = 10) {
 #' @importFrom readr parse_factor
 #' @importFrom scales percent
 #' @importFrom foreach foreach "%:%" "%dopar%"
-#' @importFrom doParallel registerDoParallel
+#' @importFrom doParallel registerDoParallel stopImplicitCluster
 #' @export
 ukb_icd_freq_by <- function(
   data, reference.var, n.groups = 10,
@@ -219,8 +219,8 @@ ukb_icd_freq_by <- function(
     foreach::foreach(j = seq_along(icd.code), .combine = "c") %dopar% {
       ukb_icd_prevalence(l[[i]], icd.version = 10, icd.code = icd.code[j])
     }
-  stopImplicitCluster()
-  stopCluster(cl)
+  doParallel::stopImplicitCluster()
+  parallel::stopCluster(cl)
 
   x <- as.data.frame(t(x)) %>%
     mutate(group = names(l))

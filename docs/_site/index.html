@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/css/style.css?v=eb4e732c825deb50ee7dd6f471e72a0c23188917">
+    <link rel="stylesheet" href="/assets/css/style.css?v=81f1d8f13560c1d7521ae27f0fe92d825007a965">
 
     <section class="page-header">
       <h1 class="project-name">ukbtools</h1>
@@ -17,9 +17,9 @@
       
     </section>
 
-    <!-- Begin Jekyll SEO tag v2.4.0 -->
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
 <title>ukbtools | An R package to manipulate and explore UK Biobank data</title>
-<meta name="generator" content="Jekyll v3.7.3" />
+<meta name="generator" content="Jekyll v3.7.4" />
 <meta property="og:title" content="ukbtools" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="An R package to manipulate and explore UK Biobank data" />
@@ -28,7 +28,7 @@
 <meta property="og:url" content="http://localhost:4000/" />
 <meta property="og:site_name" content="ukbtools" />
 <script type="application/ld+json">
-{"url":"http://localhost:4000/","description":"An R package to manipulate and explore UK Biobank data","name":"ukbtools","@type":"WebSite","headline":"ukbtools","@context":"http://schema.org"}</script>
+{"headline":"ukbtools","url":"http://localhost:4000/","name":"ukbtools","description":"An R package to manipulate and explore UK Biobank data","@type":"WebSite","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
   </head>
@@ -191,7 +191,7 @@ ukb_icd_freq_by(my_ukb_data, reference.var = "sex_0_0", freq.plot = TRUE)
 </code></pre></div></div>
 
 <p align="center">
-<img src="img/fig2_ukb_freq_by_two_panel_271117.png" width="900px" />
+<img src="img/ukb_icd_freqby.png" width="900px" />
 </p>
 
 <p><strong>ICD diagnosis frequency by reference variable.</strong> Panel <strong>A</strong> shows frequency of the query diagnoses with respect to BMI; panel <strong>B</strong> with respect to sex. Any diagnoses can be queried with the <code class="highlighter-rouge">icd.code</code> parameter (default is CAD, Stroke, LRTI)</p>
@@ -271,7 +271,7 @@ ukb_gen_rel_count(my_relatedness_data)
 </code></pre></div></div>
 
 <p align="center">
-<img src="img/ukb_relatedness_111017.png" width="600px" />
+<img src="img/ukb_relatedness.png" width="600px" />
 </p>
 
 <p><strong>Degree of relatedness.</strong> <a href="http://people.virginia.edu/~wc9c/KING/manual.html">KING kinship</a> coefficient ranges &gt; 0.354, (0.177, 0.354], (0.0884, 0.177] and (0.0442, 0.0884] corresponds to duplicate/MZ twin, 1st-degree, 2nd-degree, and 3rd-degree relationships respectively.</p>

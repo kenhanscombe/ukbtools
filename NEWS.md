@@ -1,4 +1,15 @@
 
+# ukbtools 0.11.0.9000
+
+_Development version_
+
+Test data:
+
+* Added example raw data ukbXXXX.tab, ukbXXXX.r, ukbXXXX.html to test the 'read'
+and 'summarise' functionality `ukb_df`, `ukb_df_field`, and `ukb_context`.
+
+
+
 # ukbtools 0.11.0
 
 Updated functionality:

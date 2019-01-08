@@ -92,6 +92,24 @@ ukb_df_full_join(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data)
 
 <br>
 
+## An example fileset
+
+**ukbxxxx.tab**, **ukbxxxx.r**, **ukbxxxx.html**
+
+A minimal example fileset is included with the package, in the subdirectory inst/extdata. This fileset will allow the user to test the the read (`ukb_df`, `ukb_df_field`) and summarise (`ukb_context`) functionality.
+
+```
+# To load the example data 
+df <- ukb_df("ukbxxxx", path = "inst/extdata")
+
+# To create a field code to name key
+df_field <- ukb_df_field("ukbxxxx", path = "inst/extdata")
+```
+
+The full path to the raw test data can be retrieved with `system.file("extdata", "ukbXXXX.tab", package = "ukbtools")`.
+
+<br>
+
 
 ## Exploring primary demographics of a UKB subset
 

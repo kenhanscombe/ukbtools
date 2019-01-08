@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/css/style.css?v=81f1d8f13560c1d7521ae27f0fe92d825007a965">
+    <link rel="stylesheet" href="/assets/css/style.css?v=8168292166816d12fb4d91214dd7f592ee0d8ae7">
 
     <section class="page-header">
       <h1 class="project-name">ukbtools</h1>
@@ -123,6 +123,23 @@ ukb_df_full_join(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data)
 
   <p>Repeated variable names <strong>within</strong> UKB datasets are unlikely to occur. <code class="highlighter-rouge">ukb_df</code> creates variable names by combining a snake_case descriptor with the variable’s <em>field code</em>, <em>index</em> and <em>array</em>. This should be sufficient to uniquely identify the variable. However, if an <em>index_array</em> combination is incorrectly repeated in the original UKB data, this will result in a duplicated variable name. We observed two instances. The variables were encoded *<field>–0.0*, *<field>–1.0*, *<field>––1.0*, and `ukb_df` created a variable named *var_0_0*, *var_1_0*, *var_1_0*. This is probably a typo that should have been *<field>–0.0*, *<field>–1.0*, *<field>–2.0*, consistent with UKB official documentation describing the field as having 3 values for index. We have provided `ukb_df_duplicated_names` to identify duplicated names within a dataset. This will allow the user to make changes as appropriate. We expect the occurrence of such duplicates will be rare.</field></field></field></field></field></field></p>
 </blockquote>
+
+<p><br /></p>
+
+<h2 id="an-example-fileset">An example fileset</h2>
+
+<p><strong>ukbxxxx.tab</strong>, <strong>ukbxxxx.r</strong>, <strong>ukbxxxx.html</strong></p>
+
+<p>A minimal example fileset is included with the package, in the subdirectory inst/extdata. This fileset will allow the user to test the the read (<code class="highlighter-rouge">ukb_df</code>, <code class="highlighter-rouge">ukb_df_field</code>) and summarise (<code class="highlighter-rouge">ukb_context</code>) functionality.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># To load the example data 
+df &lt;- ukb_df("ukbxxxx", path = "inst/extdata")
+
+# To create a field code to name key
+df_field &lt;- ukb_df_field("ukbxxxx", path = "inst/extdata")
+</code></pre></div></div>
+
+<p>The full path to the raw test data can be retrieved with <code class="highlighter-rouge">system.file("extdata", "ukbXXXX.tab", package = "ukbtools")</code>.</p>
 
 <p><br /></p>
 

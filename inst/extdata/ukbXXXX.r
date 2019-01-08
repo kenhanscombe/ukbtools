@@ -1,6 +1,6 @@
-# R program ukbXXXX.tab created 9999-99-99 by ukb2r.cpp XXX 99 9999 99:99:99
+# R program ukbxxxx.tab created 9999-99-99 by ukb2r.cpp XXX 99 9999 99:99:99
 
-bd <- read.table("ukbXXXX.tab", header = TRUE, sep="\t")
+bd <- read.table("ukbxxxx.tab", header = TRUE, sep="\t")
 
 lvl.100295 <- c(-7,-3,1,2,3,4,5,6,7)
 lbl.100295 <- c("None of the above","Prefer not to answer","In paid employment or self-employed","Retired","Looking after home and/or family","Unable to work because of sickness or disability","Unemployed","Doing unpaid or voluntary work","Full or part-time student")

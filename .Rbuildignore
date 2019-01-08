@@ -1,3 +1,6 @@
+^Meta$
+^docs$
+^doc$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^notes_to_self\.txt$
@@ -7,4 +10,3 @@
 ^cran-comments\.md$
 ^\.travis\.yml$
 ^ukbtools\.Rproj$
-docs/

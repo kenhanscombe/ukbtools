@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/css/style.css?v=8168292166816d12fb4d91214dd7f592ee0d8ae7">
+    <link rel="stylesheet" href="/assets/css/style.css?v=40088d14e9cb899c7ca8ddb891667be86959560d">
 
     <section class="page-header">
       <h1 class="project-name">ukbtools</h1>
@@ -157,7 +157,7 @@ ukb_context(my_ukb_data, subset.var = subgroup_of_interest)
 </code></pre></div></div>
 
 <p align="center">
-<img src="img/ukb_context_fill_111017.png" width="900px" />
+<img src="../vignettes/img/ukb_context_fill_111017.png" width="900px" />
 </p>
 
 <p><strong>Primary demographic data for a UKB subset of interest.</strong> The subset is individuals with BMI &gt;= 25; the reference is BMI &lt; 25. Barplots are displayed as proportions, e.g., about 1/3 of all participants who identified as “Chinese” were overweight compared to about 2/3 of all participants who identified as “British”. ukb_context also allows the user to draw barplots as “stacked” or “side-by-side” bars representing counts, which would reveal there were many more “British” participants (442,698) than there were “Chinese” (1,574).</p>
@@ -208,7 +208,7 @@ ukb_icd_freq_by(my_ukb_data, reference.var = "sex_0_0", freq.plot = TRUE)
 </code></pre></div></div>
 
 <p align="center">
-<img src="img/ukb_icd_freqby.png" width="900px" />
+<img src="../vignettes/img/ukb_icd_freqby.png" width="900px" />
 </p>
 
 <p><strong>ICD diagnosis frequency by reference variable.</strong> Panel <strong>A</strong> shows frequency of the query diagnoses with respect to BMI; panel <strong>B</strong> with respect to sex. Any diagnoses can be queried with the <code class="highlighter-rouge">icd.code</code> parameter (default is CAD, Stroke, LRTI)</p>
@@ -288,7 +288,7 @@ ukb_gen_rel_count(my_relatedness_data)
 </code></pre></div></div>
 
 <p align="center">
-<img src="img/ukb_relatedness.png" width="600px" />
+<img src="../vignettes/img/ukb_relatedness.png" width="600px" />
 </p>
 
 <p><strong>Degree of relatedness.</strong> <a href="http://people.virginia.edu/~wc9c/KING/manual.html">KING kinship</a> coefficient ranges &gt; 0.354, (0.177, 0.354], (0.0884, 0.177] and (0.0442, 0.0884] corresponds to duplicate/MZ twin, 1st-degree, 2nd-degree, and 3rd-degree relationships respectively.</p>

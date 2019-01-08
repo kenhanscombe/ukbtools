@@ -151,7 +151,7 @@ ukb_context(my_ukb_data, subset.var = subgroup_of_interest)
 ```
 
 <p align="center">
-<img src="../docs/img/ukb_context_fill_111017.png" width="900px" >
+<img src="img/ukb_context_fill_111017.png" width="100%" >
 </p>
 
 __Primary demographic data for a UKB subset of interest.__ The subset is individuals with BMI >= 25; the reference is BMI < 25. Barplots are displayed as proportions, e.g., about 1/3 of all participants who identified as "Chinese" were overweight compared to about 2/3 of all participants who identified as "British". ukb_context also allows the user to draw barplots as "stacked" or "side-by-side" bars representing counts, which would reveal there were many more "British" participants (442,698) than there were "Chinese" (1,574).
@@ -208,7 +208,7 @@ ukb_icd_freq_by(my_ukb_data, reference.var = "sex_0_0", freq.plot = TRUE)
 ```
 
 <p align="center">
-<img src="../docs/img/ukb_icd_freqby.png" width="900px" >
+<img src="img/ukb_icd_freqby.png" width="100%" >
 </p>
 
 __ICD diagnosis frequency by reference variable.__ Panel __A__ shows frequency of the query diagnoses with respect to BMI; panel __B__ with respect to sex. Any diagnoses can be queried with the `icd.code` parameter (default is CAD, Stroke, LRTI)
@@ -288,7 +288,7 @@ ukb_gen_rel_count(ukb_relatedness, plot = TRUE)
 ```
 
 <p align="center">
-<img src="../docs/img/ukb_relatedness.png" width="600px" >
+<img src="img/ukb_relatedness.png" width="65%" border="0" >
 </p>
 
 __Degree of relatedness.__ [KING kinship](http://people.virginia.edu/~wc9c/KING/manual.html) coefficient ranges > 0.354, (0.177, 0.354], (0.0884, 0.177] and (0.0442, 0.0884] corresponds to duplicate/MZ twin, 1st-degree, 2nd-degree, and 3rd-degree relationships respectively.

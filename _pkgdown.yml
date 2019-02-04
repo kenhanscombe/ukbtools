@@ -1,0 +1,66 @@
+
+reference:
+- title: UKB Dataframe
+  desc: >
+    Functions to wrangle the UKB data into a dataframe with meaningful column
+    names.
+  contents:
+  - '`ukb_df`'
+  - '`ukb_df_field`'
+  - '`ukb_df_full_join`'
+  - '`ukb_df_duplicated_name`'
+  - '`ukb_centre`'
+  - '`ukb_context`'
+
+- title: Genetic Metadata
+  desc: >
+    Functions to query the associated genetic sample QC information
+  contents:
+  - '`ukb_gen_read_fam`'
+  - '`ukb_gen_read_sample`'
+  - '`ukb_gen_rel_count`'
+  - '`ukb_gen_related_with_data`'
+  - '`ukb_gen_samples_to_remove`'
+  - '`ukb_gen_sqc_names`'
+  - '`ukb_gen_write_bgenie`'
+  - '`ukb_gen_write_plink`'
+
+- title: Disease Diagnoses
+  desc: >
+    Functions to query the UKB hospital episodes statistics.
+  contents:
+  - '`ukb_icd_code_meaning`'
+  - '`ukb_icd_diagnosis`'
+  - '`ukb_icd_freq_by`'
+  - '`ukb_icd_keyword`'
+  - '`ukb_icd_prevalence`'
+
+- title : Datasets
+  desc: ~
+  contents:
+  - '`ukbcentre`'
+  - '`icd10chapters`'
+  - '`icd10codes`'
+  - '`icd9chapters`'
+  - '`icd9codes`'
+
+- title: Defunct
+  desc: >
+    The genetic metadata functions were written to retrieve genetic metadata
+    from the phenotype file for the interim genotype release. The fields
+    retrieved became obselete when the full genotyping results were released at
+    the end of 2017.
+
+    With the release of the full sample (500K individuals) genotypes, sample QC
+    (ukb_sqc_v2.txt) and relatedness (ukbA_rel_sP.txt) data are now supplied as
+    separate files. The contents of these files, along with all other genetic
+    files are described in UKB Resource 531.
+  contents:
+  - '`ukb_defunct`'
+  - '`ukb_gen_excl`'
+  - '`ukb_gen_excl_to_na`'
+  - '`ukb_gen_het`'
+  - '`ukb_gen_meta`'
+  - '`ukb_gen_pcs`'
+  - '`ukb_gen_rel`'
+  - '`ukb_gen_write_plink_excl`'

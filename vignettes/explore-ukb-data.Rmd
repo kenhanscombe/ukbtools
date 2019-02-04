@@ -123,11 +123,13 @@ ukb_df_full_join(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data)
 A minimal example fileset is included with the package, in the subdirectory inst/extdata. This fileset will allow the user to test the the read (`ukb_df`, `ukb_df_field`) and summarise (`ukb_context`) functionality.
 
 ```{r}
-# To load the example data 
-df <- ukb_df("ukbxxxx", path = "inst/extdata")
+# To load the example data
+path_to_example_data <- system.file("extdata", package = "ukbtools")
+
+df <- ukb_df("ukbxxxx", path = path_to_example_data)
 
 # To create a field code to name key
-df_field <- ukb_df_field("ukbxxxx", path = "inst/extdata")
+df_field <- ukb_df_field("ukbxxxx", path = path_to_example_data)
 ```
 
 The full path to the raw test data can be retrieved with `system.file("extdata", "ukbXXXX.tab", package = "ukbtools")`.
@@ -239,12 +241,19 @@ __UKB genetic data resources__
 >
 >
 >__Defunct functions__
+>
 > - ukb_gen_meta
+>
 > - ukb_gen_pcs
+>
 > - ukb_gen_excl
+>
 > - ukb_gen_rel
+>
 > - ukb_gen_het
+>
 > - ukb_gen_excl_to_na
+>
 > - ukb_gen_write_plink_excl
 >
 >The above functions remain in the ukbtools package but return the message:

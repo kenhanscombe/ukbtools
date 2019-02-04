@@ -1,9 +1,0 @@
-theme: jekyll-theme-cayman
-title: ukbtools
-description: An R package to manipulate and explore UK Biobank data
-url: https://kenhanscombe.github.io/ukbtools/
-plugins:
-  - jekyll-seo-tag
-  - github-pages
-  - jekyll-seo-tag
-  - jekyll-github-metadata

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Frequency of an ICD diagnosis by a target variable — ukb_icd_freq_by • ukbtools</title>
+<title>ukbtools: Manipulate and Explore UK Biobank Data — ukbtools • ukbtools</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,12 @@
 
 
 
-<meta property="og:title" content="Frequency of an ICD diagnosis by a target variable — ukb_icd_freq_by" />
+<meta property="og:title" content="ukbtools: Manipulate and Explore UK Biobank Data — ukbtools" />
 
-<meta property="og:description" content="Frequency of an ICD diagnosis by a target variable" />
+<meta property="og:description" content="A set of tools to create a UK Biobank dataset
+from a UKB fileset (.tab, .r, .html), visualize primary demographic data for
+a sample subset, query ICD diagnoses, retrieve genetic metadata, read and
+write standard file formats for genetic analyses." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -111,82 +114,84 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Frequency of an ICD diagnosis by a target variable</h1>
+    <h1>ukbtools: Manipulate and Explore UK Biobank Data</h1>
     
-    <div class="hidden name"><code>ukb_icd_freq_by.Rd</code></div>
+    <div class="hidden name"><code>ukbtools.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Frequency of an ICD diagnosis by a target variable</p>
+    <p>A set of tools to create a <a href='https://www.ukbiobank.ac.uk/'>UK Biobank</a> dataset
+from a UKB fileset (.tab, .r, .html), visualize primary demographic data for
+a sample subset, query ICD diagnoses, retrieve genetic metadata, read and
+write standard file formats for genetic analyses.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ukb_icd_freq_by</span>(<span class='no'>data</span>, <span class='no'>reference.var</span>, <span class='kw'>n.groups</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>icd.code</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"^(I2[0-5])"</span>, <span class='st'>"^(I6[0-9])"</span>,
-  <span class='st'>"^(J09|J1[0-9]|J2[0-2]|P23|U04)"</span>),
-  <span class='kw'>icd.labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"coronary artery disease"</span>, <span class='st'>"cerebrovascular disease"</span>,
-  <span class='st'>"lower respiratory tract infection"</span>), <span class='kw'>plot.title</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>legend.col</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>legend.pos</span> <span class='kw'>=</span> <span class='st'>"right"</span>, <span class='kw'>icd.version</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>freq.plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>reference.lab</span> <span class='kw'>=</span> <span class='st'>"Reference variable"</span>,
-  <span class='kw'>freq.lab</span> <span class='kw'>=</span> <span class='st'>"UKB disease frequency"</span>)</pre>
+        
+    <h2 class="hasAnchor" id="ukb-dataframe"><a class="anchor" href="#ukb-dataframe"></a>UKB Dataframe</h2>
+
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>data</th>
-      <td><p>A UKB dataset (or subset) created with <code><a href='ukb_df.html'>ukb_df</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>reference.var</th>
-      <td><p>UKB ICD frequencies will be calculated by levels of this variable. If continuous, by default it is cut into 10 intervals of approximately equal size (set with n.groups).</p></td>
-    </tr>
-    <tr>
-      <th>n.groups</th>
-      <td><p>Number of approximately equal-sized groups to split a continuous variable into.</p></td>
-    </tr>
-    <tr>
-      <th>icd.code</th>
-      <td><p>ICD disease code(s) e.g. "I74". Use a regular expression to specify a broader set of diagnoses, e.g. "I" captures all Diseases of the circulatory system, I00-I99, "C|D[0-4]." captures all Neoplasms, C00-D49. Default is the WHO top 3 causes of death globally in 2015, see <a href='http://www.who.int/healthinfo/global_burden_disease/GlobalCOD_method_2000_2015.pdf?ua=1'>http://www.who.int/healthinfo/global_burden_disease/GlobalCOD_method_2000_2015.pdf?ua=1</a>.</p></td>
-    </tr>
-    <tr>
-      <th>icd.labels</th>
-      <td><p>Character vector of ICD labels for the plot legend. Default = V1 to VN.</p></td>
-    </tr>
-    <tr>
-      <th>plot.title</th>
-      <td><p>Title for the plot. Default describes the default icd.codes, WHO top 6 cause of death 2015.</p></td>
-    </tr>
-    <tr>
-      <th>legend.col</th>
-      <td><p>Number of columns for the legend. (Default = 1).</p></td>
-    </tr>
-    <tr>
-      <th>legend.pos</th>
-      <td><p>Legend position, default = "right".</p></td>
-    </tr>
-    <tr>
-      <th>icd.version</th>
-      <td><p>The ICD version (or revision) number, 9 or 10.</p></td>
-    </tr>
-    <tr>
-      <th>freq.plot</th>
-      <td><p>If TRUE returns a plot of ICD diagnosis by target variable. If FALSE (default) returns a dataframe.</p></td>
-    </tr>
-    <tr>
-      <th>freq.lab</th>
-      <td></td>
-    </tr>
-    </table>
+    <p>Functions to wrangle the UKB data into a dataframe with meaningful column
+names.</p><ul>
+<li><p><code><a href='ukb_df.html'>ukb_df</a></code></p></li>
+<li><p><code><a href='ukb_df_field.html'>ukb_df_field</a></code></p></li>
+<li><p><code><a href='ukb_df_full_join.html'>ukb_df_full_join</a></code></p></li>
+<li><p><code><a href='ukb_df_duplicated_name.html'>ukb_df_duplicated_name</a></code></p></li>
+<li><p><code><a href='ukb_centre.html'>ukb_centre</a></code></p></li>
+<li><p><code><a href='ukb_context.html'>ukb_context</a></code></p></li>
+</ul>
+    
+    <h2 class="hasAnchor" id="genetic-metadata"><a class="anchor" href="#genetic-metadata"></a>Genetic Metadata</h2>
+
+    
+    <p>Functions to query the associated genetic sample QC information.</p><ul>
+<li><p><code><a href='ukb_gen_read_fam.html'>ukb_gen_read_fam</a></code></p></li>
+<li><p><code><a href='ukb_gen_read_sample.html'>ukb_gen_read_sample</a></code></p></li>
+<li><p><code><a href='ukb_gen_rel_count.html'>ukb_gen_rel_count</a></code></p></li>
+<li><p><code><a href='ukb_gen_related_with_data.html'>ukb_gen_related_with_data</a></code></p></li>
+<li><p><code><a href='ukb_gen_samples_to_remove.html'>ukb_gen_samples_to_remove</a></code></p></li>
+<li><p><code><a href='ukb_gen_sqc_names.html'>ukb_gen_sqc_names</a></code></p></li>
+<li><p><code><a href='ukb_gen_write_bgenie.html'>ukb_gen_write_bgenie</a></code></p></li>
+<li><p><code><a href='ukb_gen_write_plink.html'>ukb_gen_write_plink</a></code></p></li>
+</ul>
+    
+    <h2 class="hasAnchor" id="disease-diagnoses"><a class="anchor" href="#disease-diagnoses"></a>Disease Diagnoses</h2>
+
+    
+    <p>Functions to query the UKB hospital episodes statistics.</p><ul>
+<li><p><code><a href='ukb_icd_code_meaning.html'>ukb_icd_code_meaning</a></code></p></li>
+<li><p><code><a href='ukb_icd_diagnosis.html'>ukb_icd_diagnosis</a></code></p></li>
+<li><p><code><a href='ukb_icd_freq_by.html'>ukb_icd_freq_by</a></code></p></li>
+<li><p><code><a href='ukb_icd_keyword.html'>ukb_icd_keyword</a></code></p></li>
+<li><p><code><a href='ukb_icd_prevalence.html'>ukb_icd_prevalence</a></code></p></li>
+</ul>
+    
+    <h2 class="hasAnchor" id="datasets"><a class="anchor" href="#datasets"></a>Datasets</h2>
+
+    
+    <ul>
+<li><p><code><a href='ukbcentre.html'>ukbcentre</a></code></p></li>
+<li><p><code><a href='icd10chapters.html'>icd10chapters</a></code></p></li>
+<li><p><code><a href='icd10codes.html'>icd10codes</a></code></p></li>
+<li><p><code><a href='icd9chapters.html'>icd9chapters</a></code></p></li>
+<li><p><code><a href='icd9codes.html'>icd9codes</a></code></p></li>
+</ul>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#ukb-dataframe">UKB Dataframe</a></li>
+
+      <li><a href="#genetic-metadata">Genetic Metadata</a></li>
+
+      <li><a href="#disease-diagnoses">Disease Diagnoses</a></li>
+
+      <li><a href="#datasets">Datasets</a></li>
+          </ul>
 
   </div>
 </div>

@@ -1,13 +1,23 @@
 
-# ukbtools 0.11.0.9000
-
-_Development version_
+# ukbtools 0.11.1
 
 Test data:
 
-* Added example raw data ukbXXXX.tab, ukbXXXX.r, ukbXXXX.html to test the 'read'
-and 'summarise' functionality `ukb_df`, `ukb_df_field`, and `ukb_context`.
+Added example UKB data ukbXXXX.tab, ukbXXXX.r, ukbXXXX.html to test the 'read'
+and 'summarise' functionality `ukb_df`, `ukb_df_field`, and `ukb_context`. See
+the section "An example fileset" in the vignette for details.
 
+Updated functionality:
+
+`ukb_icd_freq_by` with `freq.plot = TRUE` plots a barplot for categorical
+reference variables, and plots diagnosis frequencies at the midpoint of each
+group for quatitative reference variables.
+
+
+Webpage:
+
+The [ukbtools webpage](https://kenhanscombe.github.io/ukbtools/) has been
+rebuilt with pkgdown and includes the vignette under the Articles tab.
 
 
 # ukbtools 0.11.0

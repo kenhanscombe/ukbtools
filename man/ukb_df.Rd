@@ -32,20 +32,19 @@ The \strong{index} and \strong{array} from the UKB field code are preserved in t
 my_ukb_data <- ukb_df("ukb1234")
 
 
-If you have multiple UKB filesets, tidy then merge.
+If you have multiple UKB filesets, read each then join with your preferred
+method (ukb_df_full_join is
+a thin wrapper around dplyr::full_join applied recursively with
+purrr::reduce).
 
 ukb1234_data <- ukb_df("ukb1234")
 ukb2345_data <- ukb_df("ukb2345")
 ukb3456_data <- ukb_df("ukb3456")
 
-my_ukb_data <- plyr::join_all(
-  list(ukb1234_data, ukb2345_data, ukb3456_data),
-  by = "eid",
-  type = "full"
-)
+ukb_df_full_join(ukb1234_data, ukb2345_data, ukb3456_data)
 }
 
 }
 \seealso{
-\code{\link{ukb_df_field}}
+\code{\link{ukb_df_field}} \code{\link{ukb_df_full_join}}
 }

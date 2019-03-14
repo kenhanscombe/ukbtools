@@ -10,7 +10,8 @@ ukb_icd_freq_by(data, reference.var, n.groups = 10,
   icd.labels = c("coronary artery disease", "cerebrovascular disease",
   "lower respiratory tract infection"), plot.title = "",
   legend.col = 1, legend.pos = "right", icd.version = 10,
-  freq.plot = FALSE)
+  freq.plot = FALSE, reference.lab = "Reference variable",
+  freq.lab = "UKB disease frequency")
 }
 \arguments{
 \item{data}{A UKB dataset (or subset) created with \code{\link{ukb_df}}.}
@@ -32,7 +33,15 @@ ukb_icd_freq_by(data, reference.var, n.groups = 10,
 \item{icd.version}{The ICD version (or revision) number, 9 or 10.}
 
 \item{freq.plot}{If TRUE returns a plot of ICD diagnosis by target variable. If FALSE (default) returns a dataframe.}
+
+\item{reference.lab}{An x-axis title for the reference variable.}
+
+\item{freq.lab}{A y-axis title for disease frequency.}
 }
 \description{
-Frequency of an ICD diagnosis by a target variable
+Produces either a dataframe of diagnosis frequencies or a plot. For a
+quantitative reference variable (e.g. BMI), the plot shows frequency of
+diagnosis within each group (deciles of the reference
+variable by default) at the (max - min) / 2 for
+each group.
 }

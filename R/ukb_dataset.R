@@ -1,5 +1,10 @@
 
-globalVariables(c(".", "i", "j", "eid", "pair", "ibs0", "kinship", "category_related", "ped_related", "code", "heterozygosity_0_0", "field.tab", "field.showcase", "field.html", "col.type", "variable", "HetHet", "IBS0", "ID", "ID1", "ID2", "Kinship"))
+globalVariables(
+  c(".", "i", "j", "eid", "pair", "ibs0", "kinship", "category_related",
+    "ped_related", "code", "heterozygosity_0_0", "field.tab", "field.showcase",
+    "field.html", "col.type", "variable", "HetHet", "IBS0", "ID", "ID1", "ID2",
+    "Kinship", "categorized_var", "dx", "freq", "tile_range", "lower", "upper",
+    "mid", "frequency", "disease"))
 
 #' Reads a UK Biobank phenotype fileset and returns a single dataset.
 #'
@@ -14,7 +19,7 @@ globalVariables(c(".", "i", "j", "eid", "pair", "ibs0", "kinship", "category_rel
 #'
 #' @return A dataframe with variable names in snake_case (lowercase and separated by an underscore).
 #'
-#' @seealso \code{\link{ukb_df_field}}
+#' @seealso \code{\link{ukb_df_field}} \code{\link{ukb_df_full_join}}
 #'
 #' @import XML stringr
 #' @importFrom data.table fread
@@ -28,17 +33,16 @@ globalVariables(c(".", "i", "j", "eid", "pair", "ibs0", "kinship", "category_rel
 #' my_ukb_data <- ukb_df("ukb1234")
 #'
 #'
-#' If you have multiple UKB filesets, tidy then merge.
+#' If you have multiple UKB filesets, read each then join with your preferred
+#' method (ukb_df_full_join is
+#' a thin wrapper around dplyr::full_join applied recursively with
+#' purrr::reduce).
 #'
 #' ukb1234_data <- ukb_df("ukb1234")
 #' ukb2345_data <- ukb_df("ukb2345")
 #' ukb3456_data <- ukb_df("ukb3456")
 #'
-#' my_ukb_data <- plyr::join_all(
-#'   list(ukb1234_data, ukb2345_data, ukb3456_data),
-#'   by = "eid",
-#'   type = "full"
-#' )
+#' ukb_df_full_join(ukb1234_data, ukb2345_data, ukb3456_data)
 #' }
 #'
 ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2) {

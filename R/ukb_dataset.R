@@ -201,7 +201,7 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
 # @param fileset prefix for UKB fileset
 # @param path The path to the directory containing your UKB fileset. The default value is the current directory.
 #
-.update_tab_path <- function(fileset, column_type, path = ".", n_threads = "min") {
+.update_tab_path <- function(fileset, column_type, path = ".", n_threads = "max") {
   r_file <- stringr::str_interp("${fileset}.r")
   tab_file <- stringr::str_interp("${fileset}.tab")
 
@@ -224,10 +224,10 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
     input = tab_location,
     sep = "\t",
     header = TRUE,
-    colClasses = stringr::str_c("${column_type}"),
+    colClasses = stringr::str_c(column_type),
     data.table = FALSE,
     showProgress = TRUE,
-    nThread =   if(n_threads == "max") {
+    nThread = if(n_threads == "max") {
       parallel::detectCores()
     } else if (n_threads == "dt") {
       data.table::getDTthreads()

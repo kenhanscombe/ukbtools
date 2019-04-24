@@ -1,4 +1,16 @@
 
+# ukbtools 0.11.2.9000
+
+Corrected functionality:
+
+Updated earlier typo/change that made `ukb_df` incorrectly convert all column
+types to character (caused by replacing `stringr::str_interp` to
+`stringr::str_c` when passing internal coumn type vector to `data.table::fread`,
+without updating argument)
+
+**Note.** Correction is in development version - will upload to CRAN ASAP.
+
+
 # ukbtools 0.11.1
 
 Test data:

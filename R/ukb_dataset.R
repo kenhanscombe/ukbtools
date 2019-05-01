@@ -172,6 +172,7 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
     gsub(" ", "_", x = .) %>%
     gsub("uses_data-coding.*simple_list.$", "", x = .) %>%
     gsub("uses_data-coding.*hierarchical_tree.", "", x = .) %>%
+    gsub("uses_data_*coding_[0-9]*", "", x = .) %>%
     gsub("[^[:alnum:][:space:]_]", "", x = .) %>%
     gsub("__*", "_", x = .)
 

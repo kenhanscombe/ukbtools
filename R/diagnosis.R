@@ -203,9 +203,11 @@ ukb_icd_freq_by <- function(
   freq.lab = "UKB disease frequency") {
 
   data <- data %>%
-    dplyr::filter(stats::complete.cases(.[[reference.var]])) %>%
     dplyr::select(reference.var, matches(paste("^diagnoses.*icd",
-                                               icd.version, sep = "")))
+                                               icd.version, sep = ""))) %>%
+    # dplyr::filter(stats::complete.cases(.[[reference.var]]))
+    dplyr::filter(!is.na(.[[reference.var]]))
+
 
   # Include categorical variable
   if (is.factor(data[[reference.var]]) | is.ordered(data[[reference.var]])) {
@@ -259,7 +261,7 @@ ukb_icd_freq_by <- function(
               panel.background = element_rect(color = NULL,
                                               fill = alpha("grey", 0.10)),
               legend.key = element_blank(), axis.ticks.x = element_blank()) +
-        scale_y_continuous(labels = scales::percent_format(2))
+        scale_y_continuous(labels = scales::percent_format(2)) +
         geom_point(size = 2) +
         geom_line(size = 0.5) +
         guides(color = guide_legend(ncol = legend.col), size = FALSE,

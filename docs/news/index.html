@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ukbtools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.3</span>
       </span>
     </div>
 
@@ -113,15 +113,28 @@
       
     </div>
 
-    <div id="ukbtools-0-11-0-9000" class="section level1">
+    <div id="ukbtools-0-11-3" class="section level1">
 <h1 class="page-header">
-<a href="#ukbtools-0-11-0-9000" class="anchor"></a>ukbtools 0.11.0.9000<small> Unreleased </small>
+<a href="#ukbtools-0-11-3" class="anchor"></a>ukbtools 0.11.3<small> Unreleased </small>
 </h1>
-<p><em>Development version</em></p>
+<p>Corrected functionality:</p>
+<p>Updated earlier typo/change that made <code>ukb_df</code> incorrectly convert all column types to character (caused by replacing <code><a href="https://stringr.tidyverse.org/reference/str_interp.html">stringr::str_interp</a></code> to <code><a href="https://stringr.tidyverse.org/reference/str_c.html">stringr::str_c</a></code> when passing internal coumn type vector to <code><a href="https://www.rdocumentation.org/packages/data.table/topics/fread">data.table::fread</a></code>, without updating argument)</p>
+<p>Bug fix:</p>
+<p>Cleared bug in <code>ukb_icd_freq_by</code> for disease freuency against a quantitative trait.</p>
+<p>Made <code>ukb_df</code> column name from description regex find/replace more general to capture all variations of “uses data coding”</p>
+<p>Updated functionality:</p>
+<p><code>ukb_icd_keyword</code> internal regex search <code>ignore.case</code> defaults to <code>TRUE</code>, with and option to set added to arguments.</p>
+</div>
+    <div id="ukbtools-0-11-1" class="section level1">
+<h1 class="page-header">
+<a href="#ukbtools-0-11-1" class="anchor"></a>ukbtools 0.11.1<small> 2019-03-14 </small>
+</h1>
 <p>Test data:</p>
-<ul>
-<li>Added example raw data ukbXXXX.tab, ukbXXXX.r, ukbXXXX.html to test the ‘read’ and ‘summarise’ functionality <code>ukb_df</code>, <code>ukb_df_field</code>, and <code>ukb_context</code>.</li>
-</ul>
+<p>Added example UKB data ukbXXXX.tab, ukbXXXX.r, ukbXXXX.html to test the ‘read’ and ‘summarise’ functionality <code>ukb_df</code>, <code>ukb_df_field</code>, and <code>ukb_context</code>. See the section “An example fileset” in the vignette for details.</p>
+<p>Updated functionality:</p>
+<p><code>ukb_icd_freq_by</code> with <code>freq.plot = TRUE</code> plots a barplot for categorical reference variables, and plots diagnosis frequencies at the midpoint of each group for quatitative reference variables.</p>
+<p>Webpage:</p>
+<p>The <a href="https://kenhanscombe.github.io/ukbtools/">ukbtools webpage</a> has been rebuilt with pkgdown and includes the vignette under the Articles tab.</p>
 </div>
     <div id="ukbtools-0-11-0" class="section level1">
 <h1 class="page-header">
@@ -181,7 +194,8 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#ukbtools-0-11-0-9000">0.11.0.9000</a></li>
+        <li><a href="#ukbtools-0-11-3">0.11.3</a></li>
+        <li><a href="#ukbtools-0-11-1">0.11.1</a></li>
         <li><a href="#ukbtools-0-11-0">0.11.0</a></li>
         <li><a href="#ukbtools-0-10-1">0.10.1</a></li>
         <li><a href="#ukbtools-0-10-0">0.10.0</a></li>

@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ukbtools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.3</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>ukb_icd_keyword</span>(<span class='no'>description</span>, <span class='kw'>icd.version</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+    <pre class="usage"><span class='fu'>ukb_icd_keyword</span>(<span class='no'>description</span>, <span class='kw'>icd.version</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>ignore.case</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -135,6 +135,10 @@
       <th>icd.version</th>
       <td><p>The ICD version (or revision) number, 9 or 10. Default = 10.</p></td>
     </tr>
+    <tr>
+      <th>ignore.case</th>
+      <td><p>If `TRUE` (default), case is ignored during matching; if `FALSE`, the matching is case sensitive.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -145,54 +149,90 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>ukb_icd_keyword</span>(<span class='st'>"cardio"</span>, <span class='kw'>icd.version</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt;                             code
 #&gt; 1                           B334
-#&gt; 2                           A439
-#&gt; 3                           A438
-#&gt; 4                           A431
-#&gt; 5                           A430
-#&gt; 6                            A43
-#&gt; 7  Block P20-P29(not selectable)
-#&gt; 8                           I250
-#&gt; 9                           I255
-#&gt; 10                          I420
-#&gt; 11                          I421
-#&gt; 12                          I422
-#&gt; 13                          I425
-#&gt; 14                          I426
-#&gt; 15                          I428
-#&gt; 16                          I970
-#&gt; 17                          P298
-#&gt; 18                          R943
-#&gt; 19                           T46
-#&gt; 20                          T469
-#&gt; 21                           Y52
-#&gt; 22                          Y529
-#&gt; 23                          Z035
-#&gt; 24                          Z136
-#&gt;                                                                              meaning
-#&gt; 1                          B33.4 Hantavirus (cardio-)pulmonary syndrome [HPS] [HCPS]
-#&gt; 2                                                     A43.9 Nocardiosis, unspecified
-#&gt; 3                                                   A43.8 Other forms of nocardiosis
-#&gt; 4                                                        A43.1 Cutaneous nocardiosis
-#&gt; 5                                                        A43.0 Pulmonary nocardiosis
-#&gt; 6                                                                    A43 Nocardiosis
-#&gt; 7  P20-P29 Respiratory and cardiovascular disorders specific to the perinatal period
-#&gt; 8                         I25.0 Atherosclerotic cardiovascular disease, so described
-#&gt; 9                                                     I25.5 Ischaemic cardiomyopathy
-#&gt; 10                                                      I42.0 Dilated cardiomyopathy
-#&gt; 11                                     I42.1 Obstructive hypertrophic cardiomyopathy
-#&gt; 12                                           I42.2 Other hypertrophic cardiomyopathy
-#&gt; 13                                            I42.5 Other restrictive cardiomyopathy
-#&gt; 14                                                    I42.6 Alcoholic cardiomyopathy
-#&gt; 15                                                      I42.8 Other cardiomyopathies
-#&gt; 16                                                     I97.0 Postcardiotomy syndrome
-#&gt; 17          P29.8 Other cardiovascular disorders originating in the perinatal period
-#&gt; 18                         R94.3 Abnormal results of cardiovascular function studies
-#&gt; 19             T46 Poisoning by agents primarily affecting the cardiovascular system
-#&gt; 20  T46.9 Other and unspecified agents primarily affecting the cardiovascular system
-#&gt; 21                          Y52 Agents primarily affecting the cardiovascular system
-#&gt; 22  Y52.9 Other and unspecified agents primarily affecting the cardiovascular system
-#&gt; 23                     Z03.5 Observation for other suspected cardiovascular diseases
-#&gt; 24                  Z13.6 Special screening examination for cardiovascular disorders</div><div class='input'>
+#&gt; 2                           A520
+#&gt; 3                           A439
+#&gt; 4                           A438
+#&gt; 5                           A431
+#&gt; 6                           A430
+#&gt; 7                            A43
+#&gt; 8  Block P20-P29(not selectable)
+#&gt; 9                           I250
+#&gt; 10                          I255
+#&gt; 11                           I42
+#&gt; 12                          I420
+#&gt; 13                          I421
+#&gt; 14                          I422
+#&gt; 15                          I425
+#&gt; 16                          I426
+#&gt; 17                          I427
+#&gt; 18                          I428
+#&gt; 19                          I429
+#&gt; 20                           I43
+#&gt; 21                          I430
+#&gt; 22                          I431
+#&gt; 23                          I432
+#&gt; 24                          I438
+#&gt; 25                          I516
+#&gt; 26                          I517
+#&gt; 27                          I970
+#&gt; 28                          I980
+#&gt; 29                          I981
+#&gt; 30                          O903
+#&gt; 31                           P29
+#&gt; 32                          P298
+#&gt; 33                          P299
+#&gt; 34                          R570
+#&gt; 35                          R943
+#&gt; 36                           T46
+#&gt; 37                          T469
+#&gt; 38                           Y52
+#&gt; 39                          Y529
+#&gt; 40                           Y71
+#&gt; 41                          Z035
+#&gt; 42                          Z136
+#&gt;                                                                                           meaning
+#&gt; 1                                       B33.4 Hantavirus (cardio-)pulmonary syndrome [HPS] [HCPS]
+#&gt; 2                                                                   A52.0 Cardiovascular syphilis
+#&gt; 3                                                                  A43.9 Nocardiosis, unspecified
+#&gt; 4                                                                A43.8 Other forms of nocardiosis
+#&gt; 5                                                                     A43.1 Cutaneous nocardiosis
+#&gt; 6                                                                     A43.0 Pulmonary nocardiosis
+#&gt; 7                                                                                 A43 Nocardiosis
+#&gt; 8               P20-P29 Respiratory and cardiovascular disorders specific to the perinatal period
+#&gt; 9                                      I25.0 Atherosclerotic cardiovascular disease, so described
+#&gt; 10                                                                 I25.5 Ischaemic cardiomyopathy
+#&gt; 11                                                                             I42 Cardiomyopathy
+#&gt; 12                                                                   I42.0 Dilated cardiomyopathy
+#&gt; 13                                                  I42.1 Obstructive hypertrophic cardiomyopathy
+#&gt; 14                                                        I42.2 Other hypertrophic cardiomyopathy
+#&gt; 15                                                         I42.5 Other restrictive cardiomyopathy
+#&gt; 16                                                                 I42.6 Alcoholic cardiomyopathy
+#&gt; 17                                    I42.7 Cardiomyopathy due to drugs and other external agents
+#&gt; 18                                                                   I42.8 Other cardiomyopathies
+#&gt; 19                                                              I42.9 Cardiomyopathy, unspecified
+#&gt; 20                                            I43 Cardiomyopathy in diseases classified elsewhere
+#&gt; 21                 I43.0 Cardiomyopathy in infectious and parasitic diseases classified elsewhere
+#&gt; 22                                                     I43.1 Cardiomyopathy in metabolic diseases
+#&gt; 23                                                   I43.2 Cardiomyopathy in nutritional diseases
+#&gt; 24                                    I43.8 Cardiomyopathy in other diseases classified elsewhere
+#&gt; 25                                                      I51.6 Cardiovascular disease, unspecified
+#&gt; 26                                                                             I51.7 Cardiomegaly
+#&gt; 27                                                                  I97.0 Postcardiotomy syndrome
+#&gt; 28                                                                  I98.0 Cardiovascular syphilis
+#&gt; 29 I98.1 Cardiovascular disorders in other infectious and parasitic diseases classified elsewhere
+#&gt; 30                                                         O90.3 Cardiomyopathy in the puerperium
+#&gt; 31                               P29 Cardiovascular disorders originating in the perinatal period
+#&gt; 32                       P29.8 Other cardiovascular disorders originating in the perinatal period
+#&gt; 33                 P29.9 Cardiovascular disorder originating in the perinatal period, unspecified
+#&gt; 34                                                                        R57.0 Cardiogenic shock
+#&gt; 35                                      R94.3 Abnormal results of cardiovascular function studies
+#&gt; 36                          T46 Poisoning by agents primarily affecting the cardiovascular system
+#&gt; 37               T46.9 Other and unspecified agents primarily affecting the cardiovascular system
+#&gt; 38                                       Y52 Agents primarily affecting the cardiovascular system
+#&gt; 39               Y52.9 Other and unspecified agents primarily affecting the cardiovascular system
+#&gt; 40                                   Y71 Cardiovascular devices associated with adverse incidents
+#&gt; 41                                  Z03.5 Observation for other suspected cardiovascular diseases
+#&gt; 42                               Z13.6 Special screening examination for cardiovascular disorders</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

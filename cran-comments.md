@@ -16,11 +16,11 @@
 
 
 #### Ubuntu 14.04 "trusty" on travis-ci (devel and release)
-R version 3.5.2 (2017-01-27)
+R version 3.5.3 (2017-01-27)
 Status: OK
 Done. Your build exited with 0.
 
-R Under development (unstable) (2019-03-14 r76233)
+R Under development (unstable) (2019-04-25 r76422)
 Status: OK
 Done. Your build exited with 0.
 
@@ -31,7 +31,8 @@ platform: x86_64-w64-mingw32 (64-bit)
 DONE
 Status: OK
 
-R Under development (unstable) (2019-03-12 r76226)
+R Under development (unstable)
+R version 3.6.0 RC (2019-04-21 r76417)
 platform: x86_64-w64-mingw32 (64-bit)
 DONE
 Status: OK
@@ -40,9 +41,6 @@ Status: OK
 ## Downstream dependencies
 
 There are currently no downstream dependencies for this package
-
-
-
 
 
 

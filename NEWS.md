@@ -1,5 +1,5 @@
 
-# ukbtools 0.11.2.9000
+# ukbtools 0.11.3
 
 Corrected functionality:
 
@@ -20,11 +20,6 @@ Updated functionality:
 
 `ukb_icd_keyword` internal regex search `ignore.case` defaults to `TRUE`, with
 and option to set added to arguments.
-
-
-
-**Note.** Changes are in the development version 0.11.2.9000 - will upload to CRAN
-ASAP.
 
 
 

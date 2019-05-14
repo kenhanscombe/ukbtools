@@ -32,7 +32,11 @@
 
 <meta property="og:title" content="Frequency of an ICD diagnosis by a target variable — ukb_icd_freq_by" />
 
-<meta property="og:description" content="Frequency of an ICD diagnosis by a target variable" />
+<meta property="og:description" content="Produces either a dataframe of diagnosis frequencies or a plot. For a
+quantitative reference variable (e.g. BMI), the plot shows frequency of
+diagnosis within each group (deciles of the reference
+variable by default) at the (max - min) / 2 for
+each group." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -65,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ukbtools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.3</span>
       </span>
     </div>
 
@@ -118,7 +122,11 @@
 
     <div class="ref-description">
     
-    <p>Frequency of an ICD diagnosis by a target variable</p>
+    <p>Produces either a dataframe of diagnosis frequencies or a plot. For a
+quantitative reference variable (e.g. BMI), the plot shows frequency of
+diagnosis within each group (deciles of the reference
+variable by default) at the (max - min) / 2 for
+each group.</p>
     
     </div>
 
@@ -148,7 +156,7 @@
     </tr>
     <tr>
       <th>icd.code</th>
-      <td><p>ICD disease code(s) e.g. "I74". Use a regular expression to specify a broader set of diagnoses, e.g. "I" captures all Diseases of the circulatory system, I00-I99, "C|D[0-4]." captures all Neoplasms, C00-D49. Default is the WHO top 3 causes of death globally in 2015, see <a href='http://www.who.int/healthinfo/global_burden_disease/GlobalCOD_method_2000_2015.pdf?ua=1'>http://www.who.int/healthinfo/global_burden_disease/GlobalCOD_method_2000_2015.pdf?ua=1</a>.</p></td>
+      <td><p>ICD disease code(s) e.g. "I74". Use a regular expression to specify a broader set of diagnoses, e.g. "I" captures all Diseases of the circulatory system, I00-I99, "C|D[0-4]." captures all Neoplasms, C00-D49. Default is the WHO top 3 causes of death globally in 2015, see <a href='http://www.who.int/healthinfo/global_burden_disease/GlobalCOD_method_2000_2015.pdf?ua=1'>http://www.who.int/healthinfo/global_burden_disease/GlobalCOD_method_2000_2015.pdf?ua=1</a>. Note. If you specify `icd.codes`, you must supply corresponding labels to `icd.labels`.</p></td>
     </tr>
     <tr>
       <th>icd.labels</th>
@@ -175,8 +183,12 @@
       <td><p>If TRUE returns a plot of ICD diagnosis by target variable. If FALSE (default) returns a dataframe.</p></td>
     </tr>
     <tr>
+      <th>reference.lab</th>
+      <td><p>An x-axis title for the reference variable.</p></td>
+    </tr>
+    <tr>
       <th>freq.lab</th>
-      <td></td>
+      <td><p>A y-axis title for disease frequency.</p></td>
     </tr>
     </table>
     

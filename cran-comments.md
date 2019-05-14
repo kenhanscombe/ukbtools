@@ -1,4 +1,49 @@
 
+# Update to version 0.11.3
+
+## Test environments
+
+* local macOS Mojave 10.14.3, R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
+* Ubuntu 14.04 "trusty" on travis-ci (devel and release)
+* win-builder (devel and release)
+
+
+#### (local) macOS Mojave 10.14.3, R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
+0 errors ✔ | 0 warnings ✔ | 0 notes ✔
+
+
+#### Ubuntu 14.04 "trusty" on travis-ci (devel and release)
+R version 3.6.0 (2017-01-27)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Status: OK
+Done. Your build exited with 0.
+
+R Under development (unstable) (2019-05-14 r76501)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Status: OK
+Done. Your build exited with 0.
+
+
+#### win-builder (devel and release)
+R version 3.6.0 (2019-04-26)
+platform: x86_64-w64-mingw32 (64-bit)
+DONE
+Status: OK
+
+R Under development (unstable) (2019-05-12 r76489)
+platform: x86_64-w64-mingw32 (64-bit)
+DONE
+Status: OK
+
+
+## Downstream dependencies
+
+There are currently no downstream dependencies for this package
+
+
+
+
+
 # Update to version 0.11.2
 
 

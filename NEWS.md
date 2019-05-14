@@ -8,8 +8,24 @@ types to character (caused by replacing `stringr::str_interp` to
 `stringr::str_c` when passing internal coumn type vector to `data.table::fread`,
 without updating argument)
 
-**Note.** Correction is in development version 0.11.2.9000 - will upload to CRAN
+Bug fix:
+
+Cleared bug in `ukb_icd_freq_by` for disease freuency against a quantitative
+trait.
+
+Made `ukb_df` column name from description regex find/replace more general to
+capture all variations of "uses data coding"
+
+Updated functionality:
+
+`ukb_icd_keyword` internal regex search `ignore.case` defaults to `TRUE`, with
+and option to set added to arguments.
+
+
+
+**Note.** Changes are in the development version 0.11.2.9000 - will upload to CRAN
 ASAP.
+
 
 
 # ukbtools 0.11.1

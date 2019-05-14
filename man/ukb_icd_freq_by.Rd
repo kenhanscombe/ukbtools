@@ -20,7 +20,7 @@ ukb_icd_freq_by(data, reference.var, n.groups = 10,
 
 \item{n.groups}{Number of approximately equal-sized groups to split a continuous variable into.}
 
-\item{icd.code}{ICD disease code(s) e.g. "I74". Use a regular expression to specify a broader set of diagnoses, e.g. "I" captures all Diseases of the circulatory system, I00-I99, "C|D[0-4]." captures all Neoplasms, C00-D49. Default is the WHO top 3 causes of death globally in 2015, see \url{http://www.who.int/healthinfo/global_burden_disease/GlobalCOD_method_2000_2015.pdf?ua=1}.}
+\item{icd.code}{ICD disease code(s) e.g. "I74". Use a regular expression to specify a broader set of diagnoses, e.g. "I" captures all Diseases of the circulatory system, I00-I99, "C|D[0-4]." captures all Neoplasms, C00-D49. Default is the WHO top 3 causes of death globally in 2015, see \url{http://www.who.int/healthinfo/global_burden_disease/GlobalCOD_method_2000_2015.pdf?ua=1}. Note. If you specify `icd.codes`, you must supply corresponding labels to `icd.labels`.}
 
 \item{icd.labels}{Character vector of ICD labels for the plot legend. Default = V1 to VN.}
 

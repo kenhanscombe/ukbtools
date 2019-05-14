@@ -103,8 +103,9 @@ ukb_icd_code_meaning <- function(icd.code, icd.version = 10) {
 #'
 #' Returns a dataframe of ICD code and descriptions for all entries including any supplied keyword.
 #'
-#' @param icd.version The ICD version (or revision) number, 9 or 10. Default = 10.
 #' @param description A character vector of one or more keywords to be looked up in the ICD descriptions, e.g., "cardio", c("cardio", "lymphoma"). Each keyword can be a regular expression, e.g. "lymph*".
+#' @param icd.version The ICD version (or revision) number, 9 or 10. Default = 10.
+#' @param ignore.case If `TRUE` (default), case is ignored during matching; if `FALSE`, the matching is case sensitive.
 #'
 #' @seealso \code{\link{ukb_icd_diagnosis}}, \code{\link{ukb_icd_code_meaning}}, \code{\link{ukb_icd_prevalence}}
 #'
@@ -114,7 +115,7 @@ ukb_icd_code_meaning <- function(icd.code, icd.version = 10) {
 #' @examples
 #' ukb_icd_keyword("cardio", icd.version = 10)
 #'
-ukb_icd_keyword <- function(description, icd.version = 10) {
+ukb_icd_keyword <- function(description, icd.version = 10, ignore.case = TRUE) {
   icd <- if (icd.version == 9) {
     ukbtools::icd9codes
   } else if (icd.version == 10){
@@ -122,7 +123,8 @@ ukb_icd_keyword <- function(description, icd.version = 10) {
   }
 
   icd %>%
-    dplyr::filter(grepl(paste(description, collapse = "|"), .$meaning, perl = TRUE))
+    dplyr::filter(grepl(paste(description, collapse = "|"), .$meaning,
+                        perl = TRUE, ignore.case = ignore.case))
 }
 
 
@@ -130,8 +132,8 @@ ukb_icd_keyword <- function(description, icd.version = 10) {
 #' Returns the prevalence for an ICD diagnosis
 #'
 #' @param data A UKB dataset (or subset) created with \code{\link{ukb_df}}.
-#' @param icd.version The ICD version (or revision) number, 9 or 10. Default = 10.
 #' @param icd.code An ICD disease code e.g. "I74". Use a regular expression to specify a broader set of diagnoses, e.g. "I" captures all Diseases of the circulatory system, I00-I99, "C|D[0-4]." captures all Neoplasms, C00-D49.
+#' @param icd.version The ICD version (or revision) number, 9 or 10. Default = 10.
 #'
 #' @seealso \code{\link{ukb_icd_diagnosis}}, \code{\link{ukb_icd_code_meaning}}, \code{\link{ukb_icd_keyword}}
 #'
@@ -142,13 +144,13 @@ ukb_icd_keyword <- function(description, icd.version = 10) {
 #' @examples
 #' \dontrun{
 #' # ICD-10 code I74, Arterial embolism and thrombosis
-#' ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "I74")
+#' ukb_icd_prevalence(my_ukb_data, icd.code = "I74")
 #'
 #' # ICD-10 chapter 9, disease block I00–I99, Diseases of the circulatory system
-#' ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "I")
+#' ukb_icd_prevalence(my_ukb_data, icd.code = "I")
 #'
 #' # ICD-10 chapter 2, C00-D49, Neoplasms
-#' ukb_icd_prevalence(my_ukb_data, icd.version = 10, icd.diagnosis = "C|D[0-4].")
+#' ukb_icd_prevalence(my_ukb_data, icd.code = "C|D[0-4].")
 #' }
 #'
 ukb_icd_prevalence <- function(data, icd.code, icd.version = 10) {
@@ -172,14 +174,14 @@ ukb_icd_prevalence <- function(data, icd.code, icd.version = 10) {
 #' each group.
 #'
 #' @param data A UKB dataset (or subset) created with \code{\link{ukb_df}}.
-#' @param icd.code ICD disease code(s) e.g. "I74". Use a regular expression to specify a broader set of diagnoses, e.g. "I" captures all Diseases of the circulatory system, I00-I99, "C|D[0-4]." captures all Neoplasms, C00-D49. Default is the WHO top 3 causes of death globally in 2015, see \url{http://www.who.int/healthinfo/global_burden_disease/GlobalCOD_method_2000_2015.pdf?ua=1}.
 #' @param reference.var UKB ICD frequencies will be calculated by levels of this variable. If continuous, by default it is cut into 10 intervals of approximately equal size (set with n.groups).
 #' @param n.groups Number of approximately equal-sized groups to split a continuous variable into.
+#' @param icd.code ICD disease code(s) e.g. "I74". Use a regular expression to specify a broader set of diagnoses, e.g. "I" captures all Diseases of the circulatory system, I00-I99, "C|D[0-4]." captures all Neoplasms, C00-D49. Default is the WHO top 3 causes of death globally in 2015, see \url{http://www.who.int/healthinfo/global_burden_disease/GlobalCOD_method_2000_2015.pdf?ua=1}. Note. If you specify `icd.codes`, you must supply corresponding labels to `icd.labels`.
+#' @param icd.labels Character vector of ICD labels for the plot legend. Default = V1 to VN.
 #' @param icd.version The ICD version (or revision) number, 9 or 10.
 #' @param freq.plot If TRUE returns a plot of ICD diagnosis by target variable. If FALSE (default) returns a dataframe.
 #' @param legend.col Number of columns for the legend. (Default = 1).
 #' @param legend.pos Legend position, default = "right".
-#' @param icd.labels Character vector of ICD labels for the plot legend. Default = V1 to VN.
 #' @param plot.title Title for the plot. Default describes the default icd.codes, WHO top 6 cause of death 2015.
 #' @param reference.lab An x-axis title for the reference variable.
 #' @param freq.lab A y-axis title for disease frequency.
@@ -202,10 +204,14 @@ ukb_icd_freq_by <- function(
   freq.plot = FALSE, reference.lab = "Reference variable",
   freq.lab = "UKB disease frequency") {
 
+  if (!(icd.code == c("^(I2[0-5])", "^(I6[0-9])", "^(J09|J1[0-9]|J2[0-2]|P23|U04)"))) {
+    message("Message: If you specify `icd.code`, you must supply corresponding label(s) to `icd.labels`.")
+  }
+
+
   data <- data %>%
     dplyr::select(reference.var, matches(paste("^diagnoses.*icd",
                                                icd.version, sep = ""))) %>%
-    # dplyr::filter(stats::complete.cases(.[[reference.var]]))
     dplyr::filter(!is.na(.[[reference.var]]))
 
 

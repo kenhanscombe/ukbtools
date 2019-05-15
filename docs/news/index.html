@@ -118,9 +118,9 @@
 <a href="#ukbtools-0-11-3" class="anchor"></a>ukbtools 0.11.3<small> Unreleased </small>
 </h1>
 <p>Corrected functionality:</p>
-<p>Updated earlier typo/change that made <code>ukb_df</code> incorrectly convert all column types to character (caused by replacing <code><a href="https://stringr.tidyverse.org/reference/str_interp.html">stringr::str_interp</a></code> to <code><a href="https://stringr.tidyverse.org/reference/str_c.html">stringr::str_c</a></code> when passing internal coumn type vector to <code><a href="https://www.rdocumentation.org/packages/data.table/topics/fread">data.table::fread</a></code>, without updating argument)</p>
+<p>Updated earlier typo/change that made <code>ukb_df</code> incorrectly convert all column types to character (caused by replacing <code><a href="https://stringr.tidyverse.org/reference/str_interp.html">stringr::str_interp</a></code> to <code><a href="https://stringr.tidyverse.org/reference/str_c.html">stringr::str_c</a></code> when passing internal column type vector to <code><a href="https://www.rdocumentation.org/packages/data.table/topics/fread">data.table::fread</a></code>, without updating argument)</p>
 <p>Bug fix:</p>
-<p>Cleared bug in <code>ukb_icd_freq_by</code> for disease freuency against a quantitative trait.</p>
+<p>Cleared bug in <code>ukb_icd_freq_by</code> for disease frequency against a quantitative trait.</p>
 <p>Made <code>ukb_df</code> column name from description regex find/replace more general to capture all variations of “uses data coding”</p>
 <p>Updated functionality:</p>
 <p><code>ukb_icd_keyword</code> internal regex search <code>ignore.case</code> defaults to <code>TRUE</code>, with and option to set added to arguments.</p>
@@ -132,7 +132,7 @@
 <p>Test data:</p>
 <p>Added example UKB data ukbXXXX.tab, ukbXXXX.r, ukbXXXX.html to test the ‘read’ and ‘summarise’ functionality <code>ukb_df</code>, <code>ukb_df_field</code>, and <code>ukb_context</code>. See the section “An example fileset” in the vignette for details.</p>
 <p>Updated functionality:</p>
-<p><code>ukb_icd_freq_by</code> with <code>freq.plot = TRUE</code> plots a barplot for categorical reference variables, and plots diagnosis frequencies at the midpoint of each group for quatitative reference variables.</p>
+<p><code>ukb_icd_freq_by</code> with <code>freq.plot = TRUE</code> plots a barplot for categorical reference variables, and plots diagnosis frequencies at the midpoint of each group for quantitative reference variables.</p>
 <p>Webpage:</p>
 <p>The <a href="https://kenhanscombe.github.io/ukbtools/">ukbtools webpage</a> has been rebuilt with pkgdown and includes the vignette under the Articles tab.</p>
 </div>

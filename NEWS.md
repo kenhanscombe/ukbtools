@@ -5,12 +5,12 @@ Corrected functionality:
 
 Updated earlier typo/change that made `ukb_df` incorrectly convert all column
 types to character (caused by replacing `stringr::str_interp` to
-`stringr::str_c` when passing internal coumn type vector to `data.table::fread`,
+`stringr::str_c` when passing internal column type vector to `data.table::fread`,
 without updating argument)
 
 Bug fix:
 
-Cleared bug in `ukb_icd_freq_by` for disease freuency against a quantitative
+Cleared bug in `ukb_icd_freq_by` for disease frequency against a quantitative
 trait.
 
 Made `ukb_df` column name from description regex find/replace more general to
@@ -35,7 +35,7 @@ Updated functionality:
 
 `ukb_icd_freq_by` with `freq.plot = TRUE` plots a barplot for categorical
 reference variables, and plots diagnosis frequencies at the midpoint of each
-group for quatitative reference variables.
+group for quantitative reference variables.
 
 
 Webpage:

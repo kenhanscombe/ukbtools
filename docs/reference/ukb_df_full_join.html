@@ -129,7 +129,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p>Supply comma separated unquoted names of to-be-merged UKB datasets (created with <code><a href='ukb_df.html'>ukb_df</a></code>). Arguments are passed to <code>list</code>.</p></td>
+      <td><p>Supply comma separated unquoted names of to-be-merged UKB datasets (created with <code>ukb_df</code>). Arguments are passed to <code>list</code>.</p></td>
     </tr>
     <tr>
       <th>by</th>
@@ -140,20 +140,20 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The function takes a comma separated list of unquoted datasets. By explicitly setting the join key to "eid" only (Default value of the <code>by</code> parameter), any additional variables common to any two tables will have ".x" and ".y" appended to their names. If you are satisfied the additional variables are identical to the original, the copies can be safely deleted. For example, if <code><a href='https://www.rdocumentation.org/packages/base/topics/sets'>setequal(my_ukb_data$var, my_ukb_data$var.x)</a></code> is <code>TRUE</code>, then my_ukb_data$var.x can be dropped. A <code>dlyr::full_join</code> is like the set operation union in that all observations from all tables are included, i.e., all samples are included even if they are not included in all datasets.</p>
-<p>NB. <code>ukb_df_full_join</code> will fail if any variable names are repeated **within** a single UKB dataset. This is unlikely to occur, however, <code>ukb_df</code> creates variable names by combining a snake_case descriptor with the variable's **index** and **array**. If an index_array combination is incorrectly repeated, this will result in a duplicated variable. If the join fails, you can use <code><a href='ukb_df_duplicated_name.html'>ukb_df_duplicated_name</a></code> to find duplicated names. See <code><a href='../articles/explore-ukb-data.html'>vignette(topic = "explore-ukb-data", package = "ukbtools")</a></code> for further details.</p>
+<p>NB. <code>ukb_df_full_join</code> will fail if any variable names are repeated **within** a single UKB dataset. This is unlikely to occur, however, <code>ukb_df</code> creates variable names by combining a snake_case descriptor with the variable's **index** and **array**. If an index_array combination is incorrectly repeated, this will result in a duplicated variable. If the join fails, you can use <code>ukb_df_duplicated_name</code> to find duplicated names. See <code>vignette(topic = "explore-ukb-data", package = "ukbtools")</code> for further details.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='ukb_df_duplicated_name.html'>ukb_df_duplicated_name</a></code></p></div>
+    <div class='dont-index'><p><code>ukb_df_duplicated_name</code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='co'># If you have multiple UKB filesets, tidy then merge them.</span>
 
-<span class='no'>ukb1234_data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ukb_df.html'>ukb_df</a></span>(<span class='st'>"ukb1234"</span>)
-<span class='no'>ukb2345_data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ukb_df.html'>ukb_df</a></span>(<span class='st'>"ukb2345"</span>)
-<span class='no'>ukb3456_data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ukb_df.html'>ukb_df</a></span>(<span class='st'>"ukb3456"</span>)
+<span class='no'>ukb1234_data</span> <span class='kw'>&lt;-</span> <span class='fu'>ukb_df</span>(<span class='st'>"ukb1234"</span>)
+<span class='no'>ukb2345_data</span> <span class='kw'>&lt;-</span> <span class='fu'>ukb_df</span>(<span class='st'>"ukb2345"</span>)
+<span class='no'>ukb3456_data</span> <span class='kw'>&lt;-</span> <span class='fu'>ukb_df</span>(<span class='st'>"ukb3456"</span>)
 
 <span class='no'>my_ukb_data</span> <span class='kw'>&lt;-</span> <span class='fu'>ukb_df_full_join</span>(<span class='no'>ukb1234_data</span>, <span class='no'>ukb2345_data</span>, <span class='no'>ukb3456_data</span>)
 <span class='co'># }</span><div class='input'>

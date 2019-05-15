@@ -3,12 +3,12 @@
 
 ## Test environments
 
-* local macOS Mojave 10.14.3, R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
+* local macOS Mojave 10.14.3, R version 3.6.0 (2019-04-26) -- "Planting of a Tree"
 * Ubuntu 14.04 "trusty" on travis-ci (devel and release)
 * win-builder (devel and release)
 
 
-#### (local) macOS Mojave 10.14.3, R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
+#### (local) macOS Mojave 10.14.3, R version 3.6.0 (2019-04-26) -- "Planting of a Tree"
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
 

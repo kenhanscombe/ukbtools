@@ -88,40 +88,40 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Install from CRAN</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"ukbtools"</span>)
-
-<span class="co"># Install latest development version</span>
-devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"kenhanscombe/ukbtools"</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Install from CRAN</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"ukbtools"</span>)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># Install latest development version</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"kenhanscombe/ukbtools"</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 </div>
 <div id="prerequisite-make-a-ukb-fileset" class="section level2">
 <h2 class="hasAnchor">
 <a href="#prerequisite-make-a-ukb-fileset" class="anchor"></a>Prerequisite: Make a UKB fileset</h2>
 <p>Download<sup>§</sup> then decrypt your data and create a “UKB fileset” (.tab, .r, .html):</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">ukb_unpack</span> ukbxxxx.enc key
-<span class="ex">ukb_conv</span> ukbxxxx.enc_ukb r
-<span class="ex">ukb_conv</span> ukbxxxx.enc_ukb docs</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="ex">ukb_unpack</span> ukbxxxx.enc key</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="ex">ukb_conv</span> ukbxxxx.enc_ukb r</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="ex">ukb_conv</span> ukbxxxx.enc_ukb docs</a></code></pre></div>
 <p><code>ukb_unpack</code> decrypts your downloaded <code>ukbxxxx.enc</code> file, outputting a <code>ukbxxxx.enc_ukb</code> file. <code>ukb_conv</code> with the <code>r</code> flag converts the decrypted data to a tab-delimited file <code>ukbxxxx.tab</code> and an R script <code>ukbxxxx.r</code> that reads the tab file. The <code>docs</code> flag creates an html file containing a field-code-to-description table (among others).</p>
 <p><sup>§</sup> Full details of the data download and decrypt process are given in the <a href="http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf">Using UK Biobank Data</a> documentation.</p>
 </div>
 <div id="make-a-ukb-dataset" class="section level2">
 <h2 class="hasAnchor">
 <a href="#make-a-ukb-dataset" class="anchor"></a>Make a UKB dataset</h2>
-<p>The function <code><a href="reference/ukb_df.html">ukb_df()</a></code> takes two arguments, the stem of your fileset and the path, and returns a dataframe with usable column names. This will take a few minutes. The rate-limiting step is reading and parsing the code in the UKB-generated .r file - not <code>ukb_df</code> per se.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ukbtools)
-
-my_ukb_data &lt;-<span class="st"> </span><span class="kw"><a href="reference/ukb_df.html">ukb_df</a></span>(<span class="st">"ukbxxxx"</span>)</code></pre></div>
+<p>The function <code>ukb_df()</code> takes two arguments, the stem of your fileset and the path, and returns a dataframe with usable column names. This will take a few minutes. The rate-limiting step is reading and parsing the code in the UKB-generated .r file - not <code>ukb_df</code> per se.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ukbtools)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">my_ukb_data &lt;-<span class="st"> </span><span class="kw">ukb_df</span>(<span class="st">"ukbxxxx"</span>)</a></code></pre></div>
 <p>You can also specify the path to your fileset if it is not in the current directory. For example, if your fileset is in a subdirectory of the working directory called data</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_ukb_data &lt;-<span class="st"> </span><span class="kw"><a href="reference/ukb_df.html">ukb_df</a></span>(<span class="st">"ukbxxxx"</span>, <span class="dt">path =</span> <span class="st">"/full/path/to/my/data"</span>)</code></pre></div>
-<p><strong>Note:</strong> You can move the three files in your fileset after creating them with <code>ukb_conv</code>, but they should be kept together. <code><a href="reference/ukb_df.html">ukb_df()</a></code> automatically updates the read call in the R source file to point to the correct directory (the current directory by default, or a directory specified by <code>path</code>).</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">my_ukb_data &lt;-<span class="st"> </span><span class="kw">ukb_df</span>(<span class="st">"ukbxxxx"</span>, <span class="dt">path =</span> <span class="st">"/full/path/to/my/data"</span>)</a></code></pre></div>
+<p><strong>Note:</strong> You can move the three files in your fileset after creating them with <code>ukb_conv</code>, but they should be kept together. <code>ukb_df()</code> automatically updates the read call in the R source file to point to the correct directory (the current directory by default, or a directory specified by <code>path</code>).</p>
 </div>
 <div id="other-tools" class="section level2">
 <h2 class="hasAnchor">
 <a href="#other-tools" class="anchor"></a>Other tools</h2>
 <p>All tools are described on the <a href="https://kenhanscombe.github.io/ukbtools/">ukbtools webpage</a> and in the package vignette “Explore UK Biobank Data”</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/vignette">vignette</a></span>(<span class="st">"explore-ukb-data"</span>, <span class="dt">package =</span> <span class="st">"ukbtools"</span>)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/vignette">vignette</a></span>(<span class="st">"explore-ukb-data"</span>, <span class="dt">package =</span> <span class="st">"ukbtools"</span>)</a></code></pre></div>
 <p>For a list of all functions</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/help">help</a></span>(<span class="dt">package =</span> <span class="st">"ukbtools"</span>)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/help">help</a></span>(<span class="dt">package =</span> <span class="st">"ukbtools"</span>)</a></code></pre></div>
 </div>
 </div>
   </div>

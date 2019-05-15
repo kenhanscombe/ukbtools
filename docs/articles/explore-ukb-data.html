@@ -77,7 +77,7 @@
       <h1>Explore UK Biobank data</h1>
                         <h4 class="author">Ken B. Hanscombe</h4>
             
-            <h4 class="date">2019-05-14</h4>
+            <h4 class="date">2019-05-15</h4>
       
       
       <div class="hidden name"><code>explore-ukb-data.Rmd</code></div>
@@ -92,9 +92,9 @@
 <h2 class="hasAnchor">
 <a href="#getting-started" class="anchor"></a>Getting started</h2>
 <p>Download and decrypt your data with the supplied <a href="https://biobank.ctsu.ox.ac.uk/crystal/exinfo.cgi?src=accessing_data_guide#convert">helper programs</a>. To use ukbtools, you need to create a UKB fileset (.tab, .r, and .html):</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">ukb_unpack</span> ukbxxxx.enc key
-<span class="ex">ukb_conv</span> ukbxxxx.enc_ukb r
-<span class="ex">ukb_conv</span> ukbxxxx.enc_ukb docs</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ex">ukb_unpack</span> ukbxxxx.enc key</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="ex">ukb_conv</span> ukbxxxx.enc_ukb r</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="ex">ukb_conv</span> ukbxxxx.enc_ukb docs</a></code></pre></div>
 <p>ukb_unpack decrypts your downloaded ukbxxxx.enc file, outputting a ukbxxxx.enc_ukb file. ukb_conv with the r flag converts the decrypted data to a tab-delimited file ukbxxxx.tab and an R script ukbxxxx.r that reads the tab file. The docs flag creates an html file containing a field-code-to-description table (among others).</p>
 <p><strong>Note.</strong> Full details of the data download and decrypt process are given in the <a href="https://biobank.ctsu.ox.ac.uk/crystal/exinfo.cgi?src=accessing_data_guide">Using UK Biobank Data</a> documentation . <a href="https://biobank.ctsu.ox.ac.uk/crystal/download.cgi">Updated versions</a> of these helper programs exist. Other than small name changes (underscores removed) they appear to function similarly.</p>
 <p><br></p>
@@ -103,30 +103,30 @@
 <h2 class="hasAnchor">
 <a href="#installing-the-package" class="anchor"></a>Installing the package</h2>
 <p>In R,</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Install from CRAN</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"ukbtools"</span>)
-
-<span class="co"># Install latest development version</span>
-devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"kenhanscombe/ukbtools"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Install from CRAN</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"ukbtools"</span>)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># Install latest development version</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"kenhanscombe/ukbtools"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><br></p>
 </div>
 <div id="making-a-dataset" class="section level2">
 <h2 class="hasAnchor">
 <a href="#making-a-dataset" class="anchor"></a>Making a dataset</h2>
-<p>The function <code><a href="../reference/ukb_df.html">ukb_df()</a></code> takes the stem of your fileset and returns a dataframe with usable column names.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ukbtools)
-
-my_ukb_data &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ukb_df.html">ukb_df</a></span>(<span class="st">"ukbxxxx"</span>)</code></pre></div>
+<p>The function <code><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_df">ukb_df()</a></code> takes the stem of your fileset and returns a dataframe with usable column names.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ukbtools)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">my_ukb_data &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_df">ukb_df</a></span>(<span class="st">"ukbxxxx"</span>)</a></code></pre></div>
 <p>You can also specify the path to your fileset if it is not in the current directory. For example, if your fileset is in a subdirectory of the working directory called <code>data</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_ukb_data &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ukb_df.html">ukb_df</a></span>(<span class="st">"ukbxxxx"</span>, <span class="dt">path =</span> <span class="st">"/full/path/to/my/ukb/fileset/data"</span>)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">my_ukb_data &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_df">ukb_df</a></span>(<span class="st">"ukbxxxx"</span>, <span class="dt">path =</span> <span class="st">"/full/path/to/my/ukb/fileset/data"</span>)</a></code></pre></div>
 <p><br></p>
 </div>
 <div id="making-a-key" class="section level2">
 <h2 class="hasAnchor">
 <a href="#making-a-key" class="anchor"></a>Making a key</h2>
 <p>Use <code>ukb_df_field</code> to create a field code-to-descriptive name key, as dataframe or named lookup vector.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_ukb_key &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ukb_df_field.html">ukb_df_field</a></span>(<span class="st">"ukbxxxx"</span>, <span class="dt">path =</span> <span class="st">"/full/path/to/my/ukb/fileset/data"</span>)</code></pre></div>
-<p><strong>Note.</strong> You can move the three files in your fileset after creating them with <code>ukb_conv</code>, but they should be kept together. <code><a href="../reference/ukb_df.html">ukb_df()</a></code> automatically updates the read call in the R source file to point to the correct directory (the current directly by default, or the directory specified by <code>path</code>).</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">my_ukb_key &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_df_field">ukb_df_field</a></span>(<span class="st">"ukbxxxx"</span>, <span class="dt">path =</span> <span class="st">"/full/path/to/my/ukb/fileset/data"</span>)</a></code></pre></div>
+<p><strong>Note.</strong> You can move the three files in your fileset after creating them with <code>ukb_conv</code>, but they should be kept together. <code><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_df">ukb_df()</a></code> automatically updates the read call in the R source file to point to the correct directory (the current directly by default, or the directory specified by <code>path</code>).</p>
 <p><br></p>
 <blockquote>
 <p><strong>Memory and efficiency</strong></p>
@@ -138,15 +138,15 @@ my_ukb_data &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <h2 class="hasAnchor">
 <a href="#multiple-downloads" class="anchor"></a>Multiple downloads</h2>
 <p>If you have multiple UKB downloads, first read each one in, then merge them with your preferred method. You could use <code>ukb_df_full_join</code> which is a thin wrapper around <code><a href="https://dplyr.tidyverse.org/reference/join.html">dplyr::full_join</a></code> applied recursively with <code><a href="https://purrr.tidyverse.org/reference/reduce.html">purrr::reduce</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ukbxxxx_data &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ukb_df.html">ukb_df</a></span>(<span class="st">"ukbxxxx"</span>)
-ukbyyyy_data &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ukb_df.html">ukb_df</a></span>(<span class="st">"ukbyyyy"</span>)
-ukbzzzz_data &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ukb_df.html">ukb_df</a></span>(<span class="st">"ukbzzzz"</span>)
-
-<span class="kw"><a href="../reference/ukb_df_full_join.html">ukb_df_full_join</a></span>(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">ukbxxxx_data &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_df">ukb_df</a></span>(<span class="st">"ukbxxxx"</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">ukbyyyy_data &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_df">ukb_df</a></span>(<span class="st">"ukbyyyy"</span>)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">ukbzzzz_data &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_df">ukb_df</a></span>(<span class="st">"ukbzzzz"</span>)</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_df_full_join">ukb_df_full_join</a></span>(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data)</a></code></pre></div>
 <p><br></p>
 <blockquote>
 <p><strong>Repeated variables.</strong></p>
-<p>The join key is set to “eid” only (default value of the <code>by</code> parameter). Any additional variables common to any two tables will have “.x” and “.y” appended to their names. If you are satisfied the additional variables are identical to the original, the copies can be safely deleted. For example, if <code><a href="https://www.rdocumentation.org/packages/base/topics/sets">setequal(my_ukb_data$var, my_ukb_data$var.x)</a></code> is <code>TRUE</code>, then my_ukb_data$var.x can be dropped. A <code>dlyr::full_join</code> is like the set operation union in that all abservation from all tables are included, i.e., all samples are included even if they are not included in all datasets.</p>
+<p>The join key is set to “eid” only (default value of the <code>by</code> parameter). Any additional variables common to any two tables will have “.x” and “.y” appended to their names. If you are satisfied the additional variables are identical to the original, the copies can be safely deleted. For example, if <code><a href="https://www.rdocumentation.org/packages/base/topics/sets">setequal(my_ukb_data$var, my_ukb_data$var.x)</a></code> is <code>TRUE</code>, then my_ukb_data$var.x can be dropped. A <code>dlyr::full_join</code> is like the set operation union in that all observation from all tables are included, i.e., all samples are included even if they are not included in all datasets.</p>
 <p>Repeated variable names <strong>within</strong> UKB datasets are unlikely to occur. <code>ukb_df</code> creates variable names by combining a snake_case descriptor with the variable’s <em>field code</em>, <em>index</em> and <em>array</em>. This should be sufficient to uniquely identify the variable. However, if an <em>index_array</em> combination is incorrectly repeated in the original UKB data, this will result in a duplicated variable name. We observed two instances. The variables were encoded <em><field>–0.0</field></em>, <em><field>–1.0</field></em>, <em><field>––1.0</field></em>, and <code>ukb_df</code> created a variable named <em>var_0_0</em>, <em>var_1_0</em>, <em>var_1_0</em>. This is probably a typo that should have been <em><field>–0.0</field></em>, <em><field>–1.0</field></em>, <em><field>–2.0</field></em>, consistent with UKB official documentation describing the field as having 3 values for index. We have provided <code>ukb_df_duplicated_names</code> to identify duplicated names within a dataset. This will allow the user to make changes as appropriate. We expect the occurrence of such duplicates will be rare.</p>
 </blockquote>
 <p><br></p>
@@ -156,13 +156,13 @@ ukbzzzz_data &lt;-<span class="st"> </span><span class="kw"><a href="../referenc
 <a href="#an-example-fileset" class="anchor"></a>An example fileset</h2>
 <p><strong>ukbxxxx.tab</strong>, <strong>ukbxxxx.r</strong>, <strong>ukbxxxx.html</strong></p>
 <p>A minimal example fileset is included with the package, in the subdirectory inst/extdata. This fileset will allow the user to test the the read (<code>ukb_df</code>, <code>ukb_df_field</code>) and summarise (<code>ukb_context</code>) functionality.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># To load the example data</span>
-path_to_example_data &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"extdata"</span>, <span class="dt">package =</span> <span class="st">"ukbtools"</span>)
-
-df &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ukb_df.html">ukb_df</a></span>(<span class="st">"ukbxxxx"</span>, <span class="dt">path =</span> path_to_example_data)
-
-<span class="co"># To create a field code to name key</span>
-df_field &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ukb_df_field.html">ukb_df_field</a></span>(<span class="st">"ukbxxxx"</span>, <span class="dt">path =</span> path_to_example_data)</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># To load the example data</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">path_to_example_data &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"extdata"</span>, <span class="dt">package =</span> <span class="st">"ukbtools"</span>)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">df &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_df">ukb_df</a></span>(<span class="st">"ukbxxxx"</span>, <span class="dt">path =</span> path_to_example_data)</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co"># To create a field code to name key</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">df_field &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_df_field">ukb_df_field</a></span>(<span class="st">"ukbxxxx"</span>, <span class="dt">path =</span> path_to_example_data)</a></code></pre></div>
 <p>The full path to the raw test data can be retrieved with <code><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file("extdata", "ukbXXXX.tab", package = "ukbtools")</a></code>.</p>
 <p><br></p>
 </div>
@@ -170,10 +170,10 @@ df_field &lt;-<span class="st"> </span><span class="kw"><a href="../reference/uk
 <h2 class="hasAnchor">
 <a href="#exploring-primary-demographics-of-a-ukb-subset" class="anchor"></a>Exploring primary demographics of a UKB subset</h2>
 <p>As an exploratory step you might want to look at the demographics of a particular subset of the UKB sample relative to a reference sample. For example, using the <code>nonmiss.var</code> argument of <code>ukb_context</code> will produce a plot of the primary demographics (sex, age, ethnicity, and Townsend deprivation score) and employment status and assessment centre, for the subsample with data on your variable of interest compared to those without data (i.e. <code>NA</code>).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/ukb_context.html">ukb_context</a></span>(my_ukb_data, <span class="dt">nonmiss.var =</span> <span class="st">"my_variable_of_interest"</span>)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_context">ukb_context</a></span>(my_ukb_data, <span class="dt">nonmiss.var =</span> <span class="st">"my_variable_of_interest"</span>)</a></code></pre></div>
 <p>It is also possible to supply a logical vector with <code>subset.var</code> to define the subset and reference sample. This is particularly useful for understanding a subgroup within the UKB study, e.g., overweight individuals.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">subgroup_of_interest &lt;-<span class="st"> </span>(my_ukb_data<span class="op">$</span>body_mass_index_bmi_0_<span class="dv">0</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">25</span>) 
-<span class="kw"><a href="../reference/ukb_context.html">ukb_context</a></span>(my_ukb_data, <span class="dt">subset.var =</span> subgroup_of_interest)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">subgroup_of_interest &lt;-<span class="st"> </span>(my_ukb_data<span class="op">$</span>body_mass_index_bmi_<span class="dv">0</span>_<span class="dv">0</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">25</span>) </a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_context">ukb_context</a></span>(my_ukb_data, <span class="dt">subset.var =</span> subgroup_of_interest)</a></code></pre></div>
 <p align="center">
 <img src="img/ukb_context_fill_111017.png" width="100%"></p>
 <p><strong>Primary demographic data for a UKB subset of interest.</strong> The subset is individuals with BMI &gt;= 25; the reference is BMI &lt; 25. Barplots are displayed as proportions, e.g., about 1/3 of all participants who identified as “Chinese” were overweight compared to about 2/3 of all participants who identified as “British”. ukb_context also allows the user to draw barplots as “stacked” or “side-by-side” bars representing counts, which would reveal there were many more “British” participants (442,698) than there were “Chinese” (1,574).</p>
@@ -185,25 +185,25 @@ df_field &lt;-<span class="st"> </span><span class="kw"><a href="../reference/uk
 <p>The International Classification of Diseases (ICD) query functions begin <code>ukb_icd_</code>. Type <code>ukb_icd_</code> tab to see the family of functions. The full ICD code definition tables are available as datasets (<code>icd9codes</code>, <code>icd10codes</code>). ICD chapter-level tables describing disease blocks are also available for query as datasets (<code>icd9chapters</code>, <code>icd10chapters</code>)</p>
 <p><em>Sample query</em></p>
 <p><code>ukb_icd_diagnosis</code> takes one or more individual ids and returns a dataframe with a potential message noting ids with no diagnoses</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/ukb_icd_diagnosis.html">ukb_icd_diagnosis</a></span>(my_ukb_data, <span class="dt">id =</span> <span class="st">"0000000"</span>, <span class="dt">icd.version =</span> <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_icd_diagnosis">ukb_icd_diagnosis</a></span>(my_ukb_data, <span class="dt">id =</span> <span class="st">"0000000"</span>, <span class="dt">icd.version =</span> <span class="dv">10</span>)</a></code></pre></div>
 <p><br></p>
 <p><em>Diagnosis query</em></p>
 <p>To retrieve the “meaning” of an ICD code use <code>ukb_icd_code_meaning</code> accepts one or more ICD codes and returns a dataframe of codes and their associated meanings</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/ukb_icd_code_meaning.html">ukb_icd_code_meaning</a></span>(<span class="dt">icd.code =</span> <span class="st">"I74"</span>, <span class="dt">icd.version =</span> <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_icd_code_meaning">ukb_icd_code_meaning</a></span>(<span class="dt">icd.code =</span> <span class="st">"I74"</span>, <span class="dt">icd.version =</span> <span class="dv">10</span>)</a></code></pre></div>
 <p>Search for a class of diseases with a keyword. Supplying multiple keywords as a character vector will return all ICD entries containing <em>any</em> of the keywords.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/ukb_icd_keyword.html">ukb_icd_keyword</a></span>(<span class="st">"cardio"</span>, <span class="dt">icd.version =</span> <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_icd_keyword">ukb_icd_keyword</a></span>(<span class="st">"cardio"</span>, <span class="dt">icd.version =</span> <span class="dv">10</span>)</a></code></pre></div>
 <p>You can calculate the prevalence of a diagnosis in the UKB study (or a subset of the full sample) using <code>ukb_icd_prevalence</code>. The <code>icd.diagnosis</code> argument takes a regular expression, and so can also be used to retrieve prevalence of a disease “class”, i.e., the proportion of individuals with <em>any</em> diagnosis in the disease class.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ICD-10 code I74, Arterial embolism and thrombosis</span>
-<span class="kw"><a href="../reference/ukb_icd_prevalence.html">ukb_icd_prevalence</a></span>(my_ukb_data, <span class="dt">icd.version =</span> <span class="dv">10</span>, <span class="dt">icd.diagnosis =</span> <span class="st">"I74"</span>)
-
-<span class="co"># ICD-10 chapter 9, disease block I00–I99, Diseases of the circulatory system</span>
-<span class="kw"><a href="../reference/ukb_icd_prevalence.html">ukb_icd_prevalence</a></span>(my_ukb_data, <span class="dt">icd.version =</span> <span class="dv">10</span>, <span class="dt">icd.diagnosis =</span> <span class="st">"I"</span>)
-
-<span class="co"># ICD-10 chapter 2, C00-D49, Neoplasms </span>
-<span class="kw"><a href="../reference/ukb_icd_prevalence.html">ukb_icd_prevalence</a></span>(my_ukb_data, <span class="dt">icd.version =</span> <span class="dv">10</span>, <span class="dt">icd.diagnosis =</span> <span class="st">"C|D[0-4]."</span>)</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># ICD-10 code I74, Arterial embolism and thrombosis</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_icd_prevalence">ukb_icd_prevalence</a></span>(my_ukb_data, <span class="dt">icd.version =</span> <span class="dv">10</span>, <span class="dt">icd.diagnosis =</span> <span class="st">"I74"</span>)</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co"># ICD-10 chapter 9, disease block I00–I99, Diseases of the circulatory system</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_icd_prevalence">ukb_icd_prevalence</a></span>(my_ukb_data, <span class="dt">icd.version =</span> <span class="dv">10</span>, <span class="dt">icd.diagnosis =</span> <span class="st">"I"</span>)</a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co"># ICD-10 chapter 2, C00-D49, Neoplasms </span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_icd_prevalence">ukb_icd_prevalence</a></span>(my_ukb_data, <span class="dt">icd.version =</span> <span class="dv">10</span>, <span class="dt">icd.diagnosis =</span> <span class="st">"C|D[0-4]."</span>)</a></code></pre></div>
 <p>To retrieve frequency for one or more ICD diagnoses by the levels of a reference variable, e.g., sex (male or female) use <code>ukb_icd_freq_by</code>. If the variable is continuous, it is divided into N approximately equal-sized groups (default = 10) within which ICD diagnosis frequency is calculated. <code>ukb_icd_freq_by</code> also includes an option <code>freq.plot</code> to produce a figure of ICD diagnosis frequency by reference variable. Diagnoses of interest are passed to <code>icd.code</code>. The default ICD codes are the WHO top 3 causes of death worldwide (2015): coronary artery disease (CAD), cerebrovascular disease/ stroke, lower respiratory tract infection (LTRI).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/ukb_icd_freq_by.html">ukb_icd_freq_by</a></span>(my_ukb_data, <span class="dt">reference.var =</span> <span class="st">"body_mass_index_bmi_0_0"</span>, <span class="dt">freq.plot =</span> <span class="ot">TRUE</span>)
-<span class="kw"><a href="../reference/ukb_icd_freq_by.html">ukb_icd_freq_by</a></span>(my_ukb_data, <span class="dt">reference.var =</span> <span class="st">"sex_0_0"</span>, <span class="dt">freq.plot =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_icd_freq_by">ukb_icd_freq_by</a></span>(my_ukb_data, <span class="dt">reference.var =</span> <span class="st">"body_mass_index_bmi_0_0"</span>, <span class="dt">freq.plot =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_icd_freq_by">ukb_icd_freq_by</a></span>(my_ukb_data, <span class="dt">reference.var =</span> <span class="st">"sex_0_0"</span>, <span class="dt">freq.plot =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p align="center">
 <img src="img/ukb_icd_freqby.png" width="100%"></p>
 <p><strong>ICD diagnosis frequency by reference variable.</strong> Panel <strong>A</strong> shows frequency of the query diagnoses with respect to BMI; panel <strong>B</strong> with respect to sex. Any diagnoses can be queried with the <code>icd.code</code> parameter (default is CAD, Stroke, LRTI)</p>
@@ -223,7 +223,7 @@ df_field &lt;-<span class="st"> </span><span class="kw"><a href="../reference/uk
 <p><br></p>
 <blockquote>
 <p><strong>Interim release metadata</strong></p>
-<p>The genetic metadata functions were written to retrieve genetic metadata from the phenotype file for the <a href="http://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=199001">interim genotype release</a>. The associated QC was described in <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf">genotyping and quality control</a> and <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/imputation_documentation_May2015.pdf">imputation and association</a>. <strong>The fields retrieved became obselete when the full genotyping results were released at the end of 2017.</strong></p>
+<p>The genetic metadata functions were written to retrieve genetic metadata from the phenotype file for the <a href="http://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=199001">interim genotype release</a>. The associated QC was described in <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf">genotyping and quality control</a> and <a href="http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/imputation_documentation_May2015.pdf">imputation and association</a>. <strong>The fields retrieved became obsolete when the full genotyping results were released at the end of 2017.</strong></p>
 <p><strong>Full release metadata</strong></p>
 <p>With the release of the full sample (500K individuals) genotypes, sample QC (<strong>ukb_sqc_v2.txt</strong>) and relatedness (<strong>ukbA_rel_sP.txt</strong>) data are now supplied as separate files. The contents of these files, along with all other genetic files are described in <a href="https://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=531">UKB Resource 531</a>.</p>
 <p><strong>Defunct functions</strong></p>
@@ -247,30 +247,30 @@ See help("ukb_defunct")</code></pre>
 <a href="#new-genetic-metadata-functionality-v0-11-0" class="anchor"></a>New genetic metadata functionality (v0.11.0)</h3>
 <p>The sample QC file <strong>ukb_sqc_v2.txt</strong> has no header. To include a header use <code>ukb_gen_sqc_names</code>. From <a href="https://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=531">UKB Resource 531</a>: “There are currently 2 versions of this file (UKB ukb_sqc_v2.txt) in circulation. The newer version is described below and contains column headers on the first row. The older (deprecated) version lacks the column headers and has two additional Affymetrix internal values prefixing the columns listed below”.</p>
 <p><code>ukb_gen_sqc_names</code> handles this if used to include column names in a dataframe of sample QC data. If a character vector of names is needed (e.g. to supply on reading in sample QC data) use the argument <code>col_names_only = TRUE</code> and trim if required.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># With ukb_sqc_v2.txt read into the dataframe my_sqc_data</span>
-my_sqc_data &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ukb_gen_sqc_names.html">ukb_gen_sqc_names</a></span>(my_sqc_data)
-
-<span class="co"># For a character vector of column names</span>
-<span class="kw"><a href="../reference/ukb_gen_sqc_names.html">ukb_gen_sqc_names</a></span>(<span class="dt">col_names_only =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co"># With ukb_sqc_v2.txt read into the dataframe my_sqc_data</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">my_sqc_data &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_gen_sqc_names">ukb_gen_sqc_names</a></span>(my_sqc_data)</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co"># For a character vector of column names</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_gen_sqc_names">ukb_gen_sqc_names</a></span>(<span class="dt">col_names_only =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><br></p>
 <p><em>Relatedness count</em></p>
 <p><code>ukb_gen_rel_count</code> now works supplied relatedness file <strong>ukbA_rel_sP.txt</strong> with header: ID1, ID2, HetHet, IBS0, Kinship. Supply a dataframe of the relatedness data for a dataframe of counts of degree of relatedness (Duplicates/MZ twins, 1st-degree, 2nd-degree, 3rd-degree).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># With ukbA_rel_sP.txt read into the dataframe my_relatedness_data</span>
-<span class="kw"><a href="../reference/ukb_gen_rel_count.html">ukb_gen_rel_count</a></span>(my_relatedness_data)</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co"># With ukbA_rel_sP.txt read into the dataframe my_relatedness_data</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_gen_rel_count">ukb_gen_rel_count</a></span>(my_relatedness_data)</a></code></pre></div>
 <p>You can also create a plot of degree of relatedness, e.g., for samples with data on a variable of interest.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/ukb_gen_rel_count.html">ukb_gen_rel_count</a></span>(ukb_relatedness, <span class="dt">plot =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_gen_rel_count">ukb_gen_rel_count</a></span>(ukb_relatedness, <span class="dt">plot =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p align="center">
 <img src="img/ukb_relatedness.png" width="65%" border="0"></p>
 <p><strong>Degree of relatedness.</strong> <a href="http://people.virginia.edu/~wc9c/KING/manual.html">KING kinship</a> coefficient ranges &gt; 0.354, (0.177, 0.354], (0.0884, 0.177] and (0.0442, 0.0884] corresponds to duplicate/MZ twin, 1st-degree, 2nd-degree, and 3rd-degree relationships respectively.</p>
 <p><br></p>
 <p><em>Maximal subset of unrelateds</em></p>
 <p>There are many ways to remove related individuals from phenotypic data for genetic analyses. You could simply exclude all individuals indicated as having “excess relatedness” and include those “used in pca calculation” (these variables are included in the sample QC data, <strong>ukb_sqc_v2.txt</strong>). This list is based on the complete dataset and possibly removes more samples than you need to for your phenotype of interest. Ideally, you want a maximum independent set, i.e., to remove the minimum number of individuals with data on the phenotype of interest, so that no pair exceeds some cutoff for relatedness. <code>ukb_gen_samples_to_remove</code> returns a list of samples to remove in order to achieve a maximal set of unrelateds for a given phenotype (default <code>cutoff &gt; 0.0884</code> - KING coefficient corresponding to 3rd degree relatedness). For the subset of related pairs (<strong>ukbA_rel_sP.txt</strong>) in which both have data on the phenotype of interest use <code>ukb_gen_related_with_data</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># With ukbA_rel_sP.txt read into the dataframe my_relatedness_data</span>
-<span class="co"># and an integer vector samples_with_phenotype of samples who have</span>
-<span class="co"># data on the phenotype of interest</span>
-
-<span class="kw"><a href="../reference/ukb_gen_related_with_data.html">ukb_gen_related_with_data</a></span>(my_relatedness_data, <span class="dt">ukb_with_data =</span> samples_with_phenotype)
-<span class="kw"><a href="../reference/ukb_gen_samples_to_remove.html">ukb_gen_samples_to_remove</a></span>(my_relatedness_data, <span class="dt">ukb_with_data =</span> samples_with_phenotype)</code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co"># With ukbA_rel_sP.txt read into the dataframe my_relatedness_data</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="co"># and an integer vector samples_with_phenotype of samples who have</span></a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="co"># data on the phenotype of interest</span></a>
+<a class="sourceLine" id="cb19-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb19-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_gen_related_with_data">ukb_gen_related_with_data</a></span>(my_relatedness_data, <span class="dt">ukb_with_data =</span> samples_with_phenotype)</a>
+<a class="sourceLine" id="cb19-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_gen_samples_to_remove">ukb_gen_samples_to_remove</a></span>(my_relatedness_data, <span class="dt">ukb_with_data =</span> samples_with_phenotype)</a></code></pre></div>
 <p><br></p>
 </div>
 <div id="write-phenotype-and-covariate-files-for-genetic-analysis" class="section level3">
@@ -278,25 +278,25 @@ my_sqc_data &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <a href="#write-phenotype-and-covariate-files-for-genetic-analysis" class="anchor"></a>Write phenotype and covariate files for genetic analysis</h3>
 <p>ukbtools includes convenience functions to write phenotype and covariate files for <a href="https://jmarchini.org/bgenie/">BGENIE</a> and <a href="https://www.cog-genomics.org/plink2">PLINK</a>.</p>
 <p><strong>BGENIE</strong> phenotype and covariate files are space-delimited, include column names, and have missing values coded as -999. They must also be in .sample file order. The sample file is downloaded with your bulk genotype data and described in <a href="https://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=531">UKB Resource 531</a>. The sample file is a rectangular file with two header lines. Using <code>ukb_gen_read_sample</code> will read it in correctly and label the columns. <code>ukb_gen_write_bgenie</code> sorts input data to match .sample file id order and writes the data to disk.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Read .sample file supplied with bulk genetic data</span>
-my_sample_file &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ukb_gen_read_sample.html">ukb_gen_read_sample</a></span>(<span class="st">"path/to/sample_file"</span>)
-
-<span class="co"># Write a BGENIE format phenotype or covariate file</span>
-<span class="kw"><a href="../reference/ukb_gen_write_bgenie.html">ukb_gen_write_bgenie</a></span>(
-    my_ukb_data, 
-    <span class="dt">path =</span> <span class="st">"path/to/bgenie_input_file"</span>, 
-    <span class="dt">ukb.sample =</span> my_sample_file, 
-    <span class="dt">ukb.variables =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"variable1"</span>, <span class="st">"variable2"</span>, <span class="st">"variable3"</span>)
-)</code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="co"># Read .sample file supplied with bulk genetic data</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">my_sample_file &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_gen_read_sample">ukb_gen_read_sample</a></span>(<span class="st">"path/to/sample_file"</span>)</a>
+<a class="sourceLine" id="cb20-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="co"># Write a BGENIE format phenotype or covariate file</span></a>
+<a class="sourceLine" id="cb20-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_gen_write_bgenie">ukb_gen_write_bgenie</a></span>(</a>
+<a class="sourceLine" id="cb20-6" data-line-number="6">    my_ukb_data, </a>
+<a class="sourceLine" id="cb20-7" data-line-number="7">    <span class="dt">path =</span> <span class="st">"path/to/bgenie_input_file"</span>, </a>
+<a class="sourceLine" id="cb20-8" data-line-number="8">    <span class="dt">ukb.sample =</span> my_sample_file, </a>
+<a class="sourceLine" id="cb20-9" data-line-number="9">    <span class="dt">ukb.variables =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"variable1"</span>, <span class="st">"variable2"</span>, <span class="st">"variable3"</span>)</a>
+<a class="sourceLine" id="cb20-10" data-line-number="10">)</a></code></pre></div>
 <p>The <a href="https://jmarchini.org/bgenie-usage/">BGENIE usage page</a> uses the example files example.pheno and example.cov - it is not clear whether the suffixes are obligatory. Use them to be safe.</p>
 <p><strong>PLINK</strong> phenotype and covariate files are either space- or tab-delimited, column names are optional, first two columns must contain family ID and individual ID respectively, and missing values are “normally expected to be encoded as -9” but also “nonnumeric values such as ‘NA’ … (are) treated as missing”. <code>ukb_gen_write_plink</code> writes a space-delimited file with column names, UKB ID is automatically written to column 1 and 2 and labelled FID IID, and missing values are coded as <code>NA</code>. The missing value to be used can be changed with the <code>na.strings</code> argument. See <a href="https://www.cog-genomics.org/plink/1.9/input#pheno">PLINK standard data input</a> for further details.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Write a PLINK format phenotype or covariate file</span>
-
-<span class="kw"><a href="../reference/ukb_gen_write_plink.html">ukb_gen_write_plink</a></span>(
-    my_ukb_data, 
-    <span class="dt">path =</span> <span class="st">"path/to/plink_input_file"</span>, 
-    <span class="dt">ukb.variables =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"variable1"</span>, <span class="st">"variable2"</span>, <span class="st">"variable3"</span>)
-)</code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co"># Write a PLINK format phenotype or covariate file</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/ukbtools/topics/ukb_gen_write_plink">ukb_gen_write_plink</a></span>(</a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">    my_ukb_data, </a>
+<a class="sourceLine" id="cb21-5" data-line-number="5">    <span class="dt">path =</span> <span class="st">"path/to/plink_input_file"</span>, </a>
+<a class="sourceLine" id="cb21-6" data-line-number="6">    <span class="dt">ukb.variables =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"variable1"</span>, <span class="st">"variable2"</span>, <span class="st">"variable3"</span>)</a>
+<a class="sourceLine" id="cb21-7" data-line-number="7">)</a></code></pre></div>
 <p><strong>PLINK</strong> does not require that individuals in phenotype and covariate files are in any particular order, but you may want to reconcile the individuals you include in your analysis with those in the fam file (from your hard-called data). Read the fam file into R with <code>ukb_gen_read_fam</code></p>
 <p><br></p>
 <p><em>Sample exclusions</em></p>
@@ -306,9 +306,9 @@ my_sample_file &lt;-<span class="st"> </span><span class="kw"><a href="../refere
 <p><br></p>
 </div>
 </div>
-<div id="acknowledments" class="section level2">
+<div id="acknowledgements" class="section level2">
 <h2 class="hasAnchor">
-<a href="#acknowledments" class="anchor"></a>Acknowledments</h2>
+<a href="#acknowledgements" class="anchor"></a>Acknowledgements</h2>
 <p>This research has been conducted using the UK Biobank Resource, Application 13427.</p>
 </div>
   </div>
@@ -327,7 +327,7 @@ my_sample_file &lt;-<span class="st"> </span><span class="kw"><a href="../refere
       <li><a href="#exploring-primary-demographics-of-a-ukb-subset">Exploring primary demographics of a UKB subset</a></li>
       <li><a href="#retrieving-icd-diagnoses">Retrieving ICD diagnoses</a></li>
       <li><a href="#genetic-metadata"><strong>Genetic metadata</strong></a></li>
-      <li><a href="#acknowledments">Acknowledments</a></li>
+      <li><a href="#acknowledgements">Acknowledgements</a></li>
       </ul>
 </div>
       </div>

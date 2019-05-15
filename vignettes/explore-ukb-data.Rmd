@@ -108,7 +108,7 @@ ukb_df_full_join(ukbxxxx_data, ukbyyyy_data, ukbzzzz_data)
 
 >__Repeated variables.__
 >
->The join key is set to "eid" only (default value of the `by` parameter). Any additional variables common to any two tables will have ".x" and ".y" appended to their names. If you are satisfied the additional variables are identical to the original, the copies can be safely deleted. For example, if `setequal(my_ukb_data$var, my_ukb_data$var.x)` is `TRUE`, then my_ukb_data$var.x can be dropped. A `dlyr::full_join` is like the set operation union in that all abservation from all tables are included, i.e., all samples are included even if they are not included in all datasets.
+>The join key is set to "eid" only (default value of the `by` parameter). Any additional variables common to any two tables will have ".x" and ".y" appended to their names. If you are satisfied the additional variables are identical to the original, the copies can be safely deleted. For example, if `setequal(my_ukb_data$var, my_ukb_data$var.x)` is `TRUE`, then my_ukb_data$var.x can be dropped. A `dlyr::full_join` is like the set operation union in that all observation from all tables are included, i.e., all samples are included even if they are not included in all datasets.
 >
 >
 >Repeated variable names **within** UKB datasets are unlikely to occur. `ukb_df` creates variable names by combining a snake_case descriptor with the variable's *field code*, *index* and *array*. This should be sufficient to uniquely identify the variable. However, if an *index_array* combination is incorrectly repeated in the original UKB data, this will result in a duplicated variable name. We observed two instances. The variables were encoded *<field>–0.0*, *<field>–1.0*, *<field>––1.0*, and `ukb_df` created a variable named *var_0_0*, *var_1_0*, *var_1_0*. This is probably a typo that should have been *<field>–0.0*, *<field>–1.0*, *<field>–2.0*, consistent with UKB official documentation describing the field as having 3 values for index. We have provided `ukb_df_duplicated_names` to identify duplicated names within a dataset. This will allow the user to make changes as appropriate. We expect the occurrence of such duplicates will be rare.
@@ -232,7 +232,7 @@ __UKB genetic data resources__
 
 >__Interim release metadata__
 >
->The genetic metadata functions were written to retrieve genetic metadata from the phenotype file for the [interim genotype release](http://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=199001). The associated QC was described in [genotyping and quality control](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf) and [imputation and association](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/imputation_documentation_May2015.pdf). __The fields retrieved became obselete when the full genotyping results were released at the end of 2017.__
+>The genetic metadata functions were written to retrieve genetic metadata from the phenotype file for the [interim genotype release](http://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=199001). The associated QC was described in [genotyping and quality control](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf) and [imputation and association](http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/imputation_documentation_May2015.pdf). __The fields retrieved became obsolete when the full genotyping results were released at the end of 2017.__
 >
 >
 >__Full release metadata__
@@ -368,6 +368,6 @@ Use the sample QC file (__ukb_sqc_v2.txt__)  to determine to-be-excluded samples
 
 <br>
 
-## Acknowledments
+## Acknowledgements
 
 This research has been conducted using the UK Biobank Resource, Application 13427.

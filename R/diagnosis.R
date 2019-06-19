@@ -11,6 +11,7 @@
 #' @importFrom magrittr "%>%"
 #' @importFrom purrr map
 #' @importFrom tibble as_tibble
+#' @importFrom tidyr drop_na
 #' @export
 #' @examples
 #' \dontrun{
@@ -40,29 +41,33 @@ ukb_icd_diagnosis <- function(data, id, icd.version = NULL) {
     ukbtools::icd10codes
   }
 
-  individual_codes <- data %>%
-    dplyr::filter(eid %in% id) %>%
-    dplyr::select(matches(paste("^diagnoses.*icd", icd.version, sep = ""))) %>%
-    dplyr::select_if(colSums(!is.na(.)) > 0) %>%
-    t() %>%
-    tibble::as_tibble()
+  icd_lookup_helper <-  function(id) {
+    individual_codes <- data %>%
+      dplyr::filter(eid %in% id) %>%
+      dplyr::select(
+        matches(paste("^diagnoses.*icd", icd.version, sep = ""))) %>%
+      t() %>%
+      tibble::as_tibble() %>%
+      tidyr::drop_na()
 
-  colnames(individual_codes) <- id
+    colnames(individual_codes) <- id
 
-  if(ncol(individual_codes) == 1 & sum(!is.na(individual_codes[[1]])) < 1) {
-    message(paste("ID", id, "has no ICD", icd.version, "diagnoses", sep = " "))
-  } else {
+    if(ncol(individual_codes) == 1 & sum(!is.na(individual_codes[[1]])) < 1) {
+      message(paste("ID", id, "has no ICD", icd.version, "diagnoses", sep = " "))
+    } else {
 
-    d <- individual_codes %>%
-      purrr::map(~ ukb_icd_code_meaning(c(.), icd.version)) %>%
-      dplyr::bind_rows(.id = "sample")
+      d <- individual_codes %>%
+        purrr::map(~ ukb_icd_code_meaning(c(.), icd.version)) %>%
+        dplyr::bind_rows(.id = "sample")
 
-    no_icd <- id[!(id %in% unique(d$sample))]
-    if(length(no_icd) > 0) message("ID(s) ", paste(no_icd, " "), "have no ICD ", icd.version, " diagnoses.")
+      no_icd <- id[!(id %in% unique(d$sample))]
+      if(length(no_icd) > 0) message("ID(s) ", paste(no_icd, " "), "have no ICD ", icd.version, " diagnoses.")
 
-    return(d)
-
+      return(d)
+    }
   }
+
+  map_df(id, icd_lookup_helper)
 }
 
 

@@ -1,4 +1,12 @@
 
+# ukbtools 0.11.3.9000
+
+Bug fix:
+
+dplyr update broke `ukb_icd_diagnosis`. Fixed in dev version.
+
+
+
 # ukbtools 0.11.3
 
 Corrected functionality:

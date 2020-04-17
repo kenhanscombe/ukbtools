@@ -14,3 +14,4 @@
 ^README.Rmd
 ^_pkgdown.yml
 ^ukbtools.png
+^codecov\.yml$

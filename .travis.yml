@@ -6,16 +6,17 @@ cache: packages
 
 dist: trusty
 
-r:
-#  - oldrel
-  - release
-  - devel
+matrix:
+  include:
+    r:
+    - oldrel
+    - release
+    - devel
+      after_success:
+      - Rscript -e 'covr::codecov()'
 
 r_packages:
   - devtools
 
 r_github_packages:
   - kenhanscombe/ukbtools
-
-after_success:
-  - Rscript -e 'covr::codecov()'

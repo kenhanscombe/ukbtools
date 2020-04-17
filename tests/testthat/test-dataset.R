@@ -1,8 +1,7 @@
 context("Munging UKB files")
 
-path_to_example_data <- system.file("extdata", package = "ukbtools")
-
 test_that("ukb_df_field creates a valid field-lookup dataframe", {
+  path_to_example_data <- system.file("extdata", package = "ukbtools")
   f <- ukb_df_field("ukbxxxx", path_to_example_data)
 
   expect_s3_class(f, "data.frame")

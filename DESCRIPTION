@@ -29,7 +29,9 @@ Imports:
     doParallel,
     lifecycle
 RoxygenNote: 7.1.0
-Suggests: knitr,
-    rmarkdown
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat
 VignetteBuilder: knitr
 RdMacros: lifecycle

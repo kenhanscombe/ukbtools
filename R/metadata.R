@@ -14,7 +14,8 @@ defunct_message <- "The genetic metadata functions were written to retrieve gene
 #' @importFrom lifecycle deprecate_stop
 #' @export
 ukb_gen_meta <-  function(data) {
-  lifecycle::deprecate_stop("0.10", "ukb_gen_meta()", details = defunct_message)
+  lifecycle::deprecate_stop("0.10", "ukb_gen_meta()",
+                            details = defunct_message)
   # centre_lookup <- lookup(ukbtools::ukbcentre, "code", "centre")
   # data$ukb_centre_name = centre_lookup[as.factor(data[["uk_biobank_assessment_centre_0_0"]])]
   # data$bileve_chip = ifelse(!is.na(data[["ukbileve_affymetrix_quality_control_for_samples_0_0"]]), 1, 0)
@@ -51,7 +52,8 @@ ukb_gen_meta <-  function(data) {
 #' @importFrom lifecycle deprecate_stop
 #' @export
 ukb_gen_pcs <- function(data) {
-  lifecycle::deprecate_stop("0.10", "ukb_gen_pcs()", details = defunct_message)
+  lifecycle::deprecate_stop("0.10", "ukb_gen_pcs()",
+                            details = defunct_message)
   # data %>%
   #   dplyr::select(
   #     eid,
@@ -79,7 +81,8 @@ ukb_gen_pcs <- function(data) {
 #' recommended_excl_ids <- ukb_gen_excl(my_ukb_df)
 #' }
 ukb_gen_excl <- function(data) {
-  lifecycle::deprecate_stop("0.10", "ukb_gen_excl()", details = defunct_message)
+  lifecycle::deprecate_stop("0.10", "ukb_gen_excl()",
+                            details = defunct_message)
   # data %>%
   #   dplyr::filter(
   #     !is.na(data[["recommended_genomic_analysis_exclusions_0_0"]]) |
@@ -110,7 +113,8 @@ ukb_gen_excl <- function(data) {
 #' @importFrom lifecycle deprecate_stop
 #' @export
 ukb_gen_rel <- function(data) {
-  lifecycle::deprecate_stop("0.10", "ukb_gen_rel()", details = defunct_message)
+  lifecycle::deprecate_stop("0.10", "ukb_gen_rel()",
+                            details = defunct_message)
   # rbind(
   #   data %>%
   #     dplyr::select_(
@@ -181,7 +185,8 @@ ukb_gen_rel <- function(data) {
 #' ukb_het <- ukb_gen_het(my_ukb_data, all.het = TRUE)
 #' }
 ukb_gen_het <- function(data, all.het = FALSE) {
-  lifecycle::deprecate_stop("0.10", "ukb_gen_het()", details = defunct_message)
+  lifecycle::deprecate_stop("0.10", "ukb_gen_het()",
+                            details = defunct_message)
   # if (all.het) {
   #   return(
   #     data %>%
@@ -219,7 +224,8 @@ ukb_gen_het <- function(data, all.het = FALSE) {
 #' my_ukb_data$height_excl_na <- ukb_gen_excl_to_na(my_ukb_data, x = "height")
 #' }
 ukb_gen_excl_to_na <- function(data, x, ukb.id = "eid", data.frame = FALSE) {
-  lifecycle::deprecate_stop("0.10", "ukb_gen_excl_to_na()", details = defunct_message)
+  lifecycle::deprecate_stop("0.10", "ukb_gen_excl_to_na()",
+                            details = defunct_message)
   # ids <- as.character(data[[ukb.id]])
   # meta_excl <- ukb_meta_excl_lookup[ids]
   # pheno_meta_na <- data[[x]]

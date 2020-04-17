@@ -4,8 +4,7 @@
 \alias{ukb_gen_write_plink}
 \title{Writes a PLINK format phenotype or covariate file}
 \usage{
-ukb_gen_write_plink(x, path, ukb.variables, ukb.id = "eid",
-  na.strings = "NA")
+ukb_gen_write_plink(x, path, ukb.variables, ukb.id = "eid", na.strings = "NA")
 }
 \arguments{
 \item{x}{A UKB dataset.}

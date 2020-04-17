@@ -4,14 +4,21 @@
 \alias{ukb_icd_freq_by}
 \title{Frequency of an ICD diagnosis by a target variable}
 \usage{
-ukb_icd_freq_by(data, reference.var, n.groups = 10,
-  icd.code = c("^(I2[0-5])", "^(I6[0-9])",
-  "^(J09|J1[0-9]|J2[0-2]|P23|U04)"),
+ukb_icd_freq_by(
+  data,
+  reference.var,
+  n.groups = 10,
+  icd.code = c("^(I2[0-5])", "^(I6[0-9])", "^(J09|J1[0-9]|J2[0-2]|P23|U04)"),
   icd.labels = c("coronary artery disease", "cerebrovascular disease",
-  "lower respiratory tract infection"), plot.title = "",
-  legend.col = 1, legend.pos = "right", icd.version = 10,
-  freq.plot = FALSE, reference.lab = "Reference variable",
-  freq.lab = "UKB disease frequency")
+    "lower respiratory tract infection"),
+  plot.title = "",
+  legend.col = 1,
+  legend.pos = "right",
+  icd.version = 10,
+  freq.plot = FALSE,
+  reference.lab = "Reference variable",
+  freq.lab = "UKB disease frequency"
+)
 }
 \arguments{
 \item{data}{A UKB dataset (or subset) created with \code{\link{ukb_df}}.}

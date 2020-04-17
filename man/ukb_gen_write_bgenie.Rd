@@ -4,8 +4,14 @@
 \alias{ukb_gen_write_bgenie}
 \title{Writes a BGENIE format phenotype or covariate file.}
 \usage{
-ukb_gen_write_bgenie(x, ukb.sample, ukb.variables, path, ukb.id = "eid",
-  na.strings = "-999")
+ukb_gen_write_bgenie(
+  x,
+  ukb.sample,
+  ukb.variables,
+  path,
+  ukb.id = "eid",
+  na.strings = "-999"
+)
 }
 \arguments{
 \item{x}{A UKB dataset.}

@@ -26,8 +26,10 @@ Imports:
     stringr,
     foreach,
     parallel,
-    doParallel
-RoxygenNote: 6.1.1
+    doParallel,
+    lifecycle
+RoxygenNote: 7.1.0
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr
+RdMacros: lifecycle

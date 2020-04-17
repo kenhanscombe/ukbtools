@@ -4,13 +4,18 @@
 \alias{ukb_context}
 \title{Demographics of a UKB sample subset}
 \usage{
-ukb_context(data, nonmiss.var = NULL, subset.var = NULL,
-  bar.position = "fill", sex.var = "^sex.*0_0",
+ukb_context(
+  data,
+  nonmiss.var = NULL,
+  subset.var = NULL,
+  bar.position = "fill",
+  sex.var = "^sex.*0_0",
   age.var = "^age_when_attended_assessment_centre.*0_0",
   socioeconomic.var = "^townsend_deprivation_index_at_recruitment.*0_0",
   ethnicity.var = "^ethnic_background.*0_0",
   employment.var = "^current_employment_status.*0_0",
-  centre.var = "^uk_biobank_assessment_centre.*0_0")
+  centre.var = "^uk_biobank_assessment_centre.*0_0"
+)
 }
 \arguments{
 \item{data}{A UKB dataset constructed with \code{\link{ukb_df}}.}

@@ -10,7 +10,7 @@ ukb_gen_meta(data)
 \item{data}{A UKB dataset created with \code{\link{ukb_df}}.}
 }
 \description{
-\strong{Defunct. See help("ukb_defunct")}.
+\lifecycle{defunct}
 
 UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data. This function retrieves UKB assessment centre codes and assessment centre names, genetic ethnic grouping, genetically-determined sex, missingness, UKB recommended genomic analysis exclusions, BiLeve unrelatedness indicator, and BiLeve Affymetrix and genotype quality control.
 }

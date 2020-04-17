@@ -16,7 +16,7 @@ ukb_gen_excl_to_na(data, x, ukb.id = "eid", data.frame = FALSE)
 \item{data.frame}{A logical vector indicating whether to return a vector or a data.frame (header: id, meta_excl, pheno, pheno_meta_na) containing the original and updated variable. Default = FALSE returns a vector.}
 }
 \description{
-\strong{Defunct. See help("ukb_defunct")}.
+\lifecycle{defunct}
 
 Replaces data values in a vector (a UKB phenotype) with \code{NA} where the sample is to-be-excluded, i.e., is either a UKB recommended exclusion, a heterozygosity outlier, a genetic ethnicity outlier, or a randomly-selected member of a related pair.
 }

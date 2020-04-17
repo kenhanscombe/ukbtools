@@ -3,7 +3,6 @@
 \docType{package}
 \name{ukbtools}
 \alias{ukbtools}
-\alias{ukbtools-package}
 \title{ukbtools: Manipulate and Explore UK Biobank Data}
 \description{
 A set of tools to create a \href{https://www.ukbiobank.ac.uk/}{UK Biobank} dataset

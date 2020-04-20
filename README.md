@@ -1,9 +1,9 @@
-
-# ukbtools <img src="man/figures/logo.png" align="right" alt="" width="120" />
+ukbtools <img src='man/figures/logo.png' align="right" height="138" />
+===
 
 <!-- badges: start -->
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ukbtools)](https://cran.r-project.org/package=ukbtools)
-[![Travis-CI Build Status](https://travis-ci.org/kenhanscombe/ukbtools.svg?branch=master)](https://travis-ci.org/kenhanscombe/ukbtools)
+[![Travis build status](https://travis-ci.com/kenhanscombe/ukbtools.svg?branch=master)](https://travis-ci.com/kenhanscombe/ukbtools)
 [![Codecov test coverage](https://codecov.io/gh/kenhanscombe/ukbtools/branch/master/graph/badge.svg)](https://codecov.io/gh/kenhanscombe/ukbtools?branch=master)
 <!-- badges: end -->
 

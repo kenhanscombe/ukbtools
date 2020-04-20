@@ -8,21 +8,36 @@
 
 <title>ukbtools: Manipulate and Explore UK Biobank Data — ukbtools • ukbtools</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,15 +45,14 @@
 
 
 
-<meta property="og:title" content="ukbtools: Manipulate and Explore UK Biobank Data — ukbtools" />
 
+<meta property="og:title" content="ukbtools: Manipulate and Explore UK Biobank Data — ukbtools" />
 <meta property="og:description" content="A set of tools to create a UK Biobank dataset
 from a UKB fileset (.tab, .r, .html), visualize primary demographic data for
 a sample subset, query ICD diagnoses, retrieve genetic metadata, read and
 write standard file formats for genetic analyses." />
-
 <meta property="og:image" content="/logo.png" />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -52,9 +66,10 @@ write standard file formats for genetic analyses." />
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -68,7 +83,7 @@ write standard file formats for genetic analyses." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ukbtools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.3.9000</span>
       </span>
     </div>
 
@@ -76,7 +91,7 @@ write standard file formats for genetic analyses." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -99,7 +114,6 @@ write standard file formats for genetic analyses." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -109,6 +123,7 @@ write standard file formats for genetic analyses." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -120,81 +135,76 @@ write standard file formats for genetic analyses." />
     </div>
 
     <div class="ref-description">
-    
     <p>A set of tools to create a <a href='https://www.ukbiobank.ac.uk/'>UK Biobank</a> dataset
 from a UKB fileset (.tab, .r, .html), visualize primary demographic data for
 a sample subset, query ICD diagnoses, retrieve genetic metadata, read and
 write standard file formats for genetic analyses.</p>
-    
     </div>
 
-        
+
+
     <h2 class="hasAnchor" id="ukb-dataframe"><a class="anchor" href="#ukb-dataframe"></a>UKB Dataframe</h2>
 
     
-    <p>Functions to wrangle the UKB data into a dataframe with meaningful column
+
+<p>Functions to wrangle the UKB data into a dataframe with meaningful column
 names.</p><ul>
-<li><p><code>ukb_df</code></p></li>
-<li><p><code>ukb_df_field</code></p></li>
-<li><p><code>ukb_df_full_join</code></p></li>
-<li><p><code>ukb_df_duplicated_name</code></p></li>
-<li><p><code>ukb_centre</code></p></li>
-<li><p><code>ukb_context</code></p></li>
+<li><p><code><a href='ukb_df.html'>ukb_df</a></code></p></li>
+<li><p><code><a href='ukb_df_field.html'>ukb_df_field</a></code></p></li>
+<li><p><code><a href='ukb_df_full_join.html'>ukb_df_full_join</a></code></p></li>
+<li><p><code><a href='ukb_df_duplicated_name.html'>ukb_df_duplicated_name</a></code></p></li>
+<li><p><code><a href='ukb_centre.html'>ukb_centre</a></code></p></li>
+<li><p><code><a href='ukb_context.html'>ukb_context</a></code></p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="genetic-metadata"><a class="anchor" href="#genetic-metadata"></a>Genetic Metadata</h2>
 
     
-    <p>Functions to query the associated genetic sample QC information.</p><ul>
-<li><p><code>ukb_gen_read_fam</code></p></li>
-<li><p><code>ukb_gen_read_sample</code></p></li>
-<li><p><code>ukb_gen_rel_count</code></p></li>
-<li><p><code>ukb_gen_related_with_data</code></p></li>
-<li><p><code>ukb_gen_samples_to_remove</code></p></li>
-<li><p><code>ukb_gen_sqc_names</code></p></li>
-<li><p><code>ukb_gen_write_bgenie</code></p></li>
-<li><p><code>ukb_gen_write_plink</code></p></li>
+
+<p>Functions to query the associated genetic sample QC information.</p><ul>
+<li><p><code><a href='ukb_gen_read_fam.html'>ukb_gen_read_fam</a></code></p></li>
+<li><p><code><a href='ukb_gen_read_sample.html'>ukb_gen_read_sample</a></code></p></li>
+<li><p><code><a href='ukb_gen_rel_count.html'>ukb_gen_rel_count</a></code></p></li>
+<li><p><code><a href='ukb_gen_related_with_data.html'>ukb_gen_related_with_data</a></code></p></li>
+<li><p><code><a href='ukb_gen_samples_to_remove.html'>ukb_gen_samples_to_remove</a></code></p></li>
+<li><p><code><a href='ukb_gen_sqc_names.html'>ukb_gen_sqc_names</a></code></p></li>
+<li><p><code><a href='ukb_gen_write_bgenie.html'>ukb_gen_write_bgenie</a></code></p></li>
+<li><p><code><a href='ukb_gen_write_plink.html'>ukb_gen_write_plink</a></code></p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="disease-diagnoses"><a class="anchor" href="#disease-diagnoses"></a>Disease Diagnoses</h2>
 
     
-    <p>Functions to query the UKB hospital episodes statistics.</p><ul>
-<li><p><code>ukb_icd_code_meaning</code></p></li>
-<li><p><code>ukb_icd_diagnosis</code></p></li>
-<li><p><code>ukb_icd_freq_by</code></p></li>
-<li><p><code>ukb_icd_keyword</code></p></li>
-<li><p><code>ukb_icd_prevalence</code></p></li>
+
+<p>Functions to query the UKB hospital episodes statistics.</p><ul>
+<li><p><code><a href='ukb_icd_code_meaning.html'>ukb_icd_code_meaning</a></code></p></li>
+<li><p><code><a href='ukb_icd_diagnosis.html'>ukb_icd_diagnosis</a></code></p></li>
+<li><p><code><a href='ukb_icd_freq_by.html'>ukb_icd_freq_by</a></code></p></li>
+<li><p><code><a href='ukb_icd_keyword.html'>ukb_icd_keyword</a></code></p></li>
+<li><p><code><a href='ukb_icd_prevalence.html'>ukb_icd_prevalence</a></code></p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="datasets"><a class="anchor" href="#datasets"></a>Datasets</h2>
 
     
-    <ul>
-<li><p><code>ukbcentre</code></p></li>
-<li><p><code>icd10chapters</code></p></li>
-<li><p><code>icd10codes</code></p></li>
-<li><p><code>icd9chapters</code></p></li>
-<li><p><code>icd9codes</code></p></li>
+
+<ul>
+<li><p><code><a href='ukbcentre.html'>ukbcentre</a></code></p></li>
+<li><p><code><a href='icd10chapters.html'>icd10chapters</a></code></p></li>
+<li><p><code><a href='icd10codes.html'>icd10codes</a></code></p></li>
+<li><p><code><a href='icd9chapters.html'>icd9chapters</a></code></p></li>
+<li><p><code><a href='icd9codes.html'>icd9codes</a></code></p></li>
 </ul>
-    
+
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#ukb-dataframe">UKB Dataframe</a></li>
-
-      <li><a href="#genetic-metadata">Genetic Metadata</a></li>
-
-      <li><a href="#disease-diagnoses">Disease Diagnoses</a></li>
-
-      <li><a href="#datasets">Datasets</a></li>
-          </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -202,13 +212,16 @@ names.</p><ul>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

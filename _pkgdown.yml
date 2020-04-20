@@ -56,7 +56,6 @@ reference:
     separate files. The contents of these files, along with all other genetic
     files are described in UKB Resource 531.
   contents:
-  - '`ukb_defunct`'
   - '`ukb_gen_excl`'
   - '`ukb_gen_excl_to_na`'
   - '`ukb_gen_het`'

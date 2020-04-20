@@ -17,7 +17,6 @@ Imports:
     purrr,
     readr,
     ggplot2,
-    XML,
     magrittr,
     grid,
     tibble,
@@ -27,7 +26,9 @@ Imports:
     foreach,
     parallel,
     doParallel,
-    lifecycle
+    lifecycle,
+    xml2,
+    rvest
 RoxygenNote: 7.1.0
 Suggests: 
     knitr,

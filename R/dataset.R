@@ -21,7 +21,7 @@ globalVariables(
 #'
 #' @seealso \code{\link{ukb_df_field}} \code{\link{ukb_df_full_join}}
 #'
-#' @import XML stringr
+#' @import stringr
 #' @importFrom data.table fread
 #' @export
 #'
@@ -113,7 +113,9 @@ ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2) {
 #'
 #' @seealso \code{\link{ukb_df}}
 #'
-#' @import XML stringr
+#' @importFrom stringr str_interp str_c str_replace_all
+#' @importFrom xml2 read_html xml_find_all
+#' @importFrom rvest html_table
 #' @importFrom tibble tibble
 #' @export
 #' @examples
@@ -125,15 +127,18 @@ ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2) {
 #'
 ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
   html_file <- stringr::str_interp("${fileset}.html")
-  html_internal_doc <- XML::htmlParse(file.path(path, html_file))
-  html_table_nodes <- XML::getNodeSet(html_internal_doc, "//table")
-
-  html_table = XML::readHTMLTable(
-    html_table_nodes[[data.pos]],
-    as.data.frame = TRUE,
-    stringsAsFactors = FALSE,
-    colClasses = c("integer", "character", "integer", "character", "character")
-  )
+  # html_internal_doc <- XML::htmlParse(file.path(path, html_file))
+  # html_table_nodes <- XML::getNodeSet(html_internal_doc, "//table")
+  #
+  # html_table = XML::readHTMLTable(
+  #   html_table_nodes[[data.pos]],
+  #   as.data.frame = TRUE,
+  #   stringsAsFactors = FALSE,
+  #   colClasses = c("integer", "character", "integer", "character", "character")
+  # )
+  html_internal_doc <- xml2::read_html(file.path(path, "ukbxxxx.html"))
+  html_table_nodes <- xml2::xml_find_all(html_internal_doc, "//table")
+  html_table <- rvest::html_table(html_table_nodes[[data.pos]])
 
   df <- fill_missing_description(html_table)
   lookup <- description_to_name(df)
@@ -151,9 +156,10 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
       col.name = ifelse(
         field.showcase == "eid",
         "eid",
-        str_c(lookup, "_f", str_replace_all(field.html, c(
-          "-" = "_", "\\." = "_"
-        )))
+        stringr::str_c(
+          lookup, "_f",
+          stringr::str_replace_all(field.html, c("-" = "_", "\\." = "_"))
+        )
       )
     )
 

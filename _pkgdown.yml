@@ -1,5 +1,9 @@
+destination: docs
 
 reference:
+- contents:
+  - '`ukbtools`'
+
 - title: UKB Dataframe
   desc: >
     Functions to wrangle the UKB data into a dataframe with meaningful column

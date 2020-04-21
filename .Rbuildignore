@@ -15,3 +15,5 @@
 ^_pkgdown.yml
 ^ukbtools.png
 ^codecov\.yml$
+^_pkgdown\.yml$
+^pkgdown$

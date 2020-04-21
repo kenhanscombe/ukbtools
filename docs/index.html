@@ -71,7 +71,14 @@
   <a href="news/index.html">Changelog</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/kenhanscombe/ukbtools/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -83,10 +90,9 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-
 <div id="ukbtools" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#ukbtools" class="anchor"></a>ukbtools <img src="reference/figures/logo.png" align="right" height="138">
+<a href="#ukbtools" class="anchor"></a>ukbtools <img src="reference/figures/logo.png" align="right" height="137.5">
 </h1></div>
 <!-- badges: start -->
 
@@ -94,25 +100,19 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>```{r, eval = FALSE}</p>
+<div class="sourceCode" id="cb1"><pre class="r"><span class="co"># Install from CRAN</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"ukbtools"</span>)
+
+<span class="co"># Install latest development version</span>
+<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"kenhanscombe/ukbtools"</span>, <span class="kw">dependencies</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
 </div>
-</div>
-<div id="install-from-cran" class="section level1">
-<h1 class="hasAnchor">
-<a href="#install-from-cran" class="anchor"></a>Install from CRAN</h1>
-<p>install.packages(“ukbtools”)</p>
-</div>
-<div id="install-latest-development-version" class="section level1">
-<h1 class="hasAnchor">
-<a href="#install-latest-development-version" class="anchor"></a>Install latest development version</h1>
-<p>devtools::install_github(“kenhanscombe/ukbtools”, dependencies = TRUE)</p>
-<p>```</p>
 <div id="prerequisite-make-a-ukb-fileset" class="section level2">
 <h2 class="hasAnchor">
 <a href="#prerequisite-make-a-ukb-fileset" class="anchor"></a>Prerequisite: Make a UKB fileset</h2>
 <p>Download<sup>§</sup> then decrypt your data and create a “UKB fileset” (.tab, .r, .html):</p>
-<p>```{bash, eval = FALSE} ukb_unpack ukbxxxx.enc key ukb_conv ukbxxxx.enc_ukb r ukb_conv ukbxxxx.enc_ukb docs</p>
-<p>```</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="ex">ukb_unpack</span> ukbxxxx.enc key</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="ex">ukb_conv</span> ukbxxxx.enc_ukb r</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="ex">ukb_conv</span> ukbxxxx.enc_ukb docs</a></code></pre></div>
 <p><code>ukb_unpack</code> decrypts your downloaded <code>ukbxxxx.enc</code> file, outputting a <code>ukbxxxx.enc_ukb</code> file. <code>ukb_conv</code> with the <code>r</code> flag converts the decrypted data to a tab-delimited file <code>ukbxxxx.tab</code> and an R script <code>ukbxxxx.r</code> that reads the tab file. The <code>docs</code> flag creates an html file containing a field-code-to-description table (among others).</p>
 <p><sup>§</sup> Full details of the data download and decrypt process are given in the <a href="http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf">Using UK Biobank Data</a> documentation.</p>
 </div>
@@ -120,30 +120,21 @@
 <h2 class="hasAnchor">
 <a href="#make-a-ukb-dataset" class="anchor"></a>Make a UKB dataset</h2>
 <p>The function <code><a href="reference/ukb_df.html">ukb_df()</a></code> takes two arguments, the stem of your fileset and the path, and returns a dataframe with usable column names. This will take a few minutes. The rate-limiting step is reading and parsing the code in the UKB-generated .r file - not <code>ukb_df</code> per se.</p>
-<p>```{r, eval = FALSE}</p>
-<p>library(ukbtools)</p>
-<p>my_ukb_data &lt;- ukb_df(“ukbxxxx”)</p>
-<p>```</p>
+<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ukbtools</span>)
+<span class="no">my_ukb_data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/ukb_df.html">ukb_df</a></span>(<span class="st">"ukbxxxx"</span>)</pre></div>
 <p>You can also specify the path to your fileset if it is not in the current directory. For example, if your fileset is in a subdirectory of the working directory called data</p>
-<p>```{r, eval = FALSE}</p>
-<p>my_ukb_data &lt;- ukb_df(“ukbxxxx”, path = “/full/path/to/my/data”)</p>
-<p>```</p>
+<div class="sourceCode" id="cb4"><pre class="r"><span class="no">my_ukb_data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/ukb_df.html">ukb_df</a></span>(<span class="st">"ukbxxxx"</span>, <span class="kw">path</span> <span class="kw">=</span> <span class="st">"/full/path/to/my/data"</span>)</pre></div>
 <p><strong>Note:</strong> You can move the three files in your fileset after creating them with <code>ukb_conv</code>, but they should be kept together. <code><a href="reference/ukb_df.html">ukb_df()</a></code> automatically updates the read call in the R source file to point to the correct directory (the current directory by default, or a directory specified by <code>path</code>).</p>
 </div>
 <div id="other-tools" class="section level2">
 <h2 class="hasAnchor">
 <a href="#other-tools" class="anchor"></a>Other tools</h2>
 <p>All tools are described on the <a href="https://kenhanscombe.github.io/ukbtools/">ukbtools webpage</a> and in the package vignette “Explore UK Biobank Data”</p>
-<p>```{r, eval = FALSE}</p>
-<p>vignette(“explore-ukb-data”, package = “ukbtools”)</p>
-<p>```</p>
+<div class="sourceCode" id="cb5"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">"explore-ukb-data"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"ukbtools"</span>)</pre></div>
 <p>For a list of all functions</p>
-<p>```{r, eval = FALSE}</p>
-<p>help(package = “ukbtools”)</p>
-<p>```</p>
+<div class="sourceCode" id="cb6"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/help.html">help</a></span>(<span class="kw">package</span> <span class="kw">=</span> <span class="st">"ukbtools"</span>)</pre></div>
 </div>
 </div>
-
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -151,6 +142,10 @@
 <h2>Links</h2>
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=ukbtools">https://​cloud.r-project.org/​package=ukbtools</a>
+</li>
+<li>Browse source code at <br><a href="https://github.com/kenhanscombe/ukbtools/">https://​github.com/​kenhanscombe/​ukbtools/​</a>
+</li>
+<li>Report a bug at <br><a href="https://github.com/kenhanscombe/ukbtools/issues">https://​github.com/​kenhanscombe/​ukbtools/​issues</a>
 </li>
 </ul>
 </div>

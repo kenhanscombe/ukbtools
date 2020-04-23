@@ -4,9 +4,7 @@
 ^doc$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^notes_to_self\.txt$
 ^data-raw$
-^inst/extdata/$
 ^\./R/context_body\.R$
 ^cran-comments\.md$
 ^\.travis\.yml$

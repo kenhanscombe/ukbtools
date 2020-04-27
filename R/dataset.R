@@ -127,7 +127,7 @@ ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2) {
 #'
 ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
   html_file <- stringr::str_interp("${fileset}.html")
-  html_internal_doc <- xml2::read_html(file.path(path, "ukbxxxx.html"))
+  html_internal_doc <- xml2::read_html(file.path(path, html_file))
   html_table_nodes <- xml2::xml_find_all(html_internal_doc, "//table")
   html_table <- rvest::html_table(html_table_nodes[[data.pos]])
 

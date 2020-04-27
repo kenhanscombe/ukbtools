@@ -5,7 +5,7 @@
 \alias{ukbcentre}
 \title{UKB assessment centre}
 \format{
-An object of class \code{data.frame} with 24 rows and 2 columns.
+An object of class \code{data.frame} with 27 rows and 2 columns.
 }
 \usage{
 ukbcentre

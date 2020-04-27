@@ -43,7 +43,7 @@ ukb_context <- function(
          call. = FALSE)
   }
 
-  centre_lookup <- lookup(ukbtools::ukbcentre, "code", "centre")
+  centre_lookup <- lookup(ukbtools::ukbcentre, "coding", "meaning")
   data$centre <-  centre_lookup[as.character(dplyr::pull(data, centre.var))]
 
   if (!is.null(nonmiss.var)) {
@@ -143,7 +143,7 @@ ukb_context <- function(
 ukb_centre <- function(data, centre.var = "^uk_biobank_assessment_centre.*0_0") {
   centre.var <- dplyr::select(data, matches(centre.var)) %>% names()
   centre.var <- as.factor(data[[centre.var]])
-  centre_lookup <- lookup(ukbtools::ukbcentre, "code", "centre")
+  centre_lookup <- lookup(ukbtools::ukbcentre, "coding", "meaning")
   data$ukb_centre <- centre_lookup[centre.var]
 
   data %>%

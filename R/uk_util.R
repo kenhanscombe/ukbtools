@@ -152,6 +152,9 @@ ukb_fetch_bulk = function(
   ...) {
   stopifnot(file.exists(file))
 
+  file = normalizePath(file, mustWork = TRUE, winslash = "/")
+  key = normalizePath(key, mustWork = TRUE, winslash = "/")
+
   owd = getwd()
   if (!is.null(outdir)) {
     setwd(outdir)
@@ -159,8 +162,6 @@ ukb_fetch_bulk = function(
       setwd(owd)
     }, add = TRUE)
   }
-  file = normalizePath(file, mustWork = TRUE, winslash = "/")
-  key = normalizePath(key, mustWork = TRUE, winslash = "/")
 
   n_max = 1000
   if (is.null(start)) {

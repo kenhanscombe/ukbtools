@@ -17,7 +17,7 @@ ukb_conv(
   ...
 )
 
-ukb_fetch_bulk(file, key, start = NULL, ...)
+ukb_fetch_bulk(file, key, start = NULL, outdir = NULL, ...)
 }
 \arguments{
 \item{file}{name of file to run utility on}
@@ -30,6 +30,8 @@ ukb_fetch_bulk(file, key, start = NULL, ...)
 \item{type}{type of conversion to do}
 
 \item{start}{start of the fetching, 1-indexed}
+
+\item{outdir}{output directory of download}
 }
 \value{
 A character string

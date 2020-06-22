@@ -142,13 +142,25 @@ ukb_conv = function(file,
 
 #' @rdname ukb_md5
 #' @param start start of the fetching, 1-indexed
+#' @param outdir output directory of download
 #' @export
 ukb_fetch_bulk = function(
   file,
   key,
   start = NULL,
+  outdir = NULL,
   ...) {
   stopifnot(file.exists(file))
+
+  owd = getwd()
+  if (!is.null(outdir)) {
+    setwd(outdir)
+    on.exit({
+      setwd(owd)
+    }, add = TRUE)
+  }
+  file = normalizePath(file, mustWork = TRUE, winslash = "/")
+  key = normalizePath(key, mustWork = TRUE, winslash = "/")
 
   n_max = 1000
   if (is.null(start)) {

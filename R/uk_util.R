@@ -66,7 +66,7 @@ ukb_util_path = function(
                  util, ext)
     destfile = file.path(outdir, basename(url))
     if (!file.exists(destfile)) {
-      download.file(url, destfile = destfile,
+      utils::download.file(url, destfile = destfile,
                     mode = "wb")
     }
     Sys.chmod(destfile)

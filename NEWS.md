@@ -5,6 +5,8 @@ Bug fix:
 
 dplyr update broke `ukb_icd_diagnosis`. Fixed in dev version.
 
+* Added `ukb_util_*` functions to be able to perform system-level calls for fetching and unpacking.
+
 
 
 # ukbtools 0.11.3

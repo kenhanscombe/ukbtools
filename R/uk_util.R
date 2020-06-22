@@ -26,7 +26,8 @@ sys_type <- function() {
 #' @export
 #'
 #' @examples
-#' ukb_util_path("ukbmd5")
+#' md5 = ukb_util_path("ukbmd5")
+#' file.remove(md5)
 ukb_util_path = function(
   util = c("ukbmd5", "ukbconv", "ukbunpack",
            "ukbfetch", "ukblink", "ukbgene",

@@ -28,5 +28,6 @@ A path to the utility
 Get Path to UKB Utilitiy
 }
 \examples{
-ukb_util_path("ukbmd5")
+md5 = ukb_util_path("ukbmd5")
+file.remove(md5)
 }

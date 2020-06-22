@@ -56,7 +56,8 @@ ukb_util_path = function(
       if (!nzchar(noah)) {
         warning(
           paste0(
-            "You may need noah to use these linux execs on Mac OSX,",
+            "You may need noah to use these ",
+            "linux execs on Mac OSX,",
             " See https://github.com/linux-noah/noah ")
         )
       }
@@ -67,7 +68,7 @@ ukb_util_path = function(
     destfile = file.path(outdir, basename(url))
     if (!file.exists(destfile)) {
       utils::download.file(url, destfile = destfile,
-                    mode = "wb")
+                           mode = "wb")
     }
     Sys.chmod(destfile)
     return(destfile)
@@ -137,4 +138,42 @@ ukb_conv = function(file,
     warning("Convert did not seem to complete successfully")
   }
   return(out)
+}
+
+#' @rdname ukb_md5
+#' @param start start of the fetching, 1-indexed
+#' @export
+ukb_fetch_bulk = function(
+  file,
+  key,
+  start = NULL,
+  ...) {
+  stopifnot(file.exists(file))
+
+  n_max = 1000
+  if (is.null(start)) {
+    x = readLines(file)
+    n = length(x)
+    if (n > n_max) {
+      start = (seq(0, ceiling(n / n_max) -1) * n_max) + 1
+    } else {
+      start = 1
+    }
+  }
+
+  path = ukb_util_path("ukbfetch", ...)
+  bfile = paste0("-b", file)
+  akey = paste0("-a", key)
+
+  starts = paste0("-s", start)
+  x = starts[1]
+  num = paste0("-m", n_max)
+  res = sapply(starts, function(x) {
+    out = system2(path, c(bfile, akey, x, num))
+    if (out != 0) {
+      warning("Convert did not seem to complete successfully")
+    }
+    out
+  })
+  return(res)
 }

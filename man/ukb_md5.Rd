@@ -4,6 +4,7 @@
 \alias{ukb_md5}
 \alias{ukb_unpack}
 \alias{ukb_conv}
+\alias{ukb_fetch_bulk}
 \title{UKB MD5 Checksum}
 \usage{
 ukb_md5(file, ...)
@@ -15,6 +16,8 @@ ukb_conv(
   type = c("r", "docs", "csv", "sas", "stata", "lims", "bulk", "txt"),
   ...
 )
+
+ukb_fetch_bulk(file, key, start = NULL, ...)
 }
 \arguments{
 \item{file}{name of file to run utility on}
@@ -25,6 +28,8 @@ ukb_conv(
 \item{key}{file to key to unpack/decrypt file}
 
 \item{type}{type of conversion to do}
+
+\item{start}{start of the fetching, 1-indexed}
 }
 \value{
 A character string

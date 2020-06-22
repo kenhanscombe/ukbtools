@@ -4,7 +4,9 @@
 \name{icd10codes}
 \alias{icd10codes}
 \title{International Classification of Diseases Revision 10 (ICD-10) codes}
-\format{An object of class \code{data.frame} with 18761 rows and 2 columns.}
+\format{
+An object of class \code{data.frame} with 18761 rows and 2 columns.
+}
 \usage{
 icd10codes
 }

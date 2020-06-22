@@ -4,7 +4,9 @@
 \name{icd9codes}
 \alias{icd9codes}
 \title{International Classification of Diseases Revision 9 (ICD-9) codes}
-\format{An object of class \code{data.frame} with 13679 rows and 2 columns.}
+\format{
+An object of class \code{data.frame} with 13679 rows and 2 columns.
+}
 \usage{
 icd9codes
 }

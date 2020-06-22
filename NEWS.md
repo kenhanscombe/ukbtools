@@ -1,4 +1,57 @@
 
+# ukbtools 0.11.3.9000
+
+Bug fix:
+
+dplyr update broke `ukb_icd_diagnosis`. Fixed in dev version.
+
+
+
+# ukbtools 0.11.3
+
+Corrected functionality:
+
+Updated earlier typo/change that made `ukb_df` incorrectly convert all column
+types to character (caused by replacing `stringr::str_interp` to
+`stringr::str_c` when passing internal column type vector to `data.table::fread`,
+without updating argument)
+
+Bug fix:
+
+Cleared bug in `ukb_icd_freq_by` for disease frequency against a quantitative
+trait.
+
+Made `ukb_df` column name from description regex find/replace more general to
+capture all variations of "uses data coding"
+
+Updated functionality:
+
+`ukb_icd_keyword` internal regex search `ignore.case` defaults to `TRUE`, with
+and option to set added to arguments.
+
+
+
+# ukbtools 0.11.1
+
+Test data:
+
+Added example UKB data ukbXXXX.tab, ukbXXXX.r, ukbXXXX.html to test the 'read'
+and 'summarise' functionality `ukb_df`, `ukb_df_field`, and `ukb_context`. See
+the section "An example fileset" in the vignette for details.
+
+Updated functionality:
+
+`ukb_icd_freq_by` with `freq.plot = TRUE` plots a barplot for categorical
+reference variables, and plots diagnosis frequencies at the midpoint of each
+group for quantitative reference variables.
+
+
+Webpage:
+
+The [ukbtools webpage](https://kenhanscombe.github.io/ukbtools/) has been
+rebuilt with pkgdown and includes the vignette under the Articles tab.
+
+
 # ukbtools 0.11.0
 
 Updated functionality:

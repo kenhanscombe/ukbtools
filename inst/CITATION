@@ -1,0 +1,10 @@
+
+bibentry(bibtype = "Article",
+         title = "ukbtools: An R package to manage and query UK Biobank data",
+         journal = "bioRxiv",
+         author = "K. B. Hanscombe and
+                   J.R.I. Coleman and
+                   M. Traylor and
+                   C. M. Lewis",
+         year = "e-print 158113",
+         url = "https://doi.org/10.1101/158113")

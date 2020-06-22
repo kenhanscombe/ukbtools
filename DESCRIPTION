@@ -1,5 +1,5 @@
 Package: ukbtools
-Version: 0.11.0.9000
+Version: 0.11.3.9000
 Title: Manipulate and Explore UK Biobank Data
 Authors@R: person("Ken", "Hanscombe", email = "ken.hanscombe@gmail.com", role = c("aut", "cre"))
 Maintainer: Ken Hanscombe <ken.hanscombe@gmail.com>
@@ -7,25 +7,34 @@ Description: A set of tools to create a UK Biobank <http://www.ukbiobank.ac.uk/>
     visualize primary demographic data for a sample subset, query ICD diagnoses,
     retrieve genetic metadata, read and write standard file formats for genetic analyses.
 License: GPL-2
-URL: https://kenhanscombe.github.io/ukbtools/
+URL: https://github.com/kenhanscombe/ukbtools
+BugReports: https://github.com/kenhanscombe/ukbtools/issues
 Encoding: UTF-8
 LazyData: true
-Depends: R (>= 2.10)
+Depends: R (>= 3.5)
 Imports:
+    data.table (>= 1.12),
     dplyr,
     purrr,
     readr,
     ggplot2,
-    XML,
     magrittr,
     grid,
-    plyr,
     tibble,
     tidyr,
     scales,
     stringr,
-    data.table
-RoxygenNote: 6.0.1.9000
-Suggests: knitr,
-    rmarkdown
+    foreach,
+    parallel,
+    doParallel,
+    lifecycle,
+    xml2,
+    rvest
+RoxygenNote: 7.1.0
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat,
+    covr
 VignetteBuilder: knitr
+RdMacros: lifecycle

@@ -4,12 +4,14 @@
 \alias{ukb_icd_keyword}
 \title{Retrieves diagnoses containing a description.}
 \usage{
-ukb_icd_keyword(description, icd.version = 10)
+ukb_icd_keyword(description, icd.version = 10, ignore.case = TRUE)
 }
 \arguments{
 \item{description}{A character vector of one or more keywords to be looked up in the ICD descriptions, e.g., "cardio", c("cardio", "lymphoma"). Each keyword can be a regular expression, e.g. "lymph*".}
 
 \item{icd.version}{The ICD version (or revision) number, 9 or 10. Default = 10.}
+
+\item{ignore.case}{If `TRUE` (default), case is ignored during matching; if `FALSE`, the matching is case sensitive.}
 }
 \description{
 Returns a dataframe of ICD code and descriptions for all entries including any supplied keyword.

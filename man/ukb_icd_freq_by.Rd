@@ -4,13 +4,21 @@
 \alias{ukb_icd_freq_by}
 \title{Frequency of an ICD diagnosis by a target variable}
 \usage{
-ukb_icd_freq_by(data, reference.var, n.groups = 10,
+ukb_icd_freq_by(
+  data,
+  reference.var,
+  n.groups = 10,
   icd.code = c("^(I2[0-5])", "^(I6[0-9])", "^(J09|J1[0-9]|J2[0-2]|P23|U04)"),
-  icd.labels = c("coronary artery disease (CAD)",
-  "cerebrovascular disease/ stroke",
-  "lower respiratory tract infection (LRTI)"), plot.title = "",
-  legend.col = 1, legend.pos = "right", icd.version = 10,
-  freq.plot = FALSE)
+  icd.labels = c("coronary artery disease", "cerebrovascular disease",
+    "lower respiratory tract infection"),
+  plot.title = "",
+  legend.col = 1,
+  legend.pos = "right",
+  icd.version = 10,
+  freq.plot = FALSE,
+  reference.lab = "Reference variable",
+  freq.lab = "UKB disease frequency"
+)
 }
 \arguments{
 \item{data}{A UKB dataset (or subset) created with \code{\link{ukb_df}}.}
@@ -19,7 +27,7 @@ ukb_icd_freq_by(data, reference.var, n.groups = 10,
 
 \item{n.groups}{Number of approximately equal-sized groups to split a continuous variable into.}
 
-\item{icd.code}{ICD disease code(s) e.g. "I74". Use a regular expression to specify a broader set of diagnoses, e.g. "I" captures all Diseases of the circulatory system, I00-I99, "C|D[0-4]." captures all Neoplasms, C00-D49. Default is the WHO top 3 causes of death globally in 2015, see \url{http://www.who.int/healthinfo/global_burden_disease/GlobalCOD_method_2000_2015.pdf?ua=1}.}
+\item{icd.code}{ICD disease code(s) e.g. "I74". Use a regular expression to specify a broader set of diagnoses, e.g. "I" captures all Diseases of the circulatory system, I00-I99, "C|D[0-4]." captures all Neoplasms, C00-D49. Default is the WHO top 3 causes of death globally in 2015, see \url{http://www.who.int/healthinfo/global_burden_disease/GlobalCOD_method_2000_2015.pdf?ua=1}. Note. If you specify `icd.codes`, you must supply corresponding labels to `icd.labels`.}
 
 \item{icd.labels}{Character vector of ICD labels for the plot legend. Default = V1 to VN.}
 
@@ -32,7 +40,15 @@ ukb_icd_freq_by(data, reference.var, n.groups = 10,
 \item{icd.version}{The ICD version (or revision) number, 9 or 10.}
 
 \item{freq.plot}{If TRUE returns a plot of ICD diagnosis by target variable. If FALSE (default) returns a dataframe.}
+
+\item{reference.lab}{An x-axis title for the reference variable.}
+
+\item{freq.lab}{A y-axis title for disease frequency.}
 }
 \description{
-Frequency of an ICD diagnosis by a target variable
+Produces either a dataframe of diagnosis frequencies or a plot. For a
+quantitative reference variable (e.g. BMI), the plot shows frequency of
+diagnosis within each group (deciles of the reference
+variable by default) at the (max - min) / 2 for
+each group.
 }

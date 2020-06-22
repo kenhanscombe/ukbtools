@@ -1,46 +1,21 @@
 
-#' Defunct genetic metadata functions
-#'
-#' @description The genetic metadata functions were written to retrieve genetic metadata from the phenotype file for the \href{http://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=199001}{interim genotype release}. \strong{The fields retrieved became obselete when the full genotyping results (500K individuals) were released at the end of 2017.} With the release of the full genotyping results, sample QC (ukb_sqc_v2.txt) and marker QC (ukb_snp_qc.txt) data are now supplied as separate files. The contents of these files, along with all other genetic files are described fully in \href{https://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=531}{UKB Resource 531}.
-#' * ukb_gen_meta(data)
-#' * ukb_gen_pcs(data)
-#' * ukb_gen_excl(data)
-#' * ukb_gen_rel(data)
-#' * ukb_gen_het(data, all.het = FALSE)
-#' * ukb_gen_excl_to_na(data, x, ukb.id = "eid", data.frame = FALSE)
-#' * ukb_gen_write_plink_excl(path)
-#'
-#' @details See also lists new functionality that works with the files described in \href{https://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=531}{UKB Resource 531}.
-#' @seealso \code{\link{ukb_gen_sqc_names}}, \code{\link{ukb_gen_rel_count}}, \code{\link{ukb_gen_related_with_data}}, \code{\link{ukb_gen_samples_to_remove}}
-#' @import stringr
-#' @export
-#' @md
-ukb_defunct <- function() {
-  fname <- as.character(sys.call(sys.parent())[[1L]])
-  if (fname == "ukb_defunct") {
-    message('Documentation lists defunct genetics metadata retrieval functions. See help("ukb_defunct")')
-    utils::help("ukb_defunct")
-  } else {
-    .Defunct(msg = stringr::str_interp(
-      '${fname} is defunct.\nSee help("ukb_defunct")'))
-  }
-}
-
-
+defunct_message <- "The genetic metadata functions were written to retrieve genetic metadata from the phenotype file for the interim genotype release. The fields retrieved became obselete when the full genotyping results (500K individuals) were released at the end of 2017. With the release of the full genotyping results, sample QC (ukb_sqc_v2.txt) and marker QC (ukb_snp_qc.txt) data are now supplied as separate files. The contents of these files, along with all other genetic files are described fully in UKB Resource 531."
 
 
 #' Genetic metadata
 #'
-#' @description \strong{Defunct. See help("ukb_defunct")}.
+#' @description \lifecycle{defunct}
 #'
 #' UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data. This function retrieves UKB assessment centre codes and assessment centre names, genetic ethnic grouping, genetically-determined sex, missingness, UKB recommended genomic analysis exclusions, BiLeve unrelatedness indicator, and BiLeve Affymetrix and genotype quality control.
 #'
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
 #' @import dplyr
 #' @importFrom magrittr "%>%"
+#' @importFrom lifecycle deprecate_stop
 #' @export
 ukb_gen_meta <-  function(data) {
-  ukb_defunct()
+  lifecycle::deprecate_stop("0.10", "ukb_gen_meta()",
+                            details = defunct_message)
   # centre_lookup <- lookup(ukbtools::ukbcentre, "code", "centre")
   # data$ukb_centre_name = centre_lookup[as.factor(data[["uk_biobank_assessment_centre_0_0"]])]
   # data$bileve_chip = ifelse(!is.na(data[["ukbileve_affymetrix_quality_control_for_samples_0_0"]]), 1, 0)
@@ -67,16 +42,18 @@ ukb_gen_meta <-  function(data) {
 
 #' Genetic principal components
 #'
-#' @description \strong{Defunct. See help("ukb_defunct")}.
+#' @description \lifecycle{defunct}
 #'
 #'  These are the principal components derived on the UK Biobank subsample with interim genotype data. UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data.
 #'
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
 #' @import dplyr
 #' @importFrom magrittr "%>%"
+#' @importFrom lifecycle deprecate_stop
 #' @export
 ukb_gen_pcs <- function(data) {
-  ukb_defunct()
+  lifecycle::deprecate_stop("0.10", "ukb_gen_pcs()",
+                            details = defunct_message)
   # data %>%
   #   dplyr::select(
   #     eid,
@@ -89,13 +66,14 @@ ukb_gen_pcs <- function(data) {
 
 #' Sample exclusions
 #'
-#' @description \strong{Defunct. See help("ukb_defunct")}.
+#' @description \lifecycle{defunct}
 #'
 #'  This list of sample exclusions includes UKB's "recommended", "affymetrix quality control", and "genotype quality control" exclusions. UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} for the interim genotype data.
 #'
 #' @param data A UKB dataset created with \code{\link{ukb_df}}.
 #' @import dplyr
 #' @importFrom magrittr "%>%"
+#' @importFrom lifecycle deprecate_stop
 #' @export
 #' @examples
 #' \dontrun{
@@ -103,7 +81,8 @@ ukb_gen_pcs <- function(data) {
 #' recommended_excl_ids <- ukb_gen_excl(my_ukb_df)
 #' }
 ukb_gen_excl <- function(data) {
-  ukb_defunct()
+  lifecycle::deprecate_stop("0.10", "ukb_gen_excl()",
+                            details = defunct_message)
   # data %>%
   #   dplyr::filter(
   #     !is.na(data[["recommended_genomic_analysis_exclusions_0_0"]]) |
@@ -122,7 +101,7 @@ ukb_gen_excl <- function(data) {
 
 #' Creates a table of related individuals
 #'
-#' @description \strong{Defunct. See help("ukb_defunct")}.
+#' @description \lifecycle{defunct}
 #'
 #' Makes a data.frame containing all related individuals with columns UKB ID, pair ID, \href{http://people.virginia.edu/~wc9c/KING/manual.html}{KING kinship coefficient}, and proportion of alleles IBS = 0. UKB have published \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{full details of genotyping and quality control} including details on relatedness calculations for the interim genotype data.
 #'
@@ -131,9 +110,11 @@ ukb_gen_excl <- function(data) {
 #' @import dplyr
 #' @importFrom magrittr "%>%"
 #' @importFrom stats na.omit
+#' @importFrom lifecycle deprecate_stop
 #' @export
 ukb_gen_rel <- function(data) {
-  ukb_defunct()
+  lifecycle::deprecate_stop("0.10", "ukb_gen_rel()",
+                            details = defunct_message)
   # rbind(
   #   data %>%
   #     dplyr::select_(
@@ -182,7 +163,7 @@ ukb_gen_rel <- function(data) {
 
 #' Heterozygosity outliers
 #'
-#' @description \strong{Defunct. See help("ukb_defunct")}.
+#' @description \lifecycle{defunct}
 #'
 #' Heterozygosity outliers are typically removed from genetic association analyses. This function returns either a vector of heterozygosity outliers to remove (+/- 3sd from mean heterozygosity), or a data frame with heterozygosity scores for all samples.
 #'
@@ -193,6 +174,7 @@ ukb_gen_rel <- function(data) {
 #' @import dplyr
 #' @importFrom magrittr "%>%"
 #' @importFrom stats sd
+#' @importFrom lifecycle deprecate_stop
 #' @export
 #' @examples
 #' \dontrun{
@@ -203,7 +185,8 @@ ukb_gen_rel <- function(data) {
 #' ukb_het <- ukb_gen_het(my_ukb_data, all.het = TRUE)
 #' }
 ukb_gen_het <- function(data, all.het = FALSE) {
-  ukb_defunct()
+  lifecycle::deprecate_stop("0.10", "ukb_gen_het()",
+                            details = defunct_message)
   # if (all.het) {
   #   return(
   #     data %>%
@@ -225,7 +208,7 @@ ukb_gen_het <- function(data, all.het = FALSE) {
 
 #' Inserts NA into phenotype for genetic metadata exclusions
 #'
-#' @description \strong{Defunct. See help("ukb_defunct")}.
+#' @description \lifecycle{defunct}
 #'
 #' Replaces data values in a vector (a UKB phenotype) with \code{NA} where the sample is to-be-excluded, i.e., is either a UKB recommended exclusion, a heterozygosity outlier, a genetic ethnicity outlier, or a randomly-selected member of a related pair.
 #'
@@ -234,13 +217,15 @@ ukb_gen_het <- function(data, all.het = FALSE) {
 #' @param ukb.id The name of the ID variable in \code{data}. Default is "eid"
 #' @param data.frame A logical vector indicating whether to return a vector or a data.frame (header: id, meta_excl, pheno, pheno_meta_na) containing the original and updated variable. Default = FALSE returns a vector.
 #' @seealso \code{\link{ukb_gen_write_plink_excl}}
+#' @importFrom lifecycle deprecate_stop
 #' @export
 #' @examples
 #' \dontrun{
 #' my_ukb_data$height_excl_na <- ukb_gen_excl_to_na(my_ukb_data, x = "height")
 #' }
 ukb_gen_excl_to_na <- function(data, x, ukb.id = "eid", data.frame = FALSE) {
-  ukb_defunct()
+  lifecycle::deprecate_stop("0.10", "ukb_gen_excl_to_na()",
+                            details = defunct_message)
   # ids <- as.character(data[[ukb.id]])
   # meta_excl <- ukb_meta_excl_lookup[ids]
   # pheno_meta_na <- data[[x]]
@@ -251,4 +236,38 @@ ukb_gen_excl_to_na <- function(data, x, ukb.id = "eid", data.frame = FALSE) {
   # } else {
   #   return(pheno_meta_na)
   # }
+}
+
+
+
+
+#' Writes a PLINK format file for combined exclusions
+#'
+#' @description \lifecycle{defunct}
+#
+#' Writes a combined exclusions file including UKB recommended exclusions, heterozygosity exclusions (+/- 3*sd from mean), genetic ethnicity exclusions (based on the UKB genetic ethnic grouping variable, field 1002), and relatedness exclusions (a randomly-selected member of each related pair). For exclusion of individuals from a genetic analysis, the PLINK flag \code{--remove} accepts a space/tab-delimited text file with family IDs in the first column and within-family IDs in the second column (i.e., FID IID), without a header.
+#'
+#' @param path A path to a file.
+#'
+#' @seealso \code{\link{ukb_gen_meta}}, \code{\link{ukb_gen_pcs}} which retrieve variables to be included in a covariate file. \code{\link{ukb_gen_excl_to_na}} to update a phenotype with NAs for samples to-be-excluded based on genetic metadata, and \code{\link{ukb_gen_write_plink}} and \code{\link{ukb_gen_write_bgenie}}
+#'
+#' @importFrom utils write.table
+#' @importFrom lifecycle deprecate_stop
+#' @export
+#' @examples
+#' \dontrun{
+#' # Supply name of a file to write PLINK format combined exclusions
+#' ukb_gen_write_plink_excl("combined_exclusions.txt")
+#' }
+#'
+ukb_gen_write_plink_excl <- function(path) {
+  lifecycle::deprecate_stop("0.10", "ukb_gen_write_plink_excl()",
+                            details = defunct_message)
+  # utils::write.table(
+  #   ukb_meta_excl_plink,
+  #   file = path,
+  #   quote = FALSE,
+  #   row.names = FALSE,
+  #   col.names = FALSE
+  # )
 }

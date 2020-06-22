@@ -4,8 +4,11 @@
 \alias{ukb_gen_read_sample}
 \title{Reads an Oxford format sample file}
 \usage{
-ukb_gen_read_sample(file, col.names = c("id_1", "id_2", "missing"),
-  row.skip = 2)
+ukb_gen_read_sample(
+  file,
+  col.names = c("id_1", "id_2", "missing"),
+  row.skip = 2
+)
 }
 \arguments{
 \item{file}{A path to a sample file.}

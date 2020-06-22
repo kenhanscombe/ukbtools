@@ -4,7 +4,9 @@
 \name{icd10chapters}
 \alias{icd10chapters}
 \title{International Classification of Diseases Revision 10 (ICD-10) chapters}
-\format{An object of class \code{data.frame} with 21 rows and 3 columns.}
+\format{
+An object of class \code{data.frame} with 21 rows and 3 columns.
+}
 \usage{
 icd10chapters
 }

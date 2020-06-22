@@ -69,6 +69,7 @@ ukb_util_path = function(
       download.file(url, destfile = destfile,
                     mode = "wb")
     }
+    Sys.chmod(destfile)
     return(destfile)
   } else {
     stop(
@@ -88,7 +89,52 @@ ukb_encoding = function(  outdir = tempdir()) {
                       outdir = outdir)
 }
 
-ukb_md5 = function(filename, checksum, ...) {
+#' UKB MD5 Checksum
+#'
+#' @param file name of file to run utility on
+#' @param ... additional arguments to pass to
+#' \code{\link{ukb_util_path}}
+#'
+#' @return A character string
+#'
+#' @export
+ukb_md5 = function(file, ...) {
   path = ukb_util_path("ukbmd5", ...)
-  out = system2(path, filename)
+  out = system2(path, file, stdout = TRUE)
+  out = out[grepl("MD5=", out)]
+  out = sub(".*MD5=", "", out)
+  return(out)
+}
+
+
+#' @rdname ukb_md5
+#' @param key file to key to unpack/decrypt file
+#' @export
+ukb_unpack = function(file, key, ...) {
+  path = ukb_util_path("ukbunpack", ...)
+  out = system2(path, c(file, key))
+  if (out != 0) {
+    warning("Unpacking did not seem to complete successfully")
+  }
+  out = paste0(file, "_ukb")
+  return(out)
+}
+
+
+#' @rdname ukb_md5
+#' @param type type of conversion to do
+#' @export
+ukb_conv = function(file,
+                    type = c("r", "docs",
+                             "csv", "sas",
+                             "stata",
+                             "lims", "bulk",
+                             "txt"), ...) {
+  type = match.arg(type)
+  path = ukb_util_path("ukbconv", ...)
+  out = system2(path, c(file, type))
+  if (out != 0) {
+    warning("Convert did not seem to complete successfully")
+  }
+  return(out)
 }

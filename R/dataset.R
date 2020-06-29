@@ -102,8 +102,10 @@ ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2,
                      temporary = temporary)
   if (temporary) {
     r_file = file.path(tempdir(), basename(r_file))
+  } else {
+    r_file = file.path(path, r_file)
   }
-  source(file.path(path, r_file), local = TRUE)
+  source(r_file, local = TRUE)
 
   names(bd) <- ukb_key$col.name[match(names(bd), ukb_key$field.tab)]
   return(bd)

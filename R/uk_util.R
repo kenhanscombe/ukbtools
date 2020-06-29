@@ -154,6 +154,12 @@ ukb_fetch_bulk = function(
 
   file = normalizePath(file, mustWork = TRUE, winslash = "/")
   key = normalizePath(key, mustWork = TRUE, winslash = "/")
+  if (nchar(file) > 64) {
+    warning("File may be too long > 64 characters")
+  }
+  if (nchar(key) > 64) {
+    warning("key file may be too long > 64 characters")
+  }
 
   owd = getwd()
   if (!is.null(outdir)) {

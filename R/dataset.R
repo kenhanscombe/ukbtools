@@ -14,6 +14,8 @@ globalVariables(
 #' @param path The path to the directory containing your UKB fileset. The default value is the current directory.
 #' @param n_threads Either "max" (uses the number of cores, `parallel::detectCores()`), "dt" (default - uses the data.table default, `data.table::getDTthreads()`), or a numerical value (in which case n_threads is set to the supplied value, or `parallel::detectCores()` if it is smaller).
 #' @param data.pos Locates the data in your .html file. The .html file is read into a list; the default value data.pos = 2 indicates the second item in the list. (The first item in the list is the title of the table). You will probably not need to change this value, but if the need arises you can open the .html file in a browser and identify where in the file the data is.
+#' @param temporary Should the `R` file be copied to a temporary directory?
+#' Useful for permissions issues, especially on computing clusters.
 #'
 #' @details The \strong{index} and \strong{array} from the UKB field code are preserved in the variable name, as two numbers separated by underscores at the end of the name e.g. \emph{variable_index_array}. \strong{index} refers the assessment instance (or visit). \strong{array} captures multiple answers to the same "question". See UKB documentation for detailed descriptions of \href{http://biobank.ctsu.ox.ac.uk/crystal/instance.cgi?id=2}{index} and \href{http://biobank.ctsu.ox.ac.uk/crystal/help.cgi?cd=array}{array}.
 #'
@@ -45,7 +47,10 @@ globalVariables(
 #' ukb_df_full_join(ukb1234_data, ukb2345_data, ukb3456_data)
 #' }
 #'
-ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2) {
+ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2,
+                   temporary = FALSE) {
+
+  fileset = stringr::str_replace(fileset, "[.](r|html|tab)$", "")
 
   # Check files exist
   html_file <- stringr::str_interp("${fileset}.html")
@@ -90,7 +95,14 @@ ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2) {
   # Comment out .r read of .tab
   # Read .tab file from user named path with data.table::fread
   # Include UKB-generated categorical variable labels
-  bd <- read_ukb_tab(fileset, column_type = ukb_key$fread_column_type, path, n_threads = n_threads)
+  bd <- read_ukb_tab(fileset,
+                     column_type = ukb_key$fread_column_type,
+                     path,
+                     n_threads = n_threads,
+                     temporary = temporary)
+  if (temporary) {
+    r_file = file.path(tempdir(), basename(r_file))
+  }
   source(file.path(path, r_file), local = TRUE)
 
   names(bd) <- ukb_key$col.name[match(names(bd), ukb_key$field.tab)]
@@ -205,7 +217,9 @@ description_to_name <-  function(data) {
 # @param fileset prefix for UKB fileset
 # @param path The path to the directory containing your UKB fileset. The default value is the current directory.
 #
-read_ukb_tab <- function(fileset, column_type, path = ".", n_threads = "max") {
+read_ukb_tab <- function(fileset, column_type, path = ".",
+                         n_threads = "max",
+                         temporary = FALSE) {
   r_file <- stringr::str_interp("${fileset}.r")
   tab_file <- stringr::str_interp("${fileset}.tab")
 
@@ -221,7 +235,9 @@ read_ukb_tab <- function(fileset, column_type, path = ".", n_threads = "max") {
     replacement = stringr::str_interp(
       "# Read function edited by ukbtools ${edit_date}\n# bd <-")
   )
-
+  if (temporary) {
+    r_location = file.path(tempdir(), basename(r_location))
+  }
   cat(f, file = r_location, sep = "\n")
 
   bd <- data.table::fread(

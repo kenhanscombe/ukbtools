@@ -124,19 +124,38 @@ ukb_unpack = function(file, key, ...) {
 
 #' @rdname ukb_md5
 #' @param type type of conversion to do
+#' @param encoding_file encoding file to map for `ukbconv`.  If want no
+#' encoding, set to \code{NULL}
 #' @export
 ukb_conv = function(file,
+                    encoding_file = "encoding.ukb",
                     type = c("r", "docs",
                              "csv", "sas",
                              "stata",
                              "lims", "bulk",
                              "txt"), ...) {
   type = match.arg(type)
+  if (!is.null(encoding_file)) {
+    url = paste0("http://biobank.ndph.ox.ac.uk/showcase/util/",
+                 "encoding.ukb")
+    if (!file.exists(encoding_file)) {
+      utils::download.file(url, destfile = encoding_file,
+                           mode = "wb")
+    }
+  }
   path = ukb_util_path("ukbconv", ...)
-  out = system2(path, c(file, type))
+  args = c(file, type)
+  # if not default file
+  if (!is.null(encoding_file) && encoding_file != "encoding.ukb") {
+    args = c(args, "-E", encoding_file)
+  }
+  out = system2(path, args)
+
   if (out != 0) {
     warning("Convert did not seem to complete successfully")
   }
+
+
   return(out)
 }
 

@@ -13,6 +13,7 @@ ukb_unpack(file, key, ...)
 
 ukb_conv(
   file,
+  encoding_file = "encoding.ukb",
   type = c("r", "docs", "csv", "sas", "stata", "lims", "bulk", "txt"),
   ...
 )
@@ -26,6 +27,9 @@ ukb_fetch_bulk(file, key, start = NULL, outdir = NULL, ...)
 \code{\link{ukb_util_path}}}
 
 \item{key}{file to key to unpack/decrypt file}
+
+\item{encoding_file}{encoding file to map for `ukbconv`.  If want no
+encoding, set to \code{NULL}}
 
 \item{type}{type of conversion to do}
 

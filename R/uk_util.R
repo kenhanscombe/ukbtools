@@ -128,12 +128,13 @@ ukb_unpack = function(file, key, ...) {
 #' encoding, set to \code{NULL}
 #' @export
 ukb_conv = function(file,
-                    encoding_file = "encoding.ukb",
                     type = c("r", "docs",
                              "csv", "sas",
                              "stata",
                              "lims", "bulk",
-                             "txt"), ...) {
+                             "txt"),
+                    encoding_file = "encoding.ukb",
+                    ...) {
   type = match.arg(type)
   if (!is.null(encoding_file)) {
     url = paste0("http://biobank.ndph.ox.ac.uk/showcase/util/",

@@ -6,6 +6,7 @@ globalVariables(
     "Kinship", "categorized_var", "dx", "freq", "tile_range", "lower", "upper",
     "mid", "frequency", "disease"))
 
+
 #' Reads a UK Biobank phenotype fileset and returns a single dataset.
 #'
 #' A UK Biobank \emph{fileset} includes a \emph{.tab} file containing the raw data with field codes instead of variable names, an \emph{.r} (\emph{sic}) file containing code to read raw data (inserts categorical variable levels and labels), and an \emph{.html} file containing tables mapping field code to variable name, and labels and levels for categorical variables.
@@ -140,6 +141,8 @@ ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2,
 #' }
 #'
 ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
+  fileset = stringr::str_replace(fileset, "[.](r|html|tab)$", "")
+
   html_file <- stringr::str_interp("${fileset}.html")
   html_internal_doc <- xml2::read_html(file.path(path, html_file))
   html_table_nodes <- xml2::xml_find_all(html_internal_doc, "//table")
@@ -222,6 +225,8 @@ description_to_name <-  function(data) {
 read_ukb_tab <- function(fileset, column_type, path = ".",
                          n_threads = "max",
                          temporary = FALSE) {
+  fileset = stringr::str_replace(fileset, "[.](r|html|tab)$", "")
+
   r_file <- stringr::str_interp("${fileset}.r")
   tab_file <- stringr::str_interp("${fileset}.tab")
 

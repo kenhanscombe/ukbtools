@@ -99,8 +99,8 @@ ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2,
     if (ncol(withdraw_ids) > 1)
       warning(
         paste0(
-        "withdrawal_file has multiple columns, ",
-        "it should not be just one column (no header) of IDs")
+          "withdrawal_file has multiple columns, ",
+          "it should not be just one column (no header) of IDs")
       )
     withdraw_ids = withdraw_ids[[1]]
   }
@@ -137,7 +137,15 @@ ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2,
 
   names(bd) <- ukb_key$col.name[match(names(bd), ukb_key$field.tab)]
   if (!is.null(withdraw_ids)) {
-    bd = bd[ !bd$eid %in% withdraw_ids, ]
+    if ("eid" %in% colnames(bd)) {
+      bd = bd[ !bd$eid %in% withdraw_ids, ]
+    } else {
+      warning(
+        paste0(
+          "eid not in data set column name and withdraw IDs are given,",
+          " no records were dropped!")
+      )
+    }
   }
   return(bd)
 }

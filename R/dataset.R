@@ -17,6 +17,8 @@ globalVariables(
 #' @param data.pos Locates the data in your .html file. The .html file is read into a list; the default value data.pos = 2 indicates the second item in the list. (The first item in the list is the title of the table). You will probably not need to change this value, but if the need arises you can open the .html file in a browser and identify where in the file the data is.
 #' @param temporary Should the `R` file be copied to a temporary directory?
 #' Useful for permissions issues, especially on computing clusters.
+#' @param withdraw_file file of identifiers of those who have
+#' withdrawn from UK Biobank to exclude from the data set.
 #'
 #' @details The \strong{index} and \strong{array} from the UKB field code are preserved in the variable name, as two numbers separated by underscores at the end of the name e.g. \emph{variable_index_array}. \strong{index} refers the assessment instance (or visit). \strong{array} captures multiple answers to the same "question". See UKB documentation for detailed descriptions of \href{http://biobank.ctsu.ox.ac.uk/crystal/instance.cgi?id=2}{index} and \href{http://biobank.ctsu.ox.ac.uk/crystal/help.cgi?cd=array}{array}.
 #'
@@ -49,7 +51,7 @@ globalVariables(
 #' }
 #'
 ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2,
-                   temporary = FALSE) {
+                   temporary = FALSE, withdraw_file = NULL) {
 
   fileset = stringr::str_replace(fileset, "[.](r|html|tab)$", "")
 
@@ -76,7 +78,32 @@ ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2,
   )
 
   ukb_key <- ukb_df_field(fileset, path = path) %>%
-    mutate(fread_column_type = col_type[col.type])
+    dplyr::mutate(fread_column_type = col_type[col.type])
+
+  withdraw_ids = NULL
+  if (file.exists(withdraw_file)) {
+    withdraw_ids  <- data.table::fread(
+      input = withdraw_file,
+      sep = "\t",
+      header = FALSE,
+      data.table = FALSE,
+      showProgress = FALSE,
+      nThread = if(n_threads == "max") {
+        parallel::detectCores()
+      } else if (n_threads == "dt") {
+        data.table::getDTthreads()
+      } else if (is.numeric(n_threads)) {
+        min(n_threads, parallel::detectCores())
+      }
+    )
+    if (ncol(withdraw_ids) > 1)
+      warning(
+        paste0(
+        "withdrawal_file has multiple columns, ",
+        "it should not be just one column (no header) of IDs")
+      )
+    withdraw_ids = withdraw_ids[[1]]
+  }
 
   bad_col_type <- is.na(ukb_key$fread_column_type)
 
@@ -109,6 +136,9 @@ ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2,
   source(r_file, local = TRUE)
 
   names(bd) <- ukb_key$col.name[match(names(bd), ukb_key$field.tab)]
+  if (!is.null(withdraw_ids)) {
+    bd = bd[ !bd$eid %in% withdraw_ids, ]
+  }
   return(bd)
 }
 

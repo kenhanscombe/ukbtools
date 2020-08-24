@@ -4,7 +4,14 @@
 \alias{ukb_df}
 \title{Reads a UK Biobank phenotype fileset and returns a single dataset.}
 \usage{
-ukb_df(fileset, path = ".", n_threads = "dt", data.pos = 2, temporary = FALSE)
+ukb_df(
+  fileset,
+  path = ".",
+  n_threads = "dt",
+  data.pos = 2,
+  temporary = FALSE,
+  withdraw_file = NULL
+)
 }
 \arguments{
 \item{fileset}{The prefix for a UKB fileset, e.g., ukbxxxx (for ukbxxxx.tab, ukbxxxx.r, ukbxxxx.html)}
@@ -17,6 +24,9 @@ ukb_df(fileset, path = ".", n_threads = "dt", data.pos = 2, temporary = FALSE)
 
 \item{temporary}{Should the `R` file be copied to a temporary directory?
 Useful for permissions issues, especially on computing clusters.}
+
+\item{withdraw_file}{file of identifiers of those who have
+withdrawn from UK Biobank to exclude from the data set.}
 }
 \value{
 A dataframe with variable names in snake_case (lowercase and separated by an underscore).

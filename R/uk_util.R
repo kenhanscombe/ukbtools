@@ -84,7 +84,7 @@ ukb_util_path = function(
 
 #' @rdname ukb_util_path
 #' @export
-ukb_encoding = function(  outdir = tempdir()) {
+ukb_encoding = function(outdir = tempdir()) {
   res = ukb_util_path(util = "encoding.ukb",
                       download = TRUE,
                       outdir = outdir)
@@ -155,7 +155,6 @@ ukb_conv = function(file,
   if (out != 0) {
     warning("Convert did not seem to complete successfully")
   }
-
 
   return(out)
 }

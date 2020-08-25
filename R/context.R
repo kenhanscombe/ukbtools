@@ -91,7 +91,8 @@ ukb_context <- function(
       geom_density(na.rm = TRUE) +
       scale_fill_manual(values = c("grey35", NA)) +
       scale_color_manual(values = c("grey35", "hotpink")) +
-      theme(legend.position = "none", axis.title.x = element_text(face = "bold"),
+      theme(legend.position = "none",
+            axis.title.x = element_text(face = "bold"),
             panel.grid = element_blank()) +
       labs(x = "Townsend deprivation index"),
 
@@ -100,7 +101,8 @@ ukb_context <- function(
       geom_bar(position = bar.position, na.rm = TRUE, width = .7) +
       scale_fill_manual(values = c("grey35", "hotpink"), na.value = "grey65") +
       scale_y_continuous(labels = format_cnt) +
-      theme(legend.position = "none", axis.title.y = element_text(face = "bold"),
+      theme(legend.position = "none",
+            axis.title.y = element_text(face = "bold"),
             panel.grid = element_blank()) +
       labs(x = "Ethnic Background", y = count_lab) +
       coord_flip(),
@@ -110,7 +112,8 @@ ukb_context <- function(
       geom_bar(position = bar.position, na.rm = TRUE, width = .6) +
       scale_fill_manual(values = c("grey35", "hotpink"), na.value = "grey65") +
       scale_y_continuous(labels = format_cnt) +
-      theme(legend.position = "none", axis.title.y = element_text(face = "bold"),
+      theme(legend.position = "none",
+            axis.title.y = element_text(face = "bold"),
             panel.grid = element_blank()) +
       labs(x = "Assessment Centre", y = count_lab) +
       coord_flip(),
@@ -120,7 +123,8 @@ ukb_context <- function(
       geom_bar(position = bar.position, na.rm = TRUE, width = .3) +
       scale_fill_manual(values = c("grey35", "hotpink"), na.value = "grey65") +
       scale_y_continuous(labels = format_cnt) +
-      theme(legend.position = "none", axis.title.y = element_text(face = "bold"),
+      theme(legend.position = "none",
+            axis.title.y = element_text(face = "bold"),
             panel.grid = element_blank()) +
       labs(x = "Employment Status", y = count_lab) +
       coord_flip(),

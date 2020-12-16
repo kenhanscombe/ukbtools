@@ -16,7 +16,7 @@ ukb_util_get(
 
 \item{download}{Should the utility be downloaded if not found? Default is \code{TRUE}.}
 
-\item{out_dir}{The output directory to download the UKB utility to. Default \code{tempdir()}.}
+\item{out_dir}{The output directory to download the UKB utility to. Default \code{tempdir()} - UKB utility and temporary directory will be deleted at the end of the current session.}
 }
 \value{
 Path to the downloaded utility.

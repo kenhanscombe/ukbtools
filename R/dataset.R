@@ -81,7 +81,7 @@ ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2,
     dplyr::mutate(fread_column_type = col_type[col.type])
 
   withdraw_ids = NULL
-  if (file.exists(withdraw_file)) {
+  if (!is.null(withdraw_file) && file.exists(withdraw_file)) {
     withdraw_ids  <- data.table::fread(
       input = withdraw_file,
       sep = "\t",

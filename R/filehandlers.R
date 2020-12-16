@@ -196,7 +196,7 @@ ukb_util_conv <- function(file,
 #' Downloads approved bulk data files.
 #'
 # #' @rdname ukb_util_md5
-#' @param file Path to ?.
+#' @param file Path to bulk file
 #' @param key Path to key file.
 #' @param start start of the fetching, 1-indexed
 #' @param out_dir output directory of download

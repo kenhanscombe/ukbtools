@@ -2,7 +2,7 @@
 % Please edit documentation in R/filehandlers.R
 \name{ukb_util_conv}
 \alias{ukb_util_conv}
-\title{Convert unpacked UKB data to other formats.}
+\title{Converts unpacked UKB data to other formats.}
 \usage{
 ukb_util_conv(
   file,
@@ -23,5 +23,5 @@ encoding, set to \code{NULL}}
 \code{\link{ukb_util_get}}.}
 }
 \description{
-Convert unpacked UKB data to other formats.
+Converts unpacked UKB data to other formats.
 }

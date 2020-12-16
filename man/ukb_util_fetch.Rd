@@ -7,9 +7,9 @@
 ukb_util_fetch(file, key, start = NULL, out_dir = NULL, ...)
 }
 \arguments{
-\item{file}{Path to decrypted file to convert.}
+\item{file}{Path to bulk file}
 
-\item{key}{Path to key to unpack/decrypt file.}
+\item{key}{Path to key file.}
 
 \item{start}{start of the fetching, 1-indexed}
 

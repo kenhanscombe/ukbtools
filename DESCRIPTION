@@ -29,8 +29,9 @@ Imports:
     doParallel,
     lifecycle,
     xml2,
-    rvest
-RoxygenNote: 7.1.0
+    rvest,
+    utils
+RoxygenNote: 7.1.1
 Suggests: 
     knitr,
     rmarkdown,

@@ -6,6 +6,7 @@ globalVariables(
     "Kinship", "categorized_var", "dx", "freq", "tile_range", "lower", "upper",
     "mid", "frequency", "disease"))
 
+
 #' Reads a UK Biobank phenotype fileset and returns a single dataset.
 #'
 #' A UK Biobank \emph{fileset} includes a \emph{.tab} file containing the raw data with field codes instead of variable names, an \emph{.r} (\emph{sic}) file containing code to read raw data (inserts categorical variable levels and labels), and an \emph{.html} file containing tables mapping field code to variable name, and labels and levels for categorical variables.
@@ -14,6 +15,10 @@ globalVariables(
 #' @param path The path to the directory containing your UKB fileset. The default value is the current directory.
 #' @param n_threads Either "max" (uses the number of cores, `parallel::detectCores()`), "dt" (default - uses the data.table default, `data.table::getDTthreads()`), or a numerical value (in which case n_threads is set to the supplied value, or `parallel::detectCores()` if it is smaller).
 #' @param data.pos Locates the data in your .html file. The .html file is read into a list; the default value data.pos = 2 indicates the second item in the list. (The first item in the list is the title of the table). You will probably not need to change this value, but if the need arises you can open the .html file in a browser and identify where in the file the data is.
+#' @param temporary Should the `R` file be copied to a temporary directory?
+#' Useful for permissions issues, especially on computing clusters.
+#' @param withdraw_file file of identifiers of those who have
+#' withdrawn from UK Biobank to exclude from the data set.
 #'
 #' @details The \strong{index} and \strong{array} from the UKB field code are preserved in the variable name, as two numbers separated by underscores at the end of the name e.g. \emph{variable_index_array}. \strong{index} refers the assessment instance (or visit). \strong{array} captures multiple answers to the same "question". See UKB documentation for detailed descriptions of \href{http://biobank.ctsu.ox.ac.uk/crystal/instance.cgi?id=2}{index} and \href{http://biobank.ctsu.ox.ac.uk/crystal/help.cgi?cd=array}{array}.
 #'
@@ -45,7 +50,10 @@ globalVariables(
 #' ukb_df_full_join(ukb1234_data, ukb2345_data, ukb3456_data)
 #' }
 #'
-ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2) {
+ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2,
+                   temporary = FALSE, withdraw_file = NULL) {
+
+  fileset = stringr::str_replace(fileset, "[.](r|html|tab)$", "")
 
   # Check files exist
   html_file <- stringr::str_interp("${fileset}.html")
@@ -70,7 +78,32 @@ ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2) {
   )
 
   ukb_key <- ukb_df_field(fileset, path = path) %>%
-    mutate(fread_column_type = col_type[col.type])
+    dplyr::mutate(fread_column_type = col_type[col.type])
+
+  withdraw_ids = NULL
+  if (!is.null(withdraw_file) && file.exists(withdraw_file)) {
+    withdraw_ids  <- data.table::fread(
+      input = withdraw_file,
+      sep = "\t",
+      header = FALSE,
+      data.table = FALSE,
+      showProgress = FALSE,
+      nThread = if(n_threads == "max") {
+        parallel::detectCores()
+      } else if (n_threads == "dt") {
+        data.table::getDTthreads()
+      } else if (is.numeric(n_threads)) {
+        min(n_threads, parallel::detectCores())
+      }
+    )
+    if (ncol(withdraw_ids) > 1)
+      warning(
+        paste0(
+          "withdrawal_file has multiple columns, ",
+          "it should not be just one column (no header) of IDs")
+      )
+    withdraw_ids = withdraw_ids[[1]]
+  }
 
   bad_col_type <- is.na(ukb_key$fread_column_type)
 
@@ -90,10 +123,30 @@ ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2) {
   # Comment out .r read of .tab
   # Read .tab file from user named path with data.table::fread
   # Include UKB-generated categorical variable labels
-  bd <- read_ukb_tab(fileset, column_type = ukb_key$fread_column_type, path, n_threads = n_threads)
-  source(file.path(path, r_file), local = TRUE)
+  bd <- read_ukb_tab(fileset,
+                     column_type = ukb_key$fread_column_type,
+                     path,
+                     n_threads = n_threads,
+                     temporary = temporary)
+  if (temporary) {
+    r_file = file.path(tempdir(), basename(r_file))
+  } else {
+    r_file = file.path(path, r_file)
+  }
+  source(r_file, local = TRUE)
 
   names(bd) <- ukb_key$col.name[match(names(bd), ukb_key$field.tab)]
+  if (!is.null(withdraw_ids)) {
+    if ("eid" %in% colnames(bd)) {
+      bd = bd[ !bd$eid %in% withdraw_ids, ]
+    } else {
+      warning(
+        paste0(
+          "eid not in data set column name and withdraw IDs are given,",
+          " no records were dropped!")
+      )
+    }
+  }
   return(bd)
 }
 
@@ -126,6 +179,8 @@ ukb_df <- function(fileset, path = ".", n_threads = "dt", data.pos = 2) {
 #' }
 #'
 ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
+  fileset = stringr::str_replace(fileset, "[.](r|html|tab)$", "")
+
   html_file <- stringr::str_interp("${fileset}.html")
   html_internal_doc <- xml2::read_html(file.path(path, html_file))
   html_table_nodes <- xml2::xml_find_all(html_internal_doc, "//table")
@@ -205,7 +260,11 @@ description_to_name <-  function(data) {
 # @param fileset prefix for UKB fileset
 # @param path The path to the directory containing your UKB fileset. The default value is the current directory.
 #
-read_ukb_tab <- function(fileset, column_type, path = ".", n_threads = "max") {
+read_ukb_tab <- function(fileset, column_type, path = ".",
+                         n_threads = "max",
+                         temporary = FALSE) {
+  fileset = stringr::str_replace(fileset, "[.](r|html|tab)$", "")
+
   r_file <- stringr::str_interp("${fileset}.r")
   tab_file <- stringr::str_interp("${fileset}.tab")
 
@@ -221,7 +280,9 @@ read_ukb_tab <- function(fileset, column_type, path = ".", n_threads = "max") {
     replacement = stringr::str_interp(
       "# Read function edited by ukbtools ${edit_date}\n# bd <-")
   )
-
+  if (temporary) {
+    r_location = file.path(tempdir(), basename(r_location))
+  }
   cat(f, file = r_location, sep = "\n")
 
   bd <- data.table::fread(
@@ -252,7 +313,7 @@ read_ukb_tab <- function(fileset, column_type, path = ".", n_threads = "max") {
 #' @param ... Supply comma separated unquoted names of to-be-merged UKB datasets (created with \code{\link{ukb_df}}). Arguments are passed to \code{list}.
 #' @param by Variable used to merge multiple dataframes (default = "eid").
 #'
-#' @details The function takes a comma separated list of unquoted datasets. By explicitly setting the join key to "eid" only (Default value of the \code{by} parameter), any additional variables common to any two tables will have ".x" and ".y" appended to their names. If you are satisfied the additional variables are identical to the original, the copies can be safely deleted. For example, if \code{setequal(my_ukb_data$var, my_ukb_data$var.x)} is \code{TRUE}, then my_ukb_data$var.x can be dropped. A \code{dlyr::full_join} is like the set operation union in that all observations from all tables are included, i.e., all samples are included even if they are not included in all datasets.
+#' @details The function takes a comma separated list of unquoted datasets. By explicitly setting the join key to "eid" only (Default value of the \code{by} parameter), any additional variables common to any two tables will have ".x" and ".y" appended to their names. If you are satisfied the additional variables are identical to the original, the copies can be safely deleted. For example, if \code{setequal(my_ukb_data$var, my_ukb_data$var.x)} is \code{TRUE}, then my_ukb_data$var.x can be dropped. A \code{dplyr::full_join} is like the set operation union in that all observations from all tables are included, i.e., all samples are included even if they are not included in all datasets.
 #'
 #' NB. \code{ukb_df_full_join} will fail if any variable names are repeated **within** a single UKB dataset. This is unlikely to occur, however, \code{ukb_df} creates variable names by combining a snake_case descriptor with the variable's **index** and **array**. If an index_array combination is incorrectly repeated, this will result in a duplicated variable. If the join fails, you can use \code{\link{ukb_df_duplicated_name}} to find duplicated names. See \code{vignette(topic = "explore-ukb-data", package = "ukbtools")} for further details.
 #'

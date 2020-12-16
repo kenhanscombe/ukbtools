@@ -4,7 +4,14 @@
 \alias{ukb_df}
 \title{Reads a UK Biobank phenotype fileset and returns a single dataset.}
 \usage{
-ukb_df(fileset, path = ".", n_threads = "dt", data.pos = 2)
+ukb_df(
+  fileset,
+  path = ".",
+  n_threads = "dt",
+  data.pos = 2,
+  temporary = FALSE,
+  withdraw_file = NULL
+)
 }
 \arguments{
 \item{fileset}{The prefix for a UKB fileset, e.g., ukbxxxx (for ukbxxxx.tab, ukbxxxx.r, ukbxxxx.html)}
@@ -14,6 +21,12 @@ ukb_df(fileset, path = ".", n_threads = "dt", data.pos = 2)
 \item{n_threads}{Either "max" (uses the number of cores, `parallel::detectCores()`), "dt" (default - uses the data.table default, `data.table::getDTthreads()`), or a numerical value (in which case n_threads is set to the supplied value, or `parallel::detectCores()` if it is smaller).}
 
 \item{data.pos}{Locates the data in your .html file. The .html file is read into a list; the default value data.pos = 2 indicates the second item in the list. (The first item in the list is the title of the table). You will probably not need to change this value, but if the need arises you can open the .html file in a browser and identify where in the file the data is.}
+
+\item{temporary}{Should the `R` file be copied to a temporary directory?
+Useful for permissions issues, especially on computing clusters.}
+
+\item{withdraw_file}{file of identifiers of those who have
+withdrawn from UK Biobank to exclude from the data set.}
 }
 \value{
 A dataframe with variable names in snake_case (lowercase and separated by an underscore).

@@ -3,8 +3,8 @@ ukbtools <img src='man/figures/logo.png' align="right" height="137.5" />
 
 <!-- badges: start -->
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ukbtools)](https://cran.r-project.org/package=ukbtools)
-[![Travis build status](https://travis-ci.com/kenhanscombe/ukbtools.svg?branch=master)](https://travis-ci.com/kenhanscombe/ukbtools)
 [![Codecov test coverage](https://codecov.io/gh/kenhanscombe/ukbtools/branch/master/graph/badge.svg)](https://codecov.io/gh/kenhanscombe/ukbtools?branch=master)
+[![R-CMD-check](https://github.com/kenhanscombe/ukbtools/workflows/R-CMD-check/badge.svg)](https://github.com/kenhanscombe/ukbtools/actions)
 <!-- badges: end -->
 
 After downloading and decrypting your UK Biobank (UKB) data with the supplied [UKB programs] (http://biobank.ctsu.ox.ac.uk/crystal/docs/UsingUKBData.pdf), you have multiple files that need to be brought together to give you a dataset to explore. The data file has column names that are edited field-codes from the [UKB data showcase](http://www.ukbiobank.ac.uk/data-showcase/). ukbtools makes it easy to collapse the multiple UKB files into a single dataset for analysis, in the process giving meaningful names to the variables. The package also includes functionality to retrieve ICD diagnoses, explore a sample subset in the context of the UKB sample, and collect genetic metadata.

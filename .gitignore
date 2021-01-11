@@ -3,4 +3,5 @@ Meta
 .Rhistory
 .RData
 .Ruserdata
+.vscode/
 ukbtools.Rproj

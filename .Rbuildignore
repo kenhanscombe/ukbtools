@@ -7,7 +7,6 @@
 ^data-raw$
 ^\./R/context_body\.R$
 ^cran-comments\.md$
-^\.travis\.yml$
 ^ukbtools\.Rproj$
 ^README.Rmd
 ^_pkgdown.yml

@@ -1,6 +1,6 @@
-context("Defunct genetic metadata functionality")
+context("defunct functionality")
 
-test_that("defunct error produced", {
+test_that("defunct error produced for defunct functions", {
   lifecycle::expect_defunct(ukb_gen_meta())
   lifecycle::expect_defunct(ukb_gen_pcs())
   lifecycle::expect_defunct(ukb_gen_excl())

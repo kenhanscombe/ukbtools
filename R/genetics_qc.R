@@ -81,22 +81,37 @@ ukb_gen_sqc_names <- function(data, col_names_only = FALSE) {
 
 #' Relatedness count
 #'
-#' @description Creates a summary count table of the number of individuals and pairs at each degree of relatedness that occurs in the UKB sample, and an optional plot.
+#' @description Creates a summary count table of the number of individuals and
+#' pairs at each degree of relatedness that occurs in the UKB sample, and an
+#' optional plot.
 #'
-#' @param data A dataframe of the genetic relatedness data including \href{http://people.virginia.edu/~wc9c/KING/manual.html}{KING kinship coefficient}, and proportion of alleles IBS = 0. See Details.
-#' @return If \code{plot = FALSE} (default), a count of individuals and pairs at each level of relatedness. If \code{plot = TRUE}, reproduces the scatterplot of genetic relatedness against proportion of SNPs shared IBS=0 (each point representing a pair of related UKB individuals) from the \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{genotyping and quality control} documentation.
-#' @param plot Logical indicating whether to plot relatedness figure. Default = FALSE.
+#' @param data A dataframe of the genetic relatedness data including
+#' \href{http://people.virginia.edu/~wc9c/KING/manual.html}{KING kinship coefficient},
+#' and proportion of alleles IBS = 0. See Details.
+#' @return If \code{plot = FALSE} (default), a count of individuals and pairs
+#' at each level of relatedness. If \code{plot = TRUE}, reproduces the
+#' scatterplot of genetic relatedness against proportion of SNPs shared IBS=0
+#' (each point representing a pair of related UKB individuals) from the
+#' \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{genotyping and quality control}
+#' documentation.
+#' @param plot Logical indicating whether to plot relatedness figure. Default =
+#' FALSE.
 #'
-#' @details Use UKB supplied program `ukbgene` to retrieve genetic relatedness data file ukbA_rel_sP.txt. See \href{http://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=664}{UKB Resource 664}. The count and plot include individuals with IBS0 >= 0.
+#' @details Use UKB supplied program `ukbgene` to retrieve genetic relatedness
+#' data file ukbA_rel_sP.txt. See
+#' \href{http://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=664}{UKB Resource 664}.
+#' The count and plot include individuals with IBS0 >= 0.
 #'
 #' @import dplyr ggplot2
 #' @importFrom magrittr "%>%"
-#' @seealso \code{\link{ukb_gen_related_with_data}}, \code{\link{ukb_gen_samples_to_remove}}
+#' @seealso \code{\link{ukb_gen_related_with_data}},
+#' \code{\link{ukb_gen_samples_to_remove}}
 #' @export
 #' @examples
 #' \dontrun{
-#' # Use UKB supplied program `ukbgene` to retrieve genetic relatedness file ukbA_rel_sP.txt.
-#' See \href{http://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=664}{UKB Resource 664}.
+#' # Use UKB supplied program `ukbgene` to retrieve genetic relatedness file
+#' ukbA_rel_sP.txt. See
+#' \href{http://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=664}{UKB Resource 664}.
 #' With the whitespace delimited file read into R as e.g. ukb_relatedness,
 #' generate a dataframe of counts or a plot as follows:
 #'
@@ -150,11 +165,11 @@ ukb_gen_rel_count <- function(data, plot = FALSE) {
 #' @seealso \code{\link{ukb_gen_rel_count}}, \code{\link{ukb_gen_samples_to_remove}}
 #' @export
 ukb_gen_related_with_data <- function(data, ukb_with_data, cutoff = 0.0884) {
-  data %>%
-    dplyr::filter(
-      Kinship > cutoff &
-             !(!(ID1 %in% ukb_with_data) | !(ID2 %in% ukb_with_data))
-      )
+    data %>%
+        dplyr::filter(
+            Kinship > cutoff &
+                !(!(ID1 %in% ukb_with_data) | !(ID2 %in% ukb_with_data))
+        )
 }
 
 

@@ -1,8 +1,8 @@
-context("Munging UKB files")
+context("munging files")
 
 library(ukbtools)
 
-test_that("ukb_df_field creates a valid field-lookup dataframe", {
+test_that("ukb_df_field() creates a valid field-lookup dataframe", {
   path_to_example_data <- system.file("extdata", package = "ukbtools")
   f <- ukb_df_field("ukbxxxx", path_to_example_data)
 

@@ -7,23 +7,37 @@
 ukb_gen_rel_count(data, plot = FALSE)
 }
 \arguments{
-\item{data}{A dataframe of the genetic relatedness data including \href{http://people.virginia.edu/~wc9c/KING/manual.html}{KING kinship coefficient}, and proportion of alleles IBS = 0. See Details.}
+\item{data}{A dataframe of the genetic relatedness data including
+\href{http://people.virginia.edu/~wc9c/KING/manual.html}{KING kinship coefficient},
+and proportion of alleles IBS = 0. See Details.}
 
-\item{plot}{Logical indicating whether to plot relatedness figure. Default = FALSE.}
+\item{plot}{Logical indicating whether to plot relatedness figure. Default =
+FALSE.}
 }
 \value{
-If \code{plot = FALSE} (default), a count of individuals and pairs at each level of relatedness. If \code{plot = TRUE}, reproduces the scatterplot of genetic relatedness against proportion of SNPs shared IBS=0 (each point representing a pair of related UKB individuals) from the \href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{genotyping and quality control} documentation.
+If \code{plot = FALSE} (default), a count of individuals and pairs
+at each level of relatedness. If \code{plot = TRUE}, reproduces the
+scatterplot of genetic relatedness against proportion of SNPs shared IBS=0
+(each point representing a pair of related UKB individuals) from the
+\href{http://www.ukbiobank.ac.uk/wp-content/uploads/2014/04/UKBiobank_genotyping_QC_documentation-web.pdf}{genotyping and quality control}
+documentation.
 }
 \description{
-Creates a summary count table of the number of individuals and pairs at each degree of relatedness that occurs in the UKB sample, and an optional plot.
+Creates a summary count table of the number of individuals and
+pairs at each degree of relatedness that occurs in the UKB sample, and an
+optional plot.
 }
 \details{
-Use UKB supplied program `ukbgene` to retrieve genetic relatedness data file ukbA_rel_sP.txt. See \href{http://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=664}{UKB Resource 664}. The count and plot include individuals with IBS0 >= 0.
+Use UKB supplied program `ukbgene` to retrieve genetic relatedness
+data file ukbA_rel_sP.txt. See
+\href{http://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=664}{UKB Resource 664}.
+The count and plot include individuals with IBS0 >= 0.
 }
 \examples{
 \dontrun{
-# Use UKB supplied program `ukbgene` to retrieve genetic relatedness file ukbA_rel_sP.txt.
-See \href{http://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=664}{UKB Resource 664}.
+# Use UKB supplied program `ukbgene` to retrieve genetic relatedness file
+ukbA_rel_sP.txt. See
+\href{http://biobank.ctsu.ox.ac.uk/crystal/refer.cgi?id=664}{UKB Resource 664}.
 With the whitespace delimited file read into R as e.g. ukb_relatedness,
 generate a dataframe of counts or a plot as follows:
 
@@ -32,5 +46,6 @@ ukb_gen_rel_count(ukb_relatedness, plot = TRUE)
 }
 }
 \seealso{
-\code{\link{ukb_gen_related_with_data}}, \code{\link{ukb_gen_samples_to_remove}}
+\code{\link{ukb_gen_related_with_data}},
+\code{\link{ukb_gen_samples_to_remove}}
 }

@@ -147,24 +147,31 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>The UKB relatedness data as a dataframe (header: ID1, ID2, HetHet, IBS0, Kinship)</p></td>
+      <td><p>The UKB relatedness data as a dataframe (header: ID1,
+ID2, HetHet, IBS0, Kinship)</p></td>
     </tr>
     <tr>
       <th>ukb_with_data</th>
-      <td><p>A character vector of ukb eids with data on the phenotype of interest</p></td>
+      <td><p>A character vector of ukb eids with data on the
+phenotype of interest</p></td>
     </tr>
     <tr>
       <th>cutoff</th>
-      <td><p>KING kingship coefficient cutoff (default 0.0884 includes pairs with greater than 3rd-degree relatedness)</p></td>
+      <td><p>KING kingship coefficient cutoff (default 0.0884
+includes pairs with greater than 3rd-degree relatedness). KING
+kinship coefficient: &gt;0.354 duplicate/MZ twin, [0.177, 0.354]
+1st-degree, [0.0884, 0.177] 2nd-degree, [0.0442, 0.0884] 3rd-degree.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dataframe (header: ID1, ID2, HetHet, IBS0, Kinship) for the subset of individuals with data.</p>
+    <p>A dataframe (header: ID1, ID2, HetHet, IBS0, Kinship) for the
+subset of individuals with data.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='ukb_gen_rel_count.html'>ukb_gen_rel_count</a></code>, <code><a href='ukb_gen_samples_to_remove.html'>ukb_gen_samples_to_remove</a></code></p></div>
+    <div class='dont-index'><p><code><a href='ukb_gen_rel_count.html'>ukb_gen_rel_count</a></code>,
+<code><a href='ukb_gen_samples_to_remove.html'>ukb_gen_samples_to_remove</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

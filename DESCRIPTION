@@ -29,7 +29,8 @@ Imports:
     doParallel,
     lifecycle,
     xml2,
-    rvest
+    rvest,
+    withr
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,

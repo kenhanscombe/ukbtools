@@ -156,13 +156,21 @@ ukb_gen_rel_count <- function(data, plot = FALSE) {
 
 #' Subset of the UKB relatedness dataframe with data
 #'
-#' @param data The UKB relatedness data as a dataframe (header: ID1, ID2, HetHet, IBS0, Kinship)
-#' @param ukb_with_data A character vector of ukb eids with data on the phenotype of interest
-#' @param cutoff KING kingship coefficient cutoff (default 0.0884 includes pairs with greater than 3rd-degree relatedness)
+#' @param data The UKB relatedness data as a dataframe (header: ID1,
+#' ID2, HetHet, IBS0, Kinship)
+#' @param ukb_with_data A character vector of ukb eids with data on the
+#' phenotype of interest
+#' @param cutoff KING kingship coefficient cutoff (default 0.0884
+#' includes pairs with greater than 3rd-degree relatedness). KING
+#' kinship coefficient: >0.354 duplicate/MZ twin, [0.177, 0.354]
+#' 1st-degree, [0.0884, 0.177] 2nd-degree, [0.0442, 0.0884] 3rd-degree.
 #'
-#' @return A dataframe (header: ID1, ID2, HetHet, IBS0, Kinship) for the subset of individuals with data.
-#' @import tidyr dplyr
-#' @seealso \code{\link{ukb_gen_rel_count}}, \code{\link{ukb_gen_samples_to_remove}}
+#' @return A dataframe (header: ID1, ID2, HetHet, IBS0, Kinship) for the
+#' subset of individuals with data.
+#'
+#' @importFrom dplyr filter
+#' @seealso \code{\link{ukb_gen_rel_count}},
+#' \code{\link{ukb_gen_samples_to_remove}}
 #' @export
 ukb_gen_related_with_data <- function(data, ukb_with_data, cutoff = 0.0884) {
     data %>%

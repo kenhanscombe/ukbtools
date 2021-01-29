@@ -7,18 +7,25 @@
 ukb_gen_related_with_data(data, ukb_with_data, cutoff = 0.0884)
 }
 \arguments{
-\item{data}{The UKB relatedness data as a dataframe (header: ID1, ID2, HetHet, IBS0, Kinship)}
+\item{data}{The UKB relatedness data as a dataframe (header: ID1,
+ID2, HetHet, IBS0, Kinship)}
 
-\item{ukb_with_data}{A character vector of ukb eids with data on the phenotype of interest}
+\item{ukb_with_data}{A character vector of ukb eids with data on the
+phenotype of interest}
 
-\item{cutoff}{KING kingship coefficient cutoff (default 0.0884 includes pairs with greater than 3rd-degree relatedness)}
+\item{cutoff}{KING kingship coefficient cutoff (default 0.0884
+includes pairs with greater than 3rd-degree relatedness). KING
+kinship coefficient: >0.354 duplicate/MZ twin, [0.177, 0.354]
+1st-degree, [0.0884, 0.177] 2nd-degree, [0.0442, 0.0884] 3rd-degree.}
 }
 \value{
-A dataframe (header: ID1, ID2, HetHet, IBS0, Kinship) for the subset of individuals with data.
+A dataframe (header: ID1, ID2, HetHet, IBS0, Kinship) for the
+subset of individuals with data.
 }
 \description{
 Subset of the UKB relatedness dataframe with data
 }
 \seealso{
-\code{\link{ukb_gen_rel_count}}, \code{\link{ukb_gen_samples_to_remove}}
+\code{\link{ukb_gen_rel_count}},
+\code{\link{ukb_gen_samples_to_remove}}
 }

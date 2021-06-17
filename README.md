@@ -3,7 +3,7 @@ ukbtools <img src='man/figures/logo.png' align="right" height="137.5" />
 
 <!-- badges: start -->
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ukbtools)](https://cran.r-project.org/package=ukbtools)
-[![Codecov test coverage](https://codecov.io/gh/kenhanscombe/ukbtools/branch/master/graph/badge.svg)](https://codecov.io/gh/kenhanscombe/ukbtools?branch=master)
+[![codecov](https://codecov.io/gh/kenhanscombe/ukbtools/branch/master/graph/badge.svg?token=4MMpYxggFt)](https://codecov.io/gh/kenhanscombe/ukbtools)
 [![R-CMD-check](https://github.com/kenhanscombe/ukbtools/workflows/R-CMD-check/badge.svg)](https://github.com/kenhanscombe/ukbtools/actions)
 <!-- badges: end -->
 

@@ -4,7 +4,7 @@ globalVariables(
     "ped_related", "code", "heterozygosity_0_0", "field.tab", "field.showcase",
     "field.html", "col.type", "variable", "HetHet", "IBS0", "ID", "ID1", "ID2",
     "Kinship", "categorized_var", "dx", "freq", "tile_range", "lower", "upper",
-    "mid", "frequency", "disease"))
+    "mid", "frequency", "disease", "Description", "UDI", "Type", "field"))
 
 #' Reads a UK Biobank phenotype fileset and returns a single dataset.
 #'
@@ -133,17 +133,17 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
 
   df <- fill_missing_description(html_table)
   lookup <- description_to_name(df)
-  old_var_names <- paste("f.", gsub("-", ".", df[, "UDI"]), sep = "")
+  old_var_names <- paste("f.", gsub("-", ".", dplyr::pull(df, UDI)), sep = "")
 
   if (as.lookup) {
     names(lookup) <- old_var_names
     return(lookup)
   } else {
     lookup.reference <- tibble::tibble(
-      field.showcase = gsub("-.*$", "", df[, "UDI"]),
-      field.html = df[, "UDI"],
+      field.showcase = gsub("-.*$", "", dplyr::pull(df, UDI)),
+      field.html = dplyr::pull(df, UDI),
       field.tab = old_var_names,
-      col.type = df[, "Type"],
+      col.type = dplyr::pull(df, Type),
       col.name = ifelse(
         field.showcase == "eid",
         "eid",
@@ -166,14 +166,12 @@ ukb_df_field <- function(fileset, path = ".", data.pos = 2, as.lookup = FALSE) {
 # @param data Field-to-description table from html file
 #
 fill_missing_description <-  function(data) {
-  udi <- gsub(pattern = "-.*$", "", data[, "UDI"])
-  for (i in 2:nrow(data)) {
-    if (udi[i] == udi[i-1] & is.na(data[, "Description"][i])) {
-      data[i, "Type"] <- data[i-1, "Type"]
-      data[i, "Description"] <- data[i-1, "Description"]
-    }
-  }
-  return(data)
+    data %>%
+        dplyr::mutate(field = stringr::str_replace(UDI, pattern = "-.*$", "")) %>%
+        dplyr::group_by(field) %>%
+        tidyr::fill() %>%
+        dplyr::select(-field) %>%
+        dplyr::ungroup()
 }
 
 
@@ -183,8 +181,7 @@ fill_missing_description <-  function(data) {
 # @param data Field-to-description table from html file
 #
 description_to_name <-  function(data) {
-
-  name <- tolower(data[, "Description"]) %>%
+    tolower(dplyr::pull(data, Description)) %>%
     gsub(" - ", "_", x = .) %>%
     gsub(" ", "_", x = .) %>%
     gsub("uses.*data.*coding.*simple_list.$", "", x = .) %>%
@@ -192,8 +189,6 @@ description_to_name <-  function(data) {
     gsub("uses.*data.*coding_[0-9]*", "", x = .) %>%
     gsub("[^[:alnum:][:space:]_]", "", x = .) %>%
     gsub("__*", "_", x = .)
-
-  return(name)
 }
 
 

@@ -170,8 +170,8 @@ fill_missing_description <-  function(data) {
         dplyr::mutate(field = stringr::str_replace(UDI, pattern = "-.*$", "")) %>%
         dplyr::group_by(field) %>%
         tidyr::fill() %>%
-        dplyr::select(-field) %>%
-        dplyr::ungroup()
+        dplyr::ungroup() %>%
+        dplyr::select(-field)
 }
 
 
